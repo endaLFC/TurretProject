@@ -23,6 +23,7 @@
 #include <iostream> 
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "Menu.h"
 
 
 
@@ -35,9 +36,13 @@ int main()
 	// Create the main window 
 	sf::RenderWindow window(sf::VideoMode(800, 600, 32), "SFML First Program");
 
+
+	Menu menu(window.getSize().x, window.getSize().y);
+
+	/*
 	//load a font
 	sf::Font font;
-	font.loadFromFile("C:\\Windows\\Fonts\\GARA.TTF");
+	font.loadFromFile("C:\\Windows\\Fonts\\Arkhip_font.ttf");
 
 	//create a formatted text string
 	sf::Text text;
@@ -45,12 +50,16 @@ int main()
 	text.setString("Hello World");
 	text.setStyle(sf::Text::Underlined | sf::Text::Italic | sf::Text::Bold);
 	text.setPosition(20, 40);
-	text.setCharacterSize(40);
+	text.setCharacterSize(50);
 
 	//create a circle
 	sf::CircleShape circle(50);
 	circle.setPosition(300, 200);
 
+	*/
+
+	int gameMode = 0;
+	CONST int MENU = 0, PLAY = 1, OPTIONS = 2, EXIT = 3;
 
 
 	// Start game loop 
@@ -60,25 +69,52 @@ int main()
 		sf::Event Event;
 		while (window.pollEvent(Event))
 		{
-			// Close window : exit 
-			if (Event.type == sf::Event::Closed)
+			switch (gameMode)
+			{
+			case MENU:
+			
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+				{
+					menu.MoveUp();
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+				{
+					menu.MoveDown();
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+				{
+					if(menu.GetPressedItem() == 0)
+						std::cout << "Play Button has been pressed" << std::endl;
+					if (menu.GetPressedItem() == 1)
+						std::cout << "Options Button has been pressed" << std::endl;
+					if (menu.GetPressedItem() == 2)
+						gameMode = EXIT;
+				}
+				
+				break;
+
+			case PLAY:
+				
+
+				break;
+
+			case OPTIONS:
+				
+
+				break;
+
+			case EXIT:
+
 				window.close();
 
-			// Escape key : exit 
-			if ((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Escape))
-				window.close();
-
-
+				break;
+			}
 		}
 
 		//prepare frame
 		window.clear();
 
-		//draw frame items
-		window.draw(text);
-
-		window.draw(circle);
-
+		menu.Draw(window);
 
 		// Finally, display rendered frame on screen 
 		window.display();
