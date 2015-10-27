@@ -5,7 +5,7 @@
 Menu::Menu(float width, float height)
 {
 	//if (!font.loadFromFile("C:\\Windows\\Fonts\\Arkhip_font.ttf"))
-	if (!font.loadFromFile("C:\\Windows\\Fonts\\Capture_it.ttf"))
+	if (!font.loadFromFile("Capture_it.ttf"))
 	{
 		//handle error
 	}

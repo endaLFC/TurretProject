@@ -97,6 +97,9 @@
     <Image Include="Earth.jpg" />
     <Image Include="Skull.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="Capture_it.ttf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
