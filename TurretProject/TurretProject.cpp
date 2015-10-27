@@ -36,31 +36,16 @@ int main()
 	// Create the main window 
 	sf::RenderWindow window(sf::VideoMode(800, 600, 32), "SFML First Program");
 
-
 	Menu menu(window.getSize().x, window.getSize().y);
-
-	/*
-	//load a font
-	sf::Font font;
-	font.loadFromFile("C:\\Windows\\Fonts\\Arkhip_font.ttf");
-
-	//create a formatted text string
-	sf::Text text;
-	text.setFont(font);
-	text.setString("Hello World");
-	text.setStyle(sf::Text::Underlined | sf::Text::Italic | sf::Text::Bold);
-	text.setPosition(20, 40);
-	text.setCharacterSize(50);
-
-	//create a circle
-	sf::CircleShape circle(50);
-	circle.setPosition(300, 200);
-
-	*/
 
 	int gameMode = 0;
 	CONST int MENU = 0, PLAY = 1, OPTIONS = 2, EXIT = 3;
 
+	sf::Texture texture;
+	sf::Sprite background;
+
+	texture.loadFromFile("Earth.jpg");
+	background.setTexture(texture);
 
 	// Start game loop 
 	while (window.isOpen())
@@ -83,10 +68,16 @@ int main()
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
 				{
-					if(menu.GetPressedItem() == 0)
+					if (menu.GetPressedItem() == 0)
+					{
+						gameMode = PLAY;
 						std::cout << "Play Button has been pressed" << std::endl;
+					}
 					if (menu.GetPressedItem() == 1)
+					{
+						gameMode = OPTIONS;
 						std::cout << "Options Button has been pressed" << std::endl;
+					}
 					if (menu.GetPressedItem() == 2)
 						gameMode = EXIT;
 				}
@@ -111,13 +102,36 @@ int main()
 			}
 		}
 
-		//prepare frame
-		window.clear();
 
-		menu.Draw(window);
 
-		// Finally, display rendered frame on screen 
-		window.display();
+		switch (gameMode)
+		{
+		case MENU:
+			window.clear();
+
+			menu.Draw(window);
+
+			window.display();
+			break;
+
+		case PLAY:
+			window.clear();
+
+			window.draw(background);
+
+			window.display();
+			break;
+
+		case OPTIONS:
+			window.clear();
+
+
+			window.display();
+
+			break;
+		}
+
+
 	} //loop back for next frame
 
 	return EXIT_SUCCESS;
