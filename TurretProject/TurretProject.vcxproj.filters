@@ -27,6 +27,9 @@
     <ClInclude Include="Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -38,12 +41,18 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Earth.jpg">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Skull.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Spaceship.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -2,29 +2,9 @@
 // Headers 
 //////////////////////////////////////////////////////////// 
 #include "stdafx.h" 
-#ifdef _DEBUG 
-#pragma comment(lib,"sfml-graphics-d.lib") 
-#pragma comment(lib,"sfml-audio-d.lib") 
-#pragma comment(lib,"sfml-system-d.lib") 
-#pragma comment(lib,"sfml-window-d.lib") 
-#pragma comment(lib,"sfml-network-d.lib") 
-#else 
-#pragma comment(lib,"sfml-graphics.lib") 
-#pragma comment(lib,"sfml-audio.lib") 
-#pragma comment(lib,"sfml-system.lib") 
-#pragma comment(lib,"sfml-window.lib") 
-#pragma comment(lib,"sfml-network.lib") 
-#endif 
-#pragma comment(lib,"opengl32.lib") 
-#pragma comment(lib,"glu32.lib") 
 
-#include "SFML/Graphics.hpp" 
-#include "SFML/OpenGL.hpp" 
-#include <iostream> 
-#define _USE_MATH_DEFINES
-#include <math.h>
 #include "Menu.h"
-
+#include "Player.h"
 
 
 ////////////////////////////////////////////////////////////
@@ -44,93 +24,83 @@ int main()
 	sf::Texture texture;
 	sf::Sprite background;
 
+	sf::Time time;
+	sf::Clock clock;
+
+	Player p1;
+
 	texture.loadFromFile("Earth.jpg");
 	background.setTexture(texture);
 
 	// Start game loop 
 	while (window.isOpen())
 	{
+		time = clock.getElapsedTime();
+		float t = time.asSeconds();
+		clock.restart();
+
 		// Process events 
 		sf::Event Event;
-		while (window.pollEvent(Event))
-		{
-			switch (gameMode)
-			{
-			case MENU:
-			
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-				{
-					menu.MoveUp();
-				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-				{
-					menu.MoveDown();
-				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-				{
-					if (menu.GetPressedItem() == 0)
-					{
-						gameMode = PLAY;
-						std::cout << "Play Button has been pressed" << std::endl;
-					}
-					if (menu.GetPressedItem() == 1)
-					{
-						gameMode = OPTIONS;
-						std::cout << "Options Button has been pressed" << std::endl;
-					}
-					if (menu.GetPressedItem() == 2)
-						gameMode = EXIT;
-				}
-				
-				break;
-
-			case PLAY:
-				
-
-				break;
-
-			case OPTIONS:
-				
-
-				break;
-
-			case EXIT:
-
-				window.close();
-
-				break;
-			}
-		}
-
-
-
 		switch (gameMode)
 		{
 		case MENU:
+			
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			{
+				menu.MoveUp();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+			{
+				menu.MoveDown();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+			{
+				if (menu.GetPressedItem() == 0)
+				{
+					gameMode = PLAY;
+					std::cout << "Play Button has been pressed" << std::endl;
+				}
+				if (menu.GetPressedItem() == 1)
+				{
+					gameMode = OPTIONS;
+					std::cout << "Options Button has been pressed" << std::endl;
+				}
+				if (menu.GetPressedItem() == 2)
+					gameMode = EXIT;
+			}
+
+			//DRAW CODE HERE
 			window.clear();
-
 			menu.Draw(window);
-
 			window.display();
+				
 			break;
 
 		case PLAY:
+			p1.Update(t);
+
+			
+			//DRAW CODE HERE
 			window.clear();
-
 			window.draw(background);
-
+			p1.Draw(window);
 			window.display();
 			break;
 
 		case OPTIONS:
+				
+			//DRAW CODE HERE
 			window.clear();
 
-
 			window.display();
+			break;
+
+		case EXIT:
+
+			window.close();
 
 			break;
 		}
-
 
 	} //loop back for next frame
 

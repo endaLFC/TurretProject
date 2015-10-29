@@ -54,6 +54,7 @@ void Menu::MoveUp()
 {
 	if (selectedItemIndex - 1 >= 0)
 	{
+		Sleep(150);
 		text[selectedItemIndex].setColor(sf::Color::White);
 		selectedItemIndex--;
 		text[selectedItemIndex].setColor(sf::Color::Red);
@@ -64,6 +65,7 @@ void Menu::MoveDown()
 {
 	if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS)
 	{
+		Sleep(150);
 		text[selectedItemIndex].setColor(sf::Color::White);
 		selectedItemIndex++;
 		text[selectedItemIndex].setColor(sf::Color::Red);
