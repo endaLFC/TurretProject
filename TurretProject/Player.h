@@ -26,7 +26,7 @@ class Player
 		float m_rotation;
 		
 		float toRadians(float degrees);
-		void Rotation(int dir);
+		void Rotation(int dir, float t);
 		void Move(float time);
 };
 

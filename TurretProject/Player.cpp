@@ -5,15 +5,15 @@
 
 Player::Player()
 {
-	if (!m_texture.loadFromFile("cannon.png"))
+	if (!m_texture.loadFromFile("newcannon.png"))
 	{
 		// error...
 	}
 	m_sprite.setTexture(m_texture);
-	m_sprite.setOrigin(25, 120);
+	m_sprite.setOrigin(40, 125);
 	m_pos = sf::Vector2f(0, 0);
 
-	m_speed = 500;
+	m_speed = 100;
 	m_rotation = 0;
 	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
 	m_pos = sf::Vector2f(400, 570);
@@ -35,13 +35,13 @@ void Player::Move(float time)
 	m_sprite.setPosition(m_pos);
 	m_sprite.setRotation(m_rotation);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && m_rotation < 90)
 	{
-		Rotation(1);
+		Rotation(1, time);
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && m_rotation > -90)
 	{
-		Rotation(-1);
+		Rotation(-1, time);
 	}
 }
 
@@ -55,8 +55,8 @@ float Player::toRadians(float degrees)
 	return (degrees * 3.14) / 180;
 }
 
-void Player::Rotation(int dir)
+void Player::Rotation(int dir, float t)
 {
-	m_rotation += 0.05 * dir;
+	m_rotation += m_speed * t * dir;
 	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
 }
