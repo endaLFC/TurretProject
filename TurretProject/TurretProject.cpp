@@ -5,6 +5,7 @@
 
 #include "Menu.h"
 #include "Player.h"
+#include "BulletManager.h"
 
 
 ////////////////////////////////////////////////////////////
@@ -28,10 +29,11 @@ int main()
 	sf::Clock clock;
 
 	Player p1;
+	p1.Initialise();
 
 	texture.loadFromFile("Earth.jpg");
 	background.setTexture(texture);
-
+	BulletManager::GetInstance()->Init();
 	// Start game loop 
 	while (window.isOpen())
 	{
@@ -78,12 +80,13 @@ int main()
 
 		case PLAY:
 			p1.Update(t);
-
+			BulletManager::GetInstance()->Update(t);
 			
 			//DRAW CODE HERE
 			window.clear();
 			window.draw(background);
 			p1.Draw(window);
+			BulletManager::GetInstance()->Draw(window);
 			window.display();
 			break;
 

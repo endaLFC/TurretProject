@@ -1,5 +1,7 @@
 #pragma once
 #include "SFML\Graphics.hpp"
+#include "Bullet.h"
+#include "BulletManager.h"
 
 class Player
 {
@@ -12,6 +14,8 @@ class Player
 		void Draw(sf::RenderWindow &window);
 		void MoveLeft();
 		void MoveRight();
+		void Initialise();
+		//Bullet b1;
 
 	protected:
 		sf::Texture m_texture;
