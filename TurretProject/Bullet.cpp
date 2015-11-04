@@ -26,8 +26,11 @@ Bullet::~Bullet()
 
 bool Bullet::Update(float time)
 {
-
 	Move(time);
+
+	if (m_pos.x > 800 || m_pos.x < 0 || m_pos.y < 0)
+		alive = false;
+
 	return alive;
 }
 

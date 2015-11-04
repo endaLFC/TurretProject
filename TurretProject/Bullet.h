@@ -13,6 +13,7 @@ class Bullet
 		void Draw(sf::RenderWindow &window);
 		void Shoot();
 		void Initialise(sf::Texture * text);
+		int GetRadius() { return radius; }
 
 	protected:
 		sf::Texture* m_texture;
@@ -20,10 +21,10 @@ class Bullet
 		sf::Vector2f m_pos;
 		sf::Vector2f m_direction;
 
-		sf::FloatRect m_bounds;
+		sf::Vector2f widthHeight = sf::Vector2f(10,15);
 
-		int m_width;
-		int m_height;
+		int radius = 5;
+
 		float m_speed;
 		float m_rotation;
 		bool alive;

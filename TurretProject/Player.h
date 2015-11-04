@@ -15,6 +15,7 @@ class Player
 		void MoveLeft();
 		void MoveRight();
 		void Initialise();
+		sf::Vector2f GetPos() { return m_pos; }
 		//Bullet b1;
 
 	protected:

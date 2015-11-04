@@ -6,6 +6,7 @@
 #include "Menu.h"
 #include "Player.h"
 #include "BulletManager.h"
+#include "Enemy.h"
 
 
 ////////////////////////////////////////////////////////////
@@ -31,9 +32,20 @@ int main()
 	Player p1;
 	p1.Initialise();
 
+	Enemy enemies[3];
+
+	enemies[1] = Enemy(sf::Vector2f(700, 0), 75);
+	enemies[2] = Enemy(sf::Vector2f(400, 0), 50);
+
+	for (int i = 0; i < 3; i++)
+	{
+		enemies[i].Load();
+	}
+
 	texture.loadFromFile("Earth.jpg");
 	background.setTexture(texture);
 	BulletManager::GetInstance()->Init();
+
 	// Start game loop 
 	while (window.isOpen())
 	{
@@ -80,12 +92,21 @@ int main()
 
 		case PLAY:
 			p1.Update(t);
+			for (int i = 0; i < 3; i++)
+			{
+				enemies[i].Update(t, p1.GetPos());
+			}
 			BulletManager::GetInstance()->Update(t);
 			
 			//DRAW CODE HERE
 			window.clear();
 			window.draw(background);
 			p1.Draw(window);
+			for (int i = 0; i < 3; i++)
+			{
+				enemies[i].IsColliding(p1.GetPos(), 50);
+				enemies[i].Draw(window);
+			}
 			BulletManager::GetInstance()->Draw(window);
 			window.display();
 			break;

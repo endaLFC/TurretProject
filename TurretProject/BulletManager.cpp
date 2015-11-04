@@ -41,13 +41,17 @@ void BulletManager::PlayerFire(float rotation, sf::Vector2f position)
 void BulletManager::Update(float time)
 {
 	list<Bullet>::iterator it = bullets.begin();
-	for (it = bullets.begin(); it != bullets.end(); ++it)
+	for (it = bullets.begin(); it != bullets.end();)
 	{
 		if (!it->Update(time))
-		{
-			//remove from vector 
-			//reset iterator 
+		{	
+			it = bullets.erase(it);
 		}
+		else
+		{
+			++it;
+		}
+				
 	}
 }
 

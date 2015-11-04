@@ -61,7 +61,7 @@ void Player::Move(float time)
 	if (fired == true)
 	{
 		firedTime++;
-		if (firedTime >= 2000)
+		if (firedTime >= 750)
 		{
 			firedTime = 0;
 			fired = false;
