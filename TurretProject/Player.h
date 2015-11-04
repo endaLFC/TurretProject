@@ -28,6 +28,9 @@ class Player
 		int m_height;
 		float m_speed;
 		float m_rotation;
+
+		bool fired;
+		int firedTime;
 		
 		float toRadians(float degrees);
 		void Rotation(int dir, float t);

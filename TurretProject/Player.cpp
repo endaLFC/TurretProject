@@ -23,7 +23,8 @@ void Player::Initialise()
 	m_rotation = -90;
 	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
 	m_pos = sf::Vector2f(400, 570);
-	//b1.Initialise(m_rotation,m_pos);
+	fired = false;
+	firedTime = 0;
 }
 
 
@@ -51,9 +52,20 @@ void Player::Move(float time)
 		Rotation(-1, time);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && fired == false)
 	{
-		BulletManager::GetInstance()->PlayerFire(m_rotation,m_pos);
+		BulletManager::GetInstance()->PlayerFire(m_rotation, sf::Vector2f(m_pos.x + (m_direction.x * 120), m_pos.y + (m_direction.y * 120)));
+		fired = true;
+	}
+
+	if (fired == true)
+	{
+		firedTime++;
+		if (firedTime >= 2000)
+		{
+			firedTime = 0;
+			fired = false;
+		}
 	}
 
 }
@@ -61,8 +73,6 @@ void Player::Move(float time)
 void Player::Draw(sf::RenderWindow& window)
 {
 	window.draw(m_sprite);
-	//if (b1.GetAlive() == true)
-	//	b1.Draw(window);
 }
 
 float Player::toRadians(float degrees)
