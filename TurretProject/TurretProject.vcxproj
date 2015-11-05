@@ -104,6 +104,7 @@
   <ItemGroup>
     <Image Include="BulletSprite.png" />
     <Image Include="Earth.jpg" />
+    <Image Include="GameOver.jpg" />
     <Image Include="newcannon.png" />
     <Image Include="Skull.jpg" />
     <Image Include="Spaceship.png" />

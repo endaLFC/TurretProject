@@ -16,6 +16,7 @@ class Player
 		void MoveRight();
 		void Initialise();
 		sf::Vector2f GetPos() { return m_pos; }
+		int GetRadius() { return m_radius; }
 		//Bullet b1;
 
 	protected:
@@ -25,8 +26,7 @@ class Player
 		sf::Vector2f m_direction;
 		sf::FloatRect m_bounds;
 
-		int m_width;
-		int m_height;
+		int m_radius;
 		float m_speed;
 		float m_rotation;
 

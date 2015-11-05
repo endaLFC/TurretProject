@@ -57,3 +57,17 @@ void Bullet::Rotation(int dir)
 	m_rotation += m_speed * dir;
 	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
 }
+
+bool Bullet::IsColliding(sf::Vector2f targetPosition, int targetRadius)
+{
+	float distance = sqrt((targetPosition.x - m_pos.x)*(targetPosition.x - m_pos.x) + (targetPosition.y - m_pos.y)*(targetPosition.y - m_pos.y));
+	if (distance < m_radius + targetRadius)		//collision occurs
+	{
+		std::cout << "COLLISION" << std::endl;
+		return true;		//return true
+	}
+	else
+	{
+		return false;	//return false
+	}
+}

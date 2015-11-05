@@ -51,7 +51,6 @@ void BulletManager::Update(float time)
 		{
 			++it;
 		}
-				
 	}
 }
 
@@ -61,5 +60,27 @@ void BulletManager::Draw(sf::RenderWindow &window)
 	for (it = bullets.begin(); it != bullets.end(); ++it)
 	{
 		it->Draw(window);
+	}
+}
+
+bool BulletManager::IsColliding(Enemy *enemy)
+{
+	if (enemy->GetAlive() == true)
+	{
+		list<Bullet>::iterator it = bullets.begin();
+		for (it = bullets.begin(); it != bullets.end();)
+		{
+			if (it->IsColliding(enemy->GetPosition(), enemy->GetRadius()))
+			{
+				it = bullets.erase(it);
+				return true;
+			}
+			else
+			{
+				++it;
+
+			}
+		}
+		return false;
 	}
 }

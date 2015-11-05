@@ -21,9 +21,11 @@ int main()
 	Menu menu(window.getSize().x, window.getSize().y);
 
 	int gameMode = 0;
-	CONST int MENU = 0, PLAY = 1, OPTIONS = 2, EXIT = 3;
+	CONST int MENU = 0, PLAY = 1, OPTIONS = 2, EXIT = 3, GAMEOVER = 4;
 
-	sf::Texture texture;
+	sf::Texture playTexture;
+	sf::Texture gameOverTexture;
+	sf::Texture optionsTexture;
 	sf::Sprite background;
 
 	sf::Time time;
@@ -42,8 +44,10 @@ int main()
 		enemies[i].Load();
 	}
 
-	texture.loadFromFile("Earth.jpg");
-	background.setTexture(texture);
+	playTexture.loadFromFile("Earth.jpg");
+	gameOverTexture.loadFromFile("GameOver.jpg");
+	optionsTexture.loadFromFile("OptionsBackground.jpg");
+
 	BulletManager::GetInstance()->Init();
 
 	// Start game loop 
@@ -80,7 +84,9 @@ int main()
 					std::cout << "Options Button has been pressed" << std::endl;
 				}
 				if (menu.GetPressedItem() == 2)
+				{
 					gameMode = EXIT;
+				}
 			}
 
 			//DRAW CODE HERE
@@ -100,22 +106,42 @@ int main()
 			
 			//DRAW CODE HERE
 			window.clear();
+			background.setTexture(playTexture);
 			window.draw(background);
+
 			p1.Draw(window);
 			for (int i = 0; i < 3; i++)
 			{
-				enemies[i].IsColliding(p1.GetPos(), 50);
-				enemies[i].Draw(window);
+				if (BulletManager::GetInstance()->IsColliding(&enemies[i]))
+				{
+					//do something
+					enemies[i].SetAlive(false);
+				}
+
+				if (enemies[i].IsColliding(p1.GetPos(), p1.GetRadius()))
+				{
+					gameMode = GAMEOVER;
+				}
+
+				enemies[i].Draw(window);	
+
 			}
 			BulletManager::GetInstance()->Draw(window);
+			
 			window.display();
 			break;
 
 		case OPTIONS:
 				
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+			{
+				gameMode = MENU;
+			}
+
 			//DRAW CODE HERE
 			window.clear();
-
+			background.setTexture(optionsTexture);
+			window.draw(background);
 			window.display();
 			break;
 
@@ -123,6 +149,21 @@ int main()
 
 			window.close();
 
+			break;
+
+		case GAMEOVER:
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+			{
+				window.close();
+			}
+
+			//DRAW CODE HERE
+			window.clear();
+
+			background.setTexture(gameOverTexture);
+			window.draw(background);
+			window.display();
 			break;
 		}
 

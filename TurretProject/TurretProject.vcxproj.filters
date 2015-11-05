@@ -79,6 +79,9 @@
     <Image Include="newcannon.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="GameOver.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Capture_it.ttf">

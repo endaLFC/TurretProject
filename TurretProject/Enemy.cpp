@@ -11,17 +11,17 @@ Enemy::Enemy()
 	m_sprite.setRotation(m_rotation);
 	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
 	m_position = sf::Vector2f(0, 0);
+	m_alive = true;
 }
 
 Enemy::Enemy(sf::Vector2f pos, float speed)
 {
-
 	m_sprite.setOrigin(40, 35);
 	m_speed = speed;
 	m_rotation = 0;
 	m_sprite.setRotation(m_rotation);
 	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
-
+	m_alive = true;
 	m_position = sf::Vector2f(pos.x, pos.y);
 }
 void Enemy::Load()
@@ -35,15 +35,23 @@ void Enemy::Load()
 
 void Enemy::Update(float time, sf::Vector2f playerPos)
 {
-	GetDirection(playerPos);
-	Move(time, playerPos);
-	WrapAroundScreen();
+	if (m_alive == true)
+	{
+		GetDirection(playerPos);
+		Move(time, playerPos);
+		WrapAroundScreen();
+	}
+
 }
 
 void Enemy::Draw(sf::RenderWindow& window)
 {
-	m_sprite.setRotation(m_rotation);
-	window.draw(m_sprite);
+	if (m_alive == true)
+	{
+		m_sprite.setRotation(m_rotation);
+		window.draw(m_sprite);
+	}
+	
 }
 
 
@@ -51,13 +59,15 @@ void Enemy::Draw(sf::RenderWindow& window)
 
 void Enemy::Move(float time, sf::Vector2f playerPos)
 {
-	float len = DistanceFrom(m_position, playerPos);
-	//if (len > 200)
-	//{
-		m_position += m_direction * time * m_speed;
-		m_sprite.setPosition(m_position);
-	//}
-
+	if (m_alive == true)
+	{
+		//float len = DistanceFrom(m_position, playerPos);
+		//if (len > 300)
+		//{
+			m_position += m_direction * time * m_speed;
+			m_sprite.setPosition(m_position);
+		//}
+	}
 }
 
 void Enemy::WrapAroundScreen()
@@ -127,15 +137,19 @@ sf::Vector2f Enemy::SlowTurn(sf::Vector2f m_direction, sf::Vector2f dir)
 
 bool Enemy::IsColliding(sf::Vector2f targetPosition, int targetRadius)
 {
-	float distance = sqrt((targetPosition.x - m_position.x)*(targetPosition.x - m_position.x) + (targetPosition.y - m_position.y)*(targetPosition.y - m_position.y));
-	if (distance < m_radius + targetRadius)		//collision occurs
+	if (m_alive == true)
 	{
-		std::cout << "COLLISION" << std::endl;
-		return true;		//return true
+		//float distance = sqrt((targetPosition.x - m_position.x)*(targetPosition.x - m_position.x) + (targetPosition.y - m_position.y)*(targetPosition.y - m_position.y));
+		if (DistanceFrom(targetPosition, m_position) < m_radius + targetRadius)		//collision occurs
+		{
+			std::cout << "COLLISION" << std::endl;
+			m_alive = false;
+			return true;		//return true
+		}
+		else
+		{
+			return false;	//return false
+		}
 	}
-	else
-	{
-		return false;	//return false
-	}
-
+	return false;
 }
