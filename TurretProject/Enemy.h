@@ -14,6 +14,7 @@ public:
 	int GetRadius() { return m_radius; }
 	bool GetAlive() { return m_alive; }
 	void SetAlive(bool alive) { m_alive = alive; }
+	void Initialise(sf::Texture * text);
 
 protected:
 	//Functions
@@ -37,7 +38,7 @@ protected:
 	sf::Vector2f m_position;
 	sf::Vector2f m_direction;
 	sf::Sprite m_sprite;
-	sf::Texture m_texture;
+	sf::Texture* m_texture;
 	sf::FloatRect m_bounds;
 	
 };
