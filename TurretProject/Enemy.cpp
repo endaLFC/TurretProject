@@ -6,12 +6,12 @@ Enemy::Enemy()
 {
 	//m_sprite.setOrigin(40, 35);
 
-	m_speed = 100;
+	/*m_speed = 100;
 	m_rotation = 0;
-	m_sprite.setRotation(m_rotation);
-	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
-	m_position = sf::Vector2f(0, 0);
-	m_alive = true;
+	m_sprite.setrotation(m_rotation);
+	m_direction = sf::vector2f(cos(toradians(m_rotation)), sin(toradians(m_rotation)));
+	m_position = sf::vector2f(0, 0);
+	m_alive = true;*/
 }
 
 Enemy::Enemy(sf::Vector2f pos, float speed)
@@ -21,8 +21,8 @@ Enemy::Enemy(sf::Vector2f pos, float speed)
 	m_rotation = 0;
 	m_sprite.setRotation(m_rotation);
 	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
-	m_alive = true;
-	m_position = sf::Vector2f(pos.x, pos.y);*/
+	m_alive = true;*/
+	m_position = sf::Vector2f(pos.x, pos.y);
 }
 
 void Enemy::Initialise(sf::Texture * text)
@@ -35,15 +35,15 @@ void Enemy::Initialise(sf::Texture * text)
 	m_sprite.setRotation(m_rotation);
 	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
 	m_alive = true;
-	int x = rand() % 500;
-	int y = rand() % 100;
+	int x = rand() % 800;
+	int y = rand() % 10;
 
-	m_position = sf::Vector2f(x, -y);
-	/*int r, g, b;
+	m_position = sf::Vector2f(x, y);
+	int r, g, b;
 	r = rand() % 255;
 	g = rand() % 255;
 	b = rand() % 255;
-	m_sprite.setColor(sf::Color(r, g, b));*/
+	m_sprite.setColor(sf::Color(r, g, b));
 }
 
 /*void Enemy::Load()
@@ -55,15 +55,18 @@ void Enemy::Initialise(sf::Texture * text)
 	m_sprite.setTexture(m_texture);
 }*/
 
-void Enemy::Update(float time, sf::Vector2f playerPos)
+bool Enemy::Update(float time, sf::Vector2f playerPos)
 {
-	if (m_alive == true)
+	if (m_alive)
 	{
 		GetDirection(playerPos);
 		Move(time, playerPos);
 		WrapAroundScreen();
+		return true;
 	}
-
+	else {
+		return false;
+	}
 }
 
 void Enemy::Draw(sf::RenderWindow& window)

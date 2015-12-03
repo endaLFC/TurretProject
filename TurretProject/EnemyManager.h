@@ -12,9 +12,11 @@ public:
 	~EnemyManager();
 	void Init();
 	void CreateEnemy(sf::Vector2f position);
-	void Update(float time);
+	void Update(float time, sf::Vector2f playerPos);
 	void Draw(sf::RenderWindow &window);
-	bool IsColliding(Enemy *enemy);
+	bool IsColliding(sf::Vector2f targetPosition, int targetRadius);
+
+	list<Enemy>* GetEnemies();
 private:
 	EnemyManager()
 	{

@@ -63,24 +63,35 @@ void BulletManager::Draw(sf::RenderWindow &window)
 	}
 }
 
-bool BulletManager::IsColliding(Enemy *enemy)
+bool BulletManager::IsColliding()
 {
-	if (enemy->GetAlive() == true)
+   	bool collision = false;
+	list<Bullet>::iterator it = bullets.begin();
+	for (it = bullets.begin(); it != bullets.end();)
 	{
-		list<Bullet>::iterator it = bullets.begin();
-		for (it = bullets.begin(); it != bullets.end();)
+		bool hit = false;
+		list<Enemy>* enemies = EnemyManager::GetInstance()->GetEnemies();
+		for (list<Enemy>::iterator Enemyit = enemies->begin(); Enemyit != enemies->end();)
 		{
-			if (it->IsColliding(enemy->GetPosition(), enemy->GetRadius()))
+			if (it->IsColliding(Enemyit->GetPosition(), Enemyit->GetRadius()))
 			{
 				it = bullets.erase(it);
-				return true;
+				Enemyit = enemies->erase(Enemyit);
+				hit = true;
+				collision = true;
+				break;
 			}
 			else
 			{
-				++it;
-
+				++Enemyit;
 			}
 		}
-		return false;
+		if (!hit)
+		{
+			++it;
+		}
+		
 	}
+	return collision;
 }
+

@@ -6,7 +6,7 @@ public:
 	Enemy();
 	Enemy(sf::Vector2f pos, float speed);
 
-	void Update(float time, sf::Vector2f playerPos);
+	bool Update(float time, sf::Vector2f playerPos);
 	void Load();
 	bool IsColliding(sf::Vector2f targetPosition, int targetRadius);
 	void Draw(sf::RenderWindow& window);

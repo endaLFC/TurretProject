@@ -19,7 +19,7 @@ EnemyManager* EnemyManager::GetInstance()
 }
 void EnemyManager::Init()
 {
-	if (!m_texture.loadFromFile("BulletSprite.png")) //**************
+	if (!m_texture.loadFromFile("Spaceship.png")) //**************
 	{
 		//error
 	}
@@ -38,12 +38,12 @@ void EnemyManager::CreateEnemy(sf::Vector2f position)
 	enemies.push_back(e);
 }
 
-void EnemyManager::Update(float time)
+void EnemyManager::Update(float time, sf::Vector2f playerPos)
 {
 	list<Enemy>::iterator it = enemies.begin();
 	for (it = enemies.begin(); it != enemies.end();)
 	{
-		if (!it->Update(time))
+		if (!it->Update(time, playerPos))
 		{
 			it = enemies.erase(it);
 		}
@@ -54,33 +54,35 @@ void EnemyManager::Update(float time)
 	}
 }
 
-void BulletManager::Draw(sf::RenderWindow &window)
+void EnemyManager::Draw(sf::RenderWindow &window)
 {
-	list<Bullet>::iterator it = bullets.begin();
-	for (it = bullets.begin(); it != bullets.end(); ++it)
+	list<Enemy>::iterator it = enemies.begin();
+	for (it = enemies.begin(); it != enemies.end(); ++it)
 	{
 		it->Draw(window);
 	}
 }
 
-bool BulletManager::IsColliding(Enemy *enemy)
+bool EnemyManager::IsColliding(sf::Vector2f targetPosition, int targetRadius)
 {
-	if (enemy->GetAlive() == true)
-	{
-		list<Bullet>::iterator it = bullets.begin();
-		for (it = bullets.begin(); it != bullets.end();)
+		list<Enemy>::iterator it = enemies.begin();
+		for (it = enemies.begin(); it != enemies.end();)
 		{
-			if (it->IsColliding(enemy->GetPosition(), enemy->GetRadius()))
+			if (it->IsColliding(targetPosition, targetRadius))
 			{
-				it = bullets.erase(it);
+				it = enemies.erase(it);
 				return true;
 			}
 			else
 			{
 				++it;
-
 			}
 		}
 		return false;
-	}
+}
+
+
+list<Enemy>* EnemyManager::GetEnemies()
+{
+	return &enemies;
 }

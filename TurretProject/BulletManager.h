@@ -2,7 +2,7 @@
 #include "vector"
 #include "list"
 #include "Bullet.h"
-#include "Enemy.h"
+#include "EnemyManager.h"
 using namespace std;
 
 class BulletManager
@@ -14,7 +14,7 @@ public:
 	void PlayerFire(float rotation, sf::Vector2f position);
 	void Update(float time);
 	void Draw(sf::RenderWindow &window);
-	bool IsColliding(Enemy *enemy);
+	bool IsColliding();
 private:
 	BulletManager()
 	{

@@ -6,7 +6,7 @@
 #include "Menu.h"
 #include "Player.h"
 #include "BulletManager.h"
-#include "Enemy.h"
+#include "EnemyManager.h"
 
 
 ////////////////////////////////////////////////////////////
@@ -17,7 +17,7 @@ int main()
 {
 	// Create the main window 
 	sf::RenderWindow window(sf::VideoMode(800, 600, 32), "SFML First Program");
-
+	int counter = 0;
 	Menu menu(window.getSize().x, window.getSize().y);
 
 	int gameMode = 0;
@@ -34,7 +34,7 @@ int main()
 	Player p1;
 	p1.Initialise();
 
-	Enemy enemies[3];
+	/*Enemy enemies[3];
 
 	enemies[1] = Enemy(sf::Vector2f(700, 0), 75);
 	enemies[2] = Enemy(sf::Vector2f(400, 0), 50);
@@ -42,13 +42,14 @@ int main()
 	for (int i = 0; i < 3; i++)
 	{
 		enemies[i].Load();
-	}
+	}*/
 
 	playTexture.loadFromFile("Earth.jpg");
 	gameOverTexture.loadFromFile("GameOver.jpg");
 	optionsTexture.loadFromFile("OptionsBackground.jpg");
 
 	BulletManager::GetInstance()->Init();
+	EnemyManager::GetInstance()->Init();
 
 	// Start game loop 
 	while (window.isOpen())
@@ -98,34 +99,69 @@ int main()
 
 		case PLAY:
 			p1.Update(t);
-			for (int i = 0; i < 3; i++)
+			/*for (int i = 0; i < 3; i++)
 			{
 				enemies[i].Update(t, p1.GetPos());
-			}
+			}*/
 			BulletManager::GetInstance()->Update(t);
-			
+			EnemyManager::GetInstance()->Update(t, p1.GetPos());
+
 			//DRAW CODE HERE
 			window.clear();
 			background.setTexture(playTexture);
 			window.draw(background);
 
 			p1.Draw(window);
-			for (int i = 0; i < 3; i++)
+			//for (int i = 0; i < 3; i++)
+			//{
+			//	if (BulletManager::GetInstance()->IsColliding(&enemies[i]))
+			//	{
+			//		//do something
+			//		enemies[i].SetAlive(false);
+			//	}
+
+			//	if (enemies[i].IsColliding(p1.GetPos(), p1.GetRadius()))
+			//	{
+			//		gameMode = GAMEOVER;
+			//	}
+
+			//	enemies[i].Draw(window);	
+
+			//}
+			if (BulletManager::GetInstance()->IsColliding())
 			{
-				if (BulletManager::GetInstance()->IsColliding(&enemies[i]))
-				{
-					//do something
-					enemies[i].SetAlive(false);
-				}
-
-				if (enemies[i].IsColliding(p1.GetPos(), p1.GetRadius()))
-				{
-					gameMode = GAMEOVER;
-				}
-
-				enemies[i].Draw(window);	
-
+				//do something
+				//enemies[i].SetAlive(false);
 			}
+
+			if (EnemyManager::GetInstance()->IsColliding(p1.GetPos(), p1.GetRadius()))
+			{
+				gameMode = GAMEOVER;
+			}
+
+			EnemyManager::GetInstance()->Draw(window);
+
+
+			
+			counter++;
+
+			if (counter > 1000)
+			{
+				counter = 0;
+			}
+
+
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::P) && counter == 1)
+			{
+				EnemyManager::GetInstance()->CreateEnemy(sf::Vector2f(0,0));
+			}
+
+
+
+
+
+
 			BulletManager::GetInstance()->Draw(window);
 			
 			window.display();
