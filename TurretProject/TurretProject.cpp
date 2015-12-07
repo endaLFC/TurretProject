@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "BulletManager.h"
 #include "EnemyManager.h"
+#include "ParticleSystem.h"
 
 
 ////////////////////////////////////////////////////////////
@@ -17,6 +18,7 @@ int main()
 {
 	// Create the main window 
 	sf::RenderWindow window(sf::VideoMode(800, 600, 32), "SFML First Program");
+	//window.setFramerateLimit(60);
 	int counter = 0;
 	Menu menu(window.getSize().x, window.getSize().y);
 
@@ -26,30 +28,44 @@ int main()
 	sf::Texture playTexture;
 	sf::Texture gameOverTexture;
 	sf::Texture optionsTexture;
+	sf::Texture radarTexture;
+	sf::Texture radarBorderTexture;
+	sf::Texture scoreHUDTexture;
 	sf::Sprite background;
+	sf::Sprite radarBackground;
+	sf::Sprite radarBorderSpr;
+	sf::Sprite scoreHUDSprite;
 
 	sf::Time time;
 	sf::Clock clock;
+	
 
 	Player p1;
 	p1.Initialise();
 
-	/*Enemy enemies[3];
-
-	enemies[1] = Enemy(sf::Vector2f(700, 0), 75);
-	enemies[2] = Enemy(sf::Vector2f(400, 0), 50);
-
-	for (int i = 0; i < 3; i++)
-	{
-		enemies[i].Load();
-	}*/
-
-	playTexture.loadFromFile("Earth.jpg");
+	playTexture.loadFromFile("space.jpg");
+	radarTexture.loadFromFile("radar.png");
+	radarBorderTexture.loadFromFile("radarBorder.png");
+	scoreHUDTexture.loadFromFile("hud.png");
 	gameOverTexture.loadFromFile("GameOver.jpg");
 	optionsTexture.loadFromFile("OptionsBackground.jpg");
 
 	BulletManager::GetInstance()->Init();
 	EnemyManager::GetInstance()->Init();
+	ParticleSystem::GetInstance()->Init();
+
+	sf::View main(sf::FloatRect(0, 0, 800, 600));
+	sf::View miniMap;
+
+	miniMap.setViewport(sf::FloatRect(0.03f, 0.8f, 0.25f, 0.25f));
+
+	background.setTexture(playTexture);
+	radarBackground.setTexture(radarTexture);
+	scoreHUDSprite.setTexture(scoreHUDTexture);
+	radarBorderSpr.setTexture(radarBorderTexture);
+
+	scoreHUDSprite.setPosition(160,0);
+	radarBorderSpr.setPosition(0,461);
 
 	// Start game loop 
 	while (window.isOpen())
@@ -105,29 +121,11 @@ int main()
 			}*/
 			BulletManager::GetInstance()->Update(t);
 			EnemyManager::GetInstance()->Update(t, p1.GetPos());
+			ParticleSystem::GetInstance()->Update(t);
 
 			//DRAW CODE HERE
-			window.clear();
-			background.setTexture(playTexture);
-			window.draw(background);
+			
 
-			p1.Draw(window);
-			//for (int i = 0; i < 3; i++)
-			//{
-			//	if (BulletManager::GetInstance()->IsColliding(&enemies[i]))
-			//	{
-			//		//do something
-			//		enemies[i].SetAlive(false);
-			//	}
-
-			//	if (enemies[i].IsColliding(p1.GetPos(), p1.GetRadius()))
-			//	{
-			//		gameMode = GAMEOVER;
-			//	}
-
-			//	enemies[i].Draw(window);	
-
-			//}
 			if (BulletManager::GetInstance()->IsColliding())
 			{
 				//do something
@@ -139,13 +137,9 @@ int main()
 				gameMode = GAMEOVER;
 			}
 
-			EnemyManager::GetInstance()->Draw(window);
-
-
-			
 			counter++;
 
-			if (counter > 1000)
+			if (counter > 500)
 			{
 				counter = 0;
 			}
@@ -159,11 +153,25 @@ int main()
 
 
 
-
-
-
+			window.clear();
+			window.setView(main);
+			window.draw(background);
+			p1.Draw(window);
+			EnemyManager::GetInstance()->Draw(window);
 			BulletManager::GetInstance()->Draw(window);
-			
+			ParticleSystem::GetInstance()->Draw(window);
+			window.draw(scoreHUDSprite);
+
+			window.setView(miniMap);
+			window.draw(radarBackground);
+			p1.Draw(window);
+			EnemyManager::GetInstance()->Draw(window);
+			BulletManager::GetInstance()->Draw(window);
+			ParticleSystem::GetInstance()->Draw(window);
+
+			window.setView(main); //setting view back to main
+			window.draw(radarBorderSpr);
+
 			window.display();
 			break;
 

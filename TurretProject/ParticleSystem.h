@@ -1,7 +1,7 @@
 #pragma once
 #include "vector"
 #include "list"
-#include "Bullet.h"
+#include "Particle.h"
 using namespace std;
 
 class ParticleSystem
@@ -15,18 +15,27 @@ public:
 	void Draw(sf::RenderWindow &window);
 
 private:
-	list<sf::Vector2f> m_pos;
+	ParticleSystem()
+	{
+		
+	}
+	list<Particle*> particles;
+
+	/*list<sf::Vector2f> m_pos;
 	list<sf::Vector2f> m_dir;
 
 	list<float> m_angle;
 	list<float> m_force;
 
 	list<int> timeToLive;
-	list<int> timeAlive;
+	list<int> timeAlive;*/
 	
 	sf::Texture m_texture;
+	sf::Sprite m_sprite;
 
 	static bool instanceFlag;
 	static ParticleSystem* instance;
+
+	sf::Vector2f Normalise(sf::Vector2f vec);
 };
 

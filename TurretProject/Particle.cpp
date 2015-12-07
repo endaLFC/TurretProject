@@ -1,0 +1,34 @@
+#include "stdafx.h"
+#include "Particle.h"
+
+
+Particle::Particle(sf::Vector2f position, sf::Vector2f direction, float speed)
+{
+	m_pos = position;
+	m_direction = direction;
+	m_alive = true;
+	m_speed = speed;
+	timeAlive = 0;
+	timeToLive = ((rand() % 200) / 100) + 0.2;
+	opacity = 255;
+}
+
+Particle::~Particle()
+{
+	std::cout << "delete called on particle" << std::endl;
+}
+
+void Particle::Update(float time)
+{
+	m_pos += m_direction * time * m_speed;
+
+	timeAlive += time;
+
+	if (timeAlive > timeToLive)
+	{
+		m_alive = false;
+	}
+	opacity -= time * 200;
+		
+
+}

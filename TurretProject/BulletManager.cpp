@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BulletManager.h"
+#include "ParticleSystem.h"
 
 bool BulletManager::instanceFlag = false;
 BulletManager* BulletManager::instance = NULL;
@@ -75,10 +76,15 @@ bool BulletManager::IsColliding()
 		{
 			if (it->IsColliding(Enemyit->GetPosition(), Enemyit->GetRadius()))
 			{
+				for (int i = 0; i < 100; i++)
+				{
+					ParticleSystem::GetInstance()->addParticle(Enemyit->GetPosition());
+				}
+
 				it = bullets.erase(it);
 				Enemyit = enemies->erase(Enemyit);
 				hit = true;
-				collision = true;
+				collision = true;				
 				break;
 			}
 			else

@@ -19,13 +19,13 @@ void Player::Initialise()
 	m_sprite.setOrigin(40, 40);
 	m_pos = sf::Vector2f(0, 0);
 	m_radius = 40;
-	m_speed = 50;
+	m_speed = 100;
 	m_rotation = -90;
 	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
 	m_pos = sf::Vector2f(400, 570);
 	fired = false;
 	firedTime = 0;
-	firedTimeControl = 500;
+	firedTimeControl = 0.2;
 }
 
 
@@ -61,7 +61,7 @@ void Player::Move(float time)
 
 	if (fired == true)
 	{
-		firedTime++;
+		firedTime+=time;
 		if (firedTime >= firedTimeControl)
 		{
 			firedTime = 0;

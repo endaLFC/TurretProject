@@ -31,8 +31,8 @@ class Player
 		float m_rotation;
 
 		bool fired;
-		int firedTime;
-		int firedTimeControl;
+		float firedTime;
+		float firedTimeControl;
 		
 		float toRadians(float degrees);
 		void Rotation(int dir, float t);
