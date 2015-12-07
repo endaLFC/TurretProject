@@ -11,7 +11,7 @@ Player::Player()
 
 void Player::Initialise()
 {
-	if (!m_texture.loadFromFile("newcannon.png"))
+	if (!m_texture.loadFromFile("flakcannonx.png"))
 	{
 		// error...
 	}
@@ -22,7 +22,7 @@ void Player::Initialise()
 	m_speed = 100;
 	m_rotation = -90;
 	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
-	m_pos = sf::Vector2f(400, 570);
+	m_pos = sf::Vector2f(400, 600);
 	fired = false;
 	firedTime = 0;
 	firedTimeControl = 0.2;
