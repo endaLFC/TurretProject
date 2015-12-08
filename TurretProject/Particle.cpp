@@ -15,7 +15,6 @@ Particle::Particle(sf::Vector2f position, sf::Vector2f direction, float speed)
 
 Particle::~Particle()
 {
-	std::cout << "delete called on particle" << std::endl;
 }
 
 void Particle::Update(float time)

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "BulletManager.h"
 #include "ParticleSystem.h"
+#include "Score.h"
 
 bool BulletManager::instanceFlag = false;
 BulletManager* BulletManager::instance = NULL;
@@ -20,10 +21,12 @@ BulletManager* BulletManager::GetInstance()
 }
 void BulletManager::Init()
 {
-	if (!m_texture.loadFromFile("BulletSprite.png"))
+	if (!m_texture.loadFromFile("laser.png"))
 	{
 		//error
 	}
+	buffer.loadFromFile("Explosion.wav");
+	sound.setBuffer(buffer);
 }
 
 BulletManager::~BulletManager()
@@ -76,6 +79,9 @@ bool BulletManager::IsColliding()
 		{
 			if (it->IsColliding(Enemyit->GetPosition(), Enemyit->GetRadius()))
 			{
+				sound.play();
+				int playerScore = Score::GetInstance()->getScore();
+				Score::GetInstance()->setScore(playerScore + 10);
 				for (int i = 0; i < 100; i++)
 				{
 					ParticleSystem::GetInstance()->addParticle(Enemyit->GetPosition());

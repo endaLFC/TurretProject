@@ -3,6 +3,7 @@
 #include "list"
 #include "Bullet.h"
 #include "EnemyManager.h"
+#include "Player.h"
 using namespace std;
 
 class BulletManager
@@ -24,5 +25,8 @@ private:
 	sf::Texture m_texture;
 	static bool instanceFlag;
 	static BulletManager* instance;
+
+	sf::SoundBuffer buffer;
+	sf::Sound sound;
 };
 

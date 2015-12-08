@@ -65,7 +65,7 @@ int main()
 	radarBorderSpr.setTexture(radarBorderTexture);
 
 	scoreHUDSprite.setPosition(160,0);
-	radarBorderSpr.setPosition(0,461);
+	radarBorderSpr.setPosition(0,468);
 
 	// Start game loop 
 	while (window.isOpen())
@@ -79,7 +79,8 @@ int main()
 		switch (gameMode)
 		{
 		case MENU:
-			
+			background.setTexture(playTexture);
+
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
 				menu.MoveUp();
@@ -115,10 +116,6 @@ int main()
 
 		case PLAY:
 			p1.Update(t);
-			/*for (int i = 0; i < 3; i++)
-			{
-				enemies[i].Update(t, p1.GetPos());
-			}*/
 			BulletManager::GetInstance()->Update(t);
 			EnemyManager::GetInstance()->Update(t, p1.GetPos());
 			ParticleSystem::GetInstance()->Update(t);
@@ -144,23 +141,19 @@ int main()
 				counter = 0;
 			}
 
-
-
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::P) && counter == 1)
 			{
 				EnemyManager::GetInstance()->CreateEnemy(sf::Vector2f(0,0));
 			}
 
-
-
 			window.clear();
 			window.setView(main);
 			window.draw(background);
-			p1.Draw(window);
 			EnemyManager::GetInstance()->Draw(window);
 			BulletManager::GetInstance()->Draw(window);
 			ParticleSystem::GetInstance()->Draw(window);
 			window.draw(scoreHUDSprite);
+			p1.Draw(window);
 
 			window.setView(miniMap);
 			window.draw(radarBackground);

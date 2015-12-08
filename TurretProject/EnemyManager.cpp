@@ -19,7 +19,7 @@ EnemyManager* EnemyManager::GetInstance()
 }
 void EnemyManager::Init()
 {
-	if (!m_texture.loadFromFile("Spaceship.png")) //**************
+	if (!m_texture.loadFromFile("TIE_Fighter.png")) //**************
 	{
 		//error
 	}
