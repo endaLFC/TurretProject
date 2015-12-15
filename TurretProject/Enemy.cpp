@@ -43,11 +43,11 @@ void Enemy::Initialise(sf::Texture * text)
 	smokeOn = 0;
 
 	m_position = sf::Vector2f(x, y);
-	int r, g, b;
+	/*int r, g, b;
 	r = rand() % 255;
 	g = rand() % 255;
-	b = rand() % 255;
-	m_sprite.setColor(sf::Color(r, g, b));
+	b = rand() % 255;*/
+	m_sprite.setColor(sf::Color(255, 255, 255));
 }
 
 bool Enemy::Update(float time, sf::Vector2f playerPos)

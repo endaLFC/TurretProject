@@ -8,7 +8,7 @@
 #include "BulletManager.h"
 #include "EnemyManager.h"
 #include "ParticleSystem.h"
-
+#include "Energy.h"
 
 ////////////////////////////////////////////////////////////
 ///Entrypoint of application 
@@ -42,6 +42,7 @@ int main()
 
 	Player p1;
 	p1.Initialise();
+	
 
 	playTexture.loadFromFile("space.jpg");
 	radarTexture.loadFromFile("radar.png");
@@ -53,6 +54,7 @@ int main()
 	BulletManager::GetInstance()->Init();
 	EnemyManager::GetInstance()->Init();
 	ParticleSystem::GetInstance()->Init();
+	Energy::GetInstance()->Initialise();
 
 	sf::View main(sf::FloatRect(0, 0, 800, 600));
 	sf::View miniMap;
@@ -154,6 +156,7 @@ int main()
 			ParticleSystem::GetInstance()->Draw(window);
 			window.draw(scoreHUDSprite);
 			p1.Draw(window);
+			Energy::GetInstance()->Draw(window);
 
 			window.setView(miniMap);
 			window.draw(radarBackground);
