@@ -10,28 +10,22 @@ public:
 	static ParticleSystem* GetInstance();
 	~ParticleSystem();
 	void Init();
-	void addParticle(sf::Vector2f newPos);
+	void addParticle(sf::Vector2f newPos, int type);
 	void Update(float time);
 	void Draw(sf::RenderWindow &window);
-
+	
 private:
 	ParticleSystem()
 	{
 		
 	}
 	list<Particle*> particles;
-
-	/*list<sf::Vector2f> m_pos;
-	list<sf::Vector2f> m_dir;
-
-	list<float> m_angle;
-	list<float> m_force;
-
-	list<int> timeToLive;
-	list<int> timeAlive;*/
 	
 	sf::Texture m_texture;
 	sf::Sprite m_sprite;
+
+	sf::Texture m_SmokeTexture;
+	sf::Sprite m_SmokeSprite;
 
 	static bool instanceFlag;
 	static ParticleSystem* instance;

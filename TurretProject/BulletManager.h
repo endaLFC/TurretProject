@@ -27,6 +27,8 @@ private:
 	static BulletManager* instance;
 
 	sf::SoundBuffer buffer;
-	sf::Sound sound;
+	sf::SoundBuffer damageBuffer;
+	sf::Sound explosionSound;
+	sf::Sound damageSound;
 };
 

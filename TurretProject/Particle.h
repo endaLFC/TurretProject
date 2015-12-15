@@ -4,7 +4,7 @@
 class Particle
 {
 public:
-	Particle(sf::Vector2f position, sf::Vector2f direction, float speed);
+	Particle(sf::Vector2f position, sf::Vector2f direction, float speed, int type);
 	~Particle();
 
 	void Update(float time);
@@ -12,6 +12,7 @@ public:
 	bool GetAlive() { return m_alive; }
 	float GetTimePercentageLeft() { return (timeToLive - timeAlive / timeToLive )* 100;  }
 	float getOpacity(){ return opacity; }
+	int GetType() { return type; }
 
 protected:
 	sf::Vector2f m_pos;
@@ -21,5 +22,6 @@ protected:
 	float m_speed;
 	float opacity;
 	bool m_alive;
+	int type;
 };
 

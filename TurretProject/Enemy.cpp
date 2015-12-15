@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Enemy.h"
+#include "ParticleSystem.h"
 
 //PUBLIC
 Enemy::Enemy()
@@ -37,6 +38,9 @@ void Enemy::Initialise(sf::Texture * text)
 	m_alive = true;
 	int x = rand() % 800;
 	int y = rand() % 10;
+	m_health = 2;
+
+	smokeOn = 0;
 
 	m_position = sf::Vector2f(x, y);
 	int r, g, b;
@@ -46,15 +50,6 @@ void Enemy::Initialise(sf::Texture * text)
 	m_sprite.setColor(sf::Color(r, g, b));
 }
 
-/*void Enemy::Load()
-{
-	if (!m_texture.loadFromFile("Spaceship.png"))
-	{
-		// error...
-	}
-	m_sprite.setTexture(m_texture);
-}*/
-
 bool Enemy::Update(float time, sf::Vector2f playerPos)
 {
 	if (m_alive)
@@ -62,6 +57,7 @@ bool Enemy::Update(float time, sf::Vector2f playerPos)
 		GetDirection(playerPos);
 		Move(time, playerPos);
 		WrapAroundScreen();
+		Smoke(time);
 		return true;
 	}
 	else {
@@ -86,12 +82,8 @@ void Enemy::Move(float time, sf::Vector2f playerPos)
 {
 	if (m_alive == true)
 	{
-		//float len = DistanceFrom(m_position, playerPos);
-		//if (len > 300)
-		//{
 			m_position += m_direction * time * m_speed;
 			m_sprite.setPosition(m_position);
-		//}
 	}
 }
 
@@ -177,4 +169,33 @@ bool Enemy::IsColliding(sf::Vector2f targetPosition, int targetRadius)
 		}
 	}
 	return false;
+}
+
+void Enemy::Smoke(float time)
+{
+	if (smokeOn == true)
+	{
+		smokeOnTime += time;
+		if (smokeOnTime >= 0.01)
+		{
+			smokeOnTime = 0;
+			smokeOn = false;
+		}
+	}
+	
+	if (m_health == 1 && smokeOn == false)
+	{
+		ParticleSystem::GetInstance()->addParticle(m_position, 1);
+		smokeOn = true;
+	}
+	else if (m_health == 0 && smokeOn == false)
+	{
+		ParticleSystem::GetInstance()->addParticle(m_position, 0);
+		for (int i = 0; i < 10; i++)
+		{
+			ParticleSystem::GetInstance()->addParticle(m_position,1);
+		}
+		smokeOn = true;
+	}
+	
 }

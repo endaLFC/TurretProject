@@ -30,12 +30,18 @@ void ParticleSystem::Init()
 		//error
 	}
 	m_sprite.setTexture(m_texture);
+
+	if (!m_SmokeTexture.loadFromFile("Smoke.png"))
+	{
+		//error
+	}
+	m_SmokeSprite.setTexture(m_SmokeTexture);
 }
 
-void ParticleSystem::addParticle(sf::Vector2f position)
+void ParticleSystem::addParticle(sf::Vector2f position, int type)
 {
 	sf::Vector2f direction = sf::Vector2f((rand() % 100) - 50, (rand() % 100) - 50);
-	Particle* p = new Particle(position, Normalise(direction) ,rand() % 50);
+	Particle* p = new Particle(position, Normalise(direction) ,rand() % 50, type);
 	particles.push_back(p);
 }
 
@@ -64,14 +70,24 @@ void ParticleSystem::Draw(sf::RenderWindow &window)
 {
 	for each (Particle* p in particles)
 	{
-		m_sprite.setPosition(p->GetPosition());
+		
 		/*int r, g, b;
 		r = rand() % 255;
 		g = rand() % 255;
 		b = rand() % 255;*/
 
 		m_sprite.setColor(sf::Color(255, 255, 255, p->getOpacity()));
-		window.draw(m_sprite);
+		if (p->GetType() == 0)
+		{
+			m_sprite.setPosition(p->GetPosition());
+			window.draw(m_sprite);
+		}
+		else if (p->GetType() == 1)
+		{
+			m_SmokeSprite.setPosition(p->GetPosition());
+			window.draw(m_SmokeSprite);
+		}
+		
 	}
 }
 

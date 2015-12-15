@@ -2,7 +2,7 @@
 #include "Particle.h"
 
 
-Particle::Particle(sf::Vector2f position, sf::Vector2f direction, float speed)
+Particle::Particle(sf::Vector2f position, sf::Vector2f direction, float speed, int t)
 {
 	m_pos = position;
 	m_direction = direction;
@@ -11,6 +11,7 @@ Particle::Particle(sf::Vector2f position, sf::Vector2f direction, float speed)
 	timeAlive = 0;
 	timeToLive = ((rand() % 200) / 100) + 0.2;
 	opacity = 255;
+	type = t;
 }
 
 Particle::~Particle()

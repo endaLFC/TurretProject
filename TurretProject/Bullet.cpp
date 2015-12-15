@@ -20,7 +20,7 @@ void Bullet::Initialise(sf::Texture * text)
 	r = rand() % 255;
 	g = rand() % 255;
 	b = rand() % 255;
-	m_sprite.setColor(sf::Color(r, g, b));
+	m_sprite.setColor(sf::Color(255,255,255));
 }
 
 
