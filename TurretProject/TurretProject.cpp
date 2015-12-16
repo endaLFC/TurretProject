@@ -121,9 +121,7 @@ int main()
 			BulletManager::GetInstance()->Update(t);
 			EnemyManager::GetInstance()->Update(t, p1.GetPos());
 			ParticleSystem::GetInstance()->Update(t);
-
-			//DRAW CODE HERE
-			
+			Energy::GetInstance()->Update(t);
 
 			if (BulletManager::GetInstance()->IsColliding())
 			{

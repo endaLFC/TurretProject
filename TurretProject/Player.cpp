@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "Score.h"
-
+#include "Energy.h"
 
 Player::Player()
 {
@@ -99,9 +99,10 @@ void Player::Move(float time)
 		Rotation(-1, time);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && fired == false)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && fired == false && Energy::GetInstance()->GetEnergy() >= 0.2)
 	{
 		sound.play();
+		Energy::GetInstance()->Shot1();
 
 		if (fireSide == false)
 			BulletManager::GetInstance()->PlayerFire(m_rotation, sf::Vector2f(m_pos.x - 17 + (m_direction.x * 120), m_pos.y + (m_direction.y * 120)));

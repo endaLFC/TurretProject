@@ -20,17 +20,33 @@ Energy* Energy::GetInstance()
 
 void Energy::Initialise()
 {
-	m_pos = { 300, 600 };
-	//m_sprite.setPosition(m_pos);
-	if (!m_texture.loadFromFile("laser.png"))
+	if (!m_texture.loadFromFile("laser2.png"))
 	{
 		//error
 	}
+	energyWidth = 1;
+	m_pos = { 495, 15 };
+	m_sprite.setOrigin(0, 0);
+	m_sprite.setPosition(m_pos);
 	m_sprite.setTexture(m_texture);
 }
 
 Energy::~Energy()
 {
+}
+
+void Energy::Update(float time)
+{
+	if (energyWidth <= 1)
+		energyWidth += time * 0.5;
+
+	m_sprite.setScale(energyWidth, 1);
+	m_sprite.setColor(sf::Color(255* energyWidth, 255, 255));
+}
+
+void Energy::Shot1()
+{
+	energyWidth -= 0.2;
 }
 
 void Energy::Draw(sf::RenderWindow& window)
