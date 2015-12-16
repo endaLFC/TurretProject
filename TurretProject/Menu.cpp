@@ -9,9 +9,10 @@ Menu::Menu(float width, float height)
 	{
 		//handle error
 	}
-	
-	texture.loadFromFile("Skull.jpg");
+	frameTimer = 0;
+	texture.loadFromFile("Skull.png");
 	background.setTexture(texture);
+	animationRect = { 0, 0, 800, 600 };
 
 	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
 	{
@@ -70,4 +71,20 @@ void Menu::MoveDown()
 		selectedItemIndex++;
 		text[selectedItemIndex].setColor(sf::Color::Red);
 	}
+}
+
+
+void Menu::Update(float time)
+{
+	frameTimer += time;
+
+	if (frameTimer >= 0.1)
+	{
+		if (animationRect.left < 3200)
+			animationRect.left += 800;
+		else
+			animationRect.left = 0;
+		frameTimer = 0;
+	}
+	background.setTextureRect(animationRect);
 }

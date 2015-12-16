@@ -99,7 +99,7 @@ void Player::Move(float time)
 		Rotation(-1, time);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && fired == false && Energy::GetInstance()->GetEnergy() >= 0.2)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && fired == false && Energy::GetInstance()->GetEnergy() >= 0.15)
 	{
 		sound.play();
 		Energy::GetInstance()->Shot1();

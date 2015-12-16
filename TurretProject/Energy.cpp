@@ -46,7 +46,7 @@ void Energy::Update(float time)
 
 void Energy::Shot1()
 {
-	energyWidth -= 0.2;
+	energyWidth -= 0.15;
 }
 
 void Energy::Draw(sf::RenderWindow& window)

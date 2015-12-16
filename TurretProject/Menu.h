@@ -13,6 +13,7 @@ class Menu
 		void Draw(sf::RenderWindow &window);
 		void MoveUp();
 		void MoveDown();
+		void Update(float time);
 		int GetPressedItem() {return selectedItemIndex;}
 
 		
@@ -24,5 +25,7 @@ class Menu
 		sf::Text text[MAX_NUMBER_OF_ITEMS];
 		sf::Texture texture;
 		sf::Sprite background;
+		sf::IntRect animationRect;
+		float frameTimer;
 };
 

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Bullet.h"
-
+#include "Energy.h"
 
 Bullet::Bullet(float rotation, sf::Vector2f position)
 {
@@ -20,7 +20,10 @@ void Bullet::Initialise(sf::Texture * text)
 	r = rand() % 255;
 	g = rand() % 255;
 	b = rand() % 255;
-	m_sprite.setColor(sf::Color(255,255,255));
+	if (Energy::GetInstance()->GetEnergy() < 0.15)
+		m_sprite.setColor(sf::Color(255 * Energy::GetInstance()->GetEnergy() ,255,255));
+	else
+		m_sprite.setColor(sf::Color(255, 255, 255));
 }
 
 
