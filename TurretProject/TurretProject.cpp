@@ -81,7 +81,7 @@ int main()
 		switch (gameMode)
 		{
 		case MENU:
-			//background.setTexture(playTexture);
+			background.setTexture(playTexture);
 			menu.Update(t);
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
