@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Factory.h"
 #include "ParticleSystem.h"
+#include "Score.h"
 
 Factory::Factory()
 {
@@ -93,6 +94,9 @@ bool Factory::IsColliding()
 		{
 			m_health -= 1;
 			damageSound.play();
+
+			int score = Score::GetInstance()->getScore();
+			Score::GetInstance()->setScore(score + 10);
 		}
 		else
 		{

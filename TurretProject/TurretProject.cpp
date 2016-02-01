@@ -443,6 +443,7 @@ int main()
 
 			window.setView(main); //setting view back to main
 			window.draw(radarBorderSpr);
+			p1.DrawLock(window);
 
 			window.display();
 			break;
