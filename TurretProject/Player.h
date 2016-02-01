@@ -13,13 +13,18 @@ class Player
 		~Player();
 
 		void Update(float time);
-		sf::Vector2f GetPosition();
 		void Draw(sf::RenderWindow &window);
+		void DrawScore(sf::RenderWindow &window);
 		void MoveLeft();
 		void MoveRight();
 		void Initialise();
+		void SetSpriteScale(float s) { m_sprite.setScale(s,s); };
 		sf::Vector2f GetPos() { return m_pos; }
 		int GetRadius() { return m_radius; }
+		int GetRot() { return m_rotation; }
+		void SetSpeed(float tS, float mS) { m_speed = tS; maxSpeed = mS; speedBoost = true; }
+		void SetShrink(bool x) { shrink = x; }
+		bool GetShrink() { return shrink; }
 
 	protected:
 		sf::Texture m_texture;
@@ -32,7 +37,14 @@ class Player
 
 		int m_radius;
 		float m_speed;
+		float maxSpeed;
+		float forward_speed;
 		float m_rotation;
+
+		bool locked;
+
+		bool shrink = false;
+		bool speedBoost = false;
 
 		bool fired;
 		bool fireSide;
@@ -42,6 +54,7 @@ class Player
 		float toRadians(float degrees);
 		void Rotation(int dir, float t);
 		void Move(float time);
+		void WrapAroundScreen();
 
 		sf::Font font;
 		sf::Text text[MAX_NUMBER_OF_ITEMS];

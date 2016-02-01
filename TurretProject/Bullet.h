@@ -14,7 +14,7 @@ class Bullet
 		void Shoot();
 		void Initialise(sf::Texture * text);
 		int GetRadius() { return m_radius; }
-		bool IsColliding(sf::Vector2f targetPosition, int targetRadius);
+		bool IsColliding(sf::Vector2f targetPosition, int targetRadius, bool targetAlive);
 
 	protected:
 		sf::Texture* m_texture;
@@ -24,7 +24,7 @@ class Bullet
 
 		sf::Vector2f widthHeight = sf::Vector2f(10,15);
 
-		int m_radius = 5;
+		int m_radius = 10;
 
 		float m_speed;
 		float m_rotation;

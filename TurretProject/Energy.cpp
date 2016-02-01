@@ -25,7 +25,7 @@ void Energy::Initialise()
 		//error
 	}
 	energyWidth = 1;
-	m_pos = { 495, 15 };
+	m_pos = { 330, 15 };
 	m_sprite.setOrigin(0, 0);
 	m_sprite.setPosition(m_pos);
 	m_sprite.setTexture(m_texture);
@@ -41,7 +41,7 @@ void Energy::Update(float time)
 		energyWidth += time * 0.5;
 
 	m_sprite.setScale(energyWidth, 1);
-	if (energyWidth > 0.15)
+	if (energyWidth > 0.25)
 		m_sprite.setColor(sf::Color(255, 255, 255));
 	else 
 		m_sprite.setColor(sf::Color(255 * energyWidth, 255, 255));
@@ -49,7 +49,7 @@ void Energy::Update(float time)
 
 void Energy::Shot1()
 {
-	energyWidth -= 0.15;
+	energyWidth -= 0.20;
 }
 
 void Energy::Draw(sf::RenderWindow& window)

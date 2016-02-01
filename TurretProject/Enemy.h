@@ -7,7 +7,7 @@ public:
 	Enemy(sf::Vector2f pos, float speed);
 
 	bool Update(float time, sf::Vector2f playerPos);
-	void Load();
+	//void Load();
 	bool IsColliding(sf::Vector2f targetPosition, int targetRadius);
 	void Draw(sf::RenderWindow& window);
 	void Smoke(float time);
@@ -24,8 +24,8 @@ protected:
 	void Move(float time, sf::Vector2f playerPos);
 	void Rotation(int dir);
 	void WrapAroundScreen();
-	sf::Vector2f SlowTurn(sf::Vector2f m_direction, sf::Vector2f dir);
-	void GetDirection(sf::Vector2f playerPos);
+	sf::Vector2f SlowTurn(sf::Vector2f m_direction, sf::Vector2f dir, float time);
+	void GetDirection(sf::Vector2f playerPos, float time);
 
 
 	sf::Vector2f Normalise(sf::Vector2f vec);

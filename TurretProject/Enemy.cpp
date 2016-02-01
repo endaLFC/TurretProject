@@ -54,7 +54,7 @@ bool Enemy::Update(float time, sf::Vector2f playerPos)
 {
 	if (m_alive)
 	{
-		GetDirection(playerPos);
+		GetDirection(playerPos, time);
 		Move(time, playerPos);
 		WrapAroundScreen();
 		Smoke(time);
@@ -89,15 +89,15 @@ void Enemy::Move(float time, sf::Vector2f playerPos)
 
 void Enemy::WrapAroundScreen()
 {
-	if (m_position.x > 800)
+	if (m_position.x > 2400)
 		m_position.x = 0;
 	else if (m_position.x < 0)
-		m_position.x = 800;
+		m_position.x = 2400;
 
-	if (m_position.y > 600)
+	if (m_position.y > 1800)
 		m_position.y = 0;
 	else if (m_position.y < 0)
-		m_position.y = 600;
+		m_position.y = 1800;
 
 }
 
@@ -112,13 +112,13 @@ float Enemy::toRadians(float degrees)
 	return (degrees * 3.14) / 180;
 }
 
-void Enemy::GetDirection(sf::Vector2f playerPos)
+void Enemy::GetDirection(sf::Vector2f playerPos, float time)
 {
 	sf::Vector2f dir = playerPos - m_position;
 	dir = Normalise(dir);
 	//m_direction = dir;
 
-	m_direction = SlowTurn(m_direction, dir);
+	m_direction = SlowTurn(m_direction, dir, time);
 
 	m_rotation = atan2f(m_direction.y, m_direction.x) * 180 / 3.14;
 	//m_rotation = atan2f(dir.y, dir.x) * 180 / 3.14;
@@ -137,17 +137,17 @@ float Enemy::DistanceFrom(sf::Vector2f enemy, sf::Vector2f player)
 	return len;
 }
 
-sf::Vector2f Enemy::SlowTurn(sf::Vector2f m_direction, sf::Vector2f dir)
+sf::Vector2f Enemy::SlowTurn(sf::Vector2f m_direction, sf::Vector2f dir, float time)
 {
 	if (m_direction.x < dir.x)
-		m_direction.x += 0.0001;
+		m_direction.x += 0.2* time;
 	else if (m_direction.x > dir.x)
-		m_direction.x -= 0.0001;
+		m_direction.x -= 0.2* time;
 
 	if (m_direction.y < dir.y)
-		m_direction.y += 0.0001;
+		m_direction.y += 0.2* time;
 	else if (m_direction.y > dir.y)
-		m_direction.y -= 0.0001;
+		m_direction.y -= 0.2* time;
 
 	return m_direction;
 }

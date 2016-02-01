@@ -24,11 +24,12 @@ void Particle::Update(float time)
 
 	timeAlive += time;
 
+	opacity -= time * 10;
 	if (timeAlive > timeToLive)
 	{
 		m_alive = false;
 	}
-	opacity -= time * 200;
+	
 		
 
 }

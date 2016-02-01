@@ -16,6 +16,7 @@ public:
 	void Update(float time);
 	void Draw(sf::RenderWindow &window);
 	bool IsColliding();
+	bool IsColliding2(sf::Vector2f targetPosition, int targetRadius, bool targetAlive);
 private:
 	BulletManager()
 	{
