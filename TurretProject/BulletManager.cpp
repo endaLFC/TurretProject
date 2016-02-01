@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "BulletManager.h"
+#include "ParticleSystem.h"
+#include "Score.h"
 
 bool BulletManager::instanceFlag = false;
 BulletManager* BulletManager::instance = NULL;
@@ -19,10 +21,14 @@ BulletManager* BulletManager::GetInstance()
 }
 void BulletManager::Init()
 {
-	if (!m_texture.loadFromFile("BulletSprite.png"))
+	if (!m_texture.loadFromFile("laser.png"))
 	{
 		//error
 	}
+	buffer.loadFromFile("Explosion.wav");
+	explosionSound.setBuffer(buffer);
+	damageBuffer.loadFromFile("damage.wav");
+	damageSound.setBuffer(damageBuffer);
 }
 
 BulletManager::~BulletManager()
@@ -63,24 +69,75 @@ void BulletManager::Draw(sf::RenderWindow &window)
 	}
 }
 
-bool BulletManager::IsColliding(Enemy *enemy)
+bool BulletManager::IsColliding2(sf::Vector2f targetPosition, int targetRadius, bool targetAlive)
 {
-	if (enemy->GetAlive() == true)
+	bool collision = false;
+	list<Bullet>::iterator it = bullets.begin();
+	for (it = bullets.begin(); it != bullets.end();)
 	{
-		list<Bullet>::iterator it = bullets.begin();
-		for (it = bullets.begin(); it != bullets.end();)
+		if (it->IsColliding(targetPosition, targetRadius, targetAlive))
 		{
-			if (it->IsColliding(enemy->GetPosition(), enemy->GetRadius()))
+			it = bullets.erase(it);
+			collision = true;
+			break;
+		}
+		if (!collision)
+		{
+			++it;
+		}
+	}
+	return collision;
+}
+
+bool BulletManager::IsColliding()
+{
+   	bool collision = false;
+	list<Bullet>::iterator it = bullets.begin();
+	for (it = bullets.begin(); it != bullets.end();)
+	{
+		bool hit = false;
+		list<Enemy>* enemies = EnemyManager::GetInstance()->GetEnemies();
+		for (list<Enemy>::iterator Enemyit = enemies->begin(); Enemyit != enemies->end();)
+		{
+			if (it->IsColliding(Enemyit->GetPosition(), Enemyit->GetRadius(), Enemyit->GetAlive()))
 			{
-				it = bullets.erase(it);
-				return true;
+				if (Enemyit->GetHealth() > 0)
+				{
+					damageSound.play();
+					it = bullets.erase(it);
+					Enemyit->SetHealth(Enemyit->GetHealth() - 1);
+					hit = true;
+					break;
+				}
+
+				else if (Enemyit->GetHealth() == 0)
+				{
+					explosionSound.play();
+					int playerScore = Score::GetInstance()->getScore();
+					Score::GetInstance()->setScore(playerScore + 10);
+					for (int i = 0; i < 100; i++)
+					{
+						ParticleSystem::GetInstance()->addParticle(Enemyit->GetPosition(),0);
+					}
+
+					it = bullets.erase(it);
+					Enemyit = enemies->erase(Enemyit);
+					hit = true;
+					collision = true;
+					break;
+				}
 			}
 			else
 			{
-				++it;
-
+				++Enemyit;
 			}
 		}
-		return false;
+		if (!hit)
+		{
+			++it;
+		}
+		
 	}
+	return collision;
 }
+

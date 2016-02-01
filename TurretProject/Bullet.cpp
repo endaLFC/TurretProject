@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Bullet.h"
-
+#include "Energy.h"
 
 Bullet::Bullet(float rotation, sf::Vector2f position)
 {
@@ -8,7 +8,7 @@ Bullet::Bullet(float rotation, sf::Vector2f position)
 	m_pos = position;
 	m_rotation = rotation;
 	alive = true;
-	m_speed = 200;
+	m_speed = 500;
 }
 
 void Bullet::Initialise(sf::Texture * text)
@@ -20,7 +20,10 @@ void Bullet::Initialise(sf::Texture * text)
 	r = rand() % 255;
 	g = rand() % 255;
 	b = rand() % 255;
-	m_sprite.setColor(sf::Color(r, g, b));
+	if (Energy::GetInstance()->GetEnergy() < 0.15)
+		m_sprite.setColor(sf::Color(255 * Energy::GetInstance()->GetEnergy() ,255,255));
+	else
+		m_sprite.setColor(sf::Color(255, 255, 255));
 }
 
 
@@ -33,7 +36,7 @@ bool Bullet::Update(float time)
 {
 	Move(time);
 
-	if (m_pos.x > 800 || m_pos.x < 0 || m_pos.y < 0)
+	if (m_pos.x > 2400 || m_pos.x < 0 || m_pos.y < 0 || m_pos.y > 1800)
 		alive = false;
 
 	return alive;
@@ -63,13 +66,13 @@ void Bullet::Rotation(int dir)
 	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
 }
 
-bool Bullet::IsColliding(sf::Vector2f targetPosition, int targetRadius)
+bool Bullet::IsColliding(sf::Vector2f targetPosition, int targetRadius, bool targetAlive)
 {
 	float distance = sqrt((targetPosition.x - m_pos.x)*(targetPosition.x - m_pos.x) + (targetPosition.y - m_pos.y)*(targetPosition.y - m_pos.y));
-	if (distance < m_radius + targetRadius)		//collision occurs
+	if (distance < m_radius + targetRadius && alive == true && targetAlive == true)		//collision occurs
 	{
 		std::cout << "COLLISION" << std::endl;
-		return true;		//return true
+		return true;	//return true
 	}
 	else
 	{

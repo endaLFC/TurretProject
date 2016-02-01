@@ -2,7 +2,8 @@
 #include "vector"
 #include "list"
 #include "Bullet.h"
-#include "Enemy.h"
+#include "EnemyManager.h"
+#include "Player.h"
 using namespace std;
 
 class BulletManager
@@ -14,7 +15,8 @@ public:
 	void PlayerFire(float rotation, sf::Vector2f position);
 	void Update(float time);
 	void Draw(sf::RenderWindow &window);
-	bool IsColliding(Enemy *enemy);
+	bool IsColliding();
+	bool IsColliding2(sf::Vector2f targetPosition, int targetRadius, bool targetAlive);
 private:
 	BulletManager()
 	{
@@ -24,5 +26,10 @@ private:
 	sf::Texture m_texture;
 	static bool instanceFlag;
 	static BulletManager* instance;
+
+	sf::SoundBuffer buffer;
+	sf::SoundBuffer damageBuffer;
+	sf::Sound explosionSound;
+	sf::Sound damageSound;
 };
 

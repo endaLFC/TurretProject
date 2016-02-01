@@ -28,6 +28,7 @@
 
 #include "SFML/Graphics.hpp" 
 #include "SFML/OpenGL.hpp" 
+#include "SFML\Audio.hpp"
 #include <iostream> 
 #define _USE_MATH_DEFINES
 #include <math.h>
