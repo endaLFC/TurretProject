@@ -25,5 +25,8 @@ protected:
 	sf::Vector2f m_position;
 	sf::Sprite m_sprite;
 	sf::Texture m_texture;
+
+	sf::SoundBuffer buffer;
+	sf::Sound sound;
 };
 

@@ -37,6 +37,9 @@ void Powerup::Initialise(sf::Vector2f pos, int type)
 	m_radius = 20;
 	m_sprite.setColor(sf::Color(255, 255, 255));
 	m_alive = true;
+
+	buffer.loadFromFile("pickup.wav");
+	sound.setBuffer(buffer);
 }
 
 void Powerup::Draw(sf::RenderWindow& window)
@@ -52,6 +55,7 @@ bool Powerup::IsColliding(sf::Vector2f targetPosition, int targetRadius)
 		float distance = sqrt((targetPosition.x - m_position.x)*(targetPosition.x - m_position.x) + (targetPosition.y - m_position.y)*(targetPosition.y - m_position.y));
 		if (distance < m_radius + targetRadius)		//collision occurs
 		{
+			sound.play();
 			m_alive = false;
 			return true;	//return true
 		}

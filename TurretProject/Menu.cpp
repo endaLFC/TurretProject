@@ -10,7 +10,8 @@ Menu::Menu(float width, float height)
 		//handle error
 	}
 	frameTimer = 0;
-	texture.loadFromFile("Asteroids4.jpg");
+	//texture.loadFromFile("Asteroids4.jpg");
+	texture.loadFromFile("opening.jpg");
 	background.setTexture(texture);
 	animationRect = { 0, 0, 1100, 800 };
 
@@ -22,17 +23,19 @@ Menu::Menu(float width, float height)
 	text[0].setFont(font);
 	text[0].setColor(sf::Color::Red);
 	text[0].setString("Play");
-	text[0].setPosition(sf::Vector2f(width/15 * 2, height/(MAX_NUMBER_OF_ITEMS + 1 ) * 3));
+	//text[0].setPosition(sf::Vector2f(width/15 * 2, height/(MAX_NUMBER_OF_ITEMS + 1 ) * 3));
+	text[0].setPosition(sf::Vector2f(width / 15 * 11.2, height / (MAX_NUMBER_OF_ITEMS + 1) * 1.5));
 
 	text[1].setFont(font);
 	text[1].setColor(sf::Color::White);
 	text[1].setString("Options");
-	text[1].setPosition(sf::Vector2f(width /15 * 6, height / (MAX_NUMBER_OF_ITEMS + 1) * 3));
+	//text[1].setPosition(sf::Vector2f(width /15 * 6, height / (MAX_NUMBER_OF_ITEMS + 1) * 3));
+	text[1].setPosition(sf::Vector2f(width / 15 * 11.2, height / (MAX_NUMBER_OF_ITEMS + 1) * 2));
 
 	text[2].setFont(font);
 	text[2].setColor(sf::Color::White);
 	text[2].setString("Exit");
-	text[2].setPosition(sf::Vector2f(width /15 * 11.3, height / (MAX_NUMBER_OF_ITEMS + 1) * 3));
+	text[2].setPosition(sf::Vector2f(width /15 * 11.2, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.5));
 
 	selectedItemIndex = 0;
 }
@@ -80,7 +83,7 @@ void Menu::Update(float time)
 
 	if (frameTimer >= 0.15)
 	{
-		if (animationRect.left < 5500)
+		if (animationRect.left < 4400)
 			animationRect.left += 1100;
 		else
 			animationRect.left = 0;

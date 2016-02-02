@@ -39,6 +39,10 @@ class Player
 
 		sf::Texture m_texture;
 		sf::Sprite m_sprite;
+		sf::Texture m_dockTexture;
+		sf::Sprite m_dockSprite;
+
+
 
 		sf::Texture m_landingzoneTexture;
 		sf::Sprite m_landingzoneSprite;
@@ -49,12 +53,21 @@ class Player
 		sf::Sprite m_lockSprite;
 
 		sf::Vector2f m_pos;
-		const sf::Vector2f startPos = sf::Vector2f(1350, 1800);
+		sf::Vector2f startPos;
 		sf::Vector2f m_direction;
 		sf::FloatRect m_bounds;
+
 		sf::SoundBuffer buffer;
 		sf::Sound sound;
 
+		sf::SoundBuffer buffer2;
+		sf::Sound sound2;
+
+		sf::SoundBuffer fireBuffer;
+		sf::Sound fireSound;
+
+		sf::SoundBuffer lockBuffer;
+		sf::Sound lockSound;
 
 		float lockSpeed;
 		int m_radius;
@@ -70,6 +83,7 @@ class Player
 		bool speedBoost = false;
 
 		bool fired;
+		bool fired2;
 		bool fireSide;
 		float firedTime;
 		float firedTimeControl;
@@ -81,5 +95,9 @@ class Player
 
 		sf::Font font;
 		sf::Text text[MAX_NUMBER_OF_ITEMS];
+
+		float turretRot;
+
+		float vol;
 };
 

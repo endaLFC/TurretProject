@@ -43,7 +43,11 @@ void Player::Initialise()
 
 
 	//if (!m_texture.loadFromFile("flakcannonx.png"))
-	if (!m_texture.loadFromFile("Spaceship.png"))
+	if (!m_texture.loadFromFile("spacecraft3.png"))
+	{
+		// error...
+	}
+	if (!m_dockTexture.loadFromFile("spacecraft4.png"))
 	{
 		// error...
 	}
@@ -65,24 +69,31 @@ void Player::Initialise()
 	}
 
 	m_sprite.setTexture(m_texture);
-	m_sprite.setOrigin(40, 35);//40,40
+	m_sprite.setOrigin(110, 85);//40,40
+
+	m_dockSprite.setTexture(m_dockTexture);
+	m_dockSprite.setOrigin(110, 85);//40,40
 
 	m_lockSprite.setTexture(m_lockedTexture);
 	m_landingzoneSprite.setTexture(m_landingzoneTexture);
 
 	lockSpeed = 50;
 
-	m_radius = 30;
+	m_radius = 50;
 	m_speed = 100;
 	maxSpeed = 500;
 	forward_speed = 0;
 	m_rotation = 270;
 	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
+	startPos = sf::Vector2f(1350, 1700);
 	m_pos = startPos;
 	m_sprite.setPosition(m_pos);
+	m_dockSprite.setPosition(startPos);
+	m_dockSprite.setRotation(m_rotation);
 	m_lockSprite.setPosition(227, 628);
 	m_landingzoneSprite.setPosition(1130,1500);
 	fired = false;
+	fired2 = false;
 	firedTime = 0;
 	firedTimeControl = 0.2;
 	fireSide = false;
@@ -91,6 +102,21 @@ void Player::Initialise()
 
 	buffer.loadFromFile("blaster-firing.wav");
 	sound.setBuffer(buffer);
+
+	buffer2.loadFromFile("takeoff.wav");
+	sound2.setBuffer(buffer2);
+
+	fireBuffer.loadFromFile("thrusters.wav");
+	fireSound.setBuffer(fireBuffer);
+
+	lockBuffer.loadFromFile("lockingin.wav");
+	lockSound.setBuffer(lockBuffer);
+
+	turretRot = 0;
+
+	vol = 50;
+
+	fireSound.setVolume(vol);
 }
 
 
@@ -101,6 +127,20 @@ Player::~Player()
 
 void Player::Update(float time)
 {
+	if (turretMode == TURRET)
+	{
+		turretRot = m_rotation;
+	}
+	else if (turretMode == LOCKING)
+	{
+		if (turretRot < 272 && turretRot > 268)
+			turretRot = 270;
+		else if (turretRot > 270)
+			turretRot -= lockSpeed * time;
+		else if (turretRot < 270)
+			turretRot += lockSpeed * time;
+	}
+
 	if (shrink == true && speedBoost == true)
 	{
 		m_sprite.setScale(0.75, 0.75);
@@ -157,6 +197,10 @@ void Player::Move(float time)
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
+			vol = 50;
+
+			if (fireSound.getStatus() != fireSound.Playing)
+				fireSound.play();
 			if (forward_speed <= maxSpeed)
 				forward_speed += 10;
 			for (int i = 0; i < 5; i++)
@@ -164,38 +208,69 @@ void Player::Move(float time)
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			if (forward_speed >= 10)
+			if (forward_speed >= 30)
 				forward_speed -= 10;
 		}
-		else if (forward_speed >= 3)
+		if (forward_speed >= 23)
 			forward_speed -= 3;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && fired == false && Energy::GetInstance()->GetEnergy() >= 0.25 && turretMode != LOCKING)
-	{
-		sound.play();
-		Energy::GetInstance()->Shot1();
 
-		if (fireSide == false)
+		if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
-			float xBefore = 10;
-			float yBefore = -25;
+			vol -= time * 50;
+			if (vol <= 1)
+			{
+				vol = 0;
+				fireSound.stop();
+			}
+				
+		}
+
+		fireSound.setVolume(vol);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && Energy::GetInstance()->GetEnergy() >= 0.25 && turretMode != LOCKING)
+	{
+		if (turretMode == TURRET && fired == false)
+		{
+			sound.play();
+			Energy::GetInstance()->Shot1();
+
+			if (fireSide == false)
+			{
+				float xBefore = 80;
+				float yBefore = -45;
+				float xAfter = xBefore * cos(toRadians(m_rotation)) - yBefore * sin(toRadians(m_rotation));
+				float yAfter = xBefore * sin(toRadians(m_rotation)) + yBefore * cos(toRadians(m_rotation));
+
+
+				BulletManager::GetInstance()->PlayerFire(m_rotation, sf::Vector2f(m_pos.x + xAfter, m_pos.y + (yAfter)));	//(m_pos.x - 17 + (m_direction.x * 120), m_pos.y + (m_direction.y * 120))	// cos(toRadians(m_rotation)
+			}
+			else
+			{
+				float xBefore = 80;
+				float yBefore = 45;
+				float xAfter = xBefore * cos(toRadians(m_rotation)) - yBefore * sin(toRadians(m_rotation));
+				float yAfter = xBefore * sin(toRadians(m_rotation)) + yBefore * cos(toRadians(m_rotation));
+
+				BulletManager::GetInstance()->PlayerFire(m_rotation, sf::Vector2f(m_pos.x + xAfter, m_pos.y + (yAfter)));	//(m_pos.x + 10 + (m_direction.x * 120), m_pos.y + (m_direction.y * 120))	// sin(toRadians(m_rotation)
+			}
+			fired = true;
+		}
+		else if (turretMode == SPACESHIP && fired2 == false)
+		{
+			sound.play();
+			Energy::GetInstance()->Shot1();
+
+			float xBefore = 80;
+			float yBefore = 0;
 			float xAfter = xBefore * cos(toRadians(m_rotation)) - yBefore * sin(toRadians(m_rotation));
 			float yAfter = xBefore * sin(toRadians(m_rotation)) + yBefore * cos(toRadians(m_rotation));
 
-		
-			BulletManager::GetInstance()->PlayerFire(m_rotation, sf::Vector2f(m_pos.x + xAfter, m_pos.y + (yAfter)));	//(m_pos.x - 17 + (m_direction.x * 120), m_pos.y + (m_direction.y * 120))	// cos(toRadians(m_rotation)
-		}
-		else
-		{
-			float xBefore = 10;
-			float yBefore = 25;
-			float xAfter = xBefore * cos(toRadians(m_rotation)) - yBefore * sin(toRadians(m_rotation));
-			float yAfter = xBefore * sin(toRadians(m_rotation)) + yBefore * cos(toRadians(m_rotation)) ;
-		
-			BulletManager::GetInstance()->PlayerFire(m_rotation, sf::Vector2f(m_pos.x + xAfter, m_pos.y + (yAfter)));	//(m_pos.x + 10 + (m_direction.x * 120), m_pos.y + (m_direction.y * 120))	// sin(toRadians(m_rotation)
+			BulletManager::GetInstance()->PlayerFire(m_rotation, sf::Vector2f(m_pos.x + xAfter, m_pos.y + (yAfter)));
+
+			fired2 = true;
 		}
 
-		fired = true;
+		
 	}
 
 
@@ -214,13 +289,25 @@ void Player::Move(float time)
 		}
 	}
 
+	if (fired2 == true)
+	{
+		firedTime += time;
+		if (firedTime >= firedTimeControl*2)
+		{
+			firedTime = 0;
+			fired2 = false;
+		}
+	}
+
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::U) && locked == true && turretMode == TURRET)
 	{
+		sound2.play();
 		unlockStuff();
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L) && locked == false && isInLockZone() == true)
 	{
+		lockSound.play();
 		lockStuff();
 	}
 
@@ -232,8 +319,11 @@ void Player::Draw(sf::RenderWindow& window)
 	{
 		window.draw(m_landingzoneSprite);
 	}
-
+	m_dockSprite.setRotation(turretRot);
 	window.draw(m_sprite);
+	window.draw(m_dockSprite);
+	
+
 	/*for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
 	{
 		window.draw(text[i]);
@@ -263,7 +353,6 @@ void Player::Rotation(int dir, float t)
 	m_rotation += 1.5 * m_speed * t * dir;
 	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
 
-
 	if (m_rotation >= 360)
 	{
 		m_rotation = m_rotation - 360;
@@ -272,7 +361,6 @@ void Player::Rotation(int dir, float t)
 	{
 		m_rotation = 360 - m_rotation;
 	}
-
 }
 
 void Player::WrapAroundScreen()
@@ -298,6 +386,7 @@ bool Player::isInLockZone()	//checking if the player is in the landing zone and 
 
 void Player::lockStuff()		//things to do when locked
 {
+	
 	m_lockSprite.setTexture(m_lockingTexture);
 	forward_speed = 0;
 	turretMode = LOCKING;
@@ -341,6 +430,7 @@ void Player::slowLock(float t)
 
 	if (m_pos == startPos && m_rotation == 270)
 	{
+		lockSound.stop();
 		turretMode = TURRET;
 		m_lockSprite.setTexture(m_lockedTexture);
 	}

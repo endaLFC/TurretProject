@@ -89,6 +89,7 @@
     <ClInclude Include="Energy.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Flock.h" />
+    <ClInclude Include="FlockEnemy.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Particle.h" />
@@ -109,6 +110,7 @@
     <ClCompile Include="Energy.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="Flock.cpp" />
+    <ClCompile Include="FlockEnemy.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Particle.cpp" />

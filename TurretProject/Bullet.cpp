@@ -8,14 +8,14 @@ Bullet::Bullet(float rotation, sf::Vector2f position)
 	m_pos = position;
 	m_rotation = rotation;
 	alive = true;
-	m_speed = 500;
+	m_speed = 700;
 }
 
 void Bullet::Initialise(sf::Texture * text)
 {
 	m_texture = text;
 	m_sprite.setTexture(*m_texture);
-	m_sprite.setOrigin(5, 7.5);
+	m_sprite.setOrigin(15, 10);
 	int r, g, b;
 	r = rand() % 255;
 	g = rand() % 255;

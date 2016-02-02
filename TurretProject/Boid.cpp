@@ -40,7 +40,7 @@ Pvector Boid::Separation(vector<Boid> boids, sf::Vector2f playerPos)
 	// algorithm
 	
 	// Distance of field of vision for separation between boids
-	float desiredseparation = 20;
+	float desiredseparation = 60;
 	float desiredseparation2 = 100;
 	float desiredseparation3 = 300;
 	float desiredseparation4 = 70;
@@ -202,7 +202,7 @@ Pvector Boid::Alignment(vector<Boid> Boids)
 	// algorithm
 	//if (predator == true)
 	//	return Pvector(0,0);
-	float neighbordist = 50;
+	float neighbordist = 140;
 	float neighbordist2 = 140;
 
 	Pvector sum(0, 0);	

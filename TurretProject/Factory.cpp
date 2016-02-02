@@ -9,12 +9,12 @@ Factory::Factory()
 
 void Factory::Initialise()
 {
-	if (!m_texture.loadFromFile("TIE_Fighter.png")) //**************
+	if (!m_texture.loadFromFile("factory.png")) //**************
 	{
 		//error
 	}
 	m_sprite.setTexture(m_texture);
-	m_sprite.setOrigin(40, 35);
+	m_sprite.setOrigin(55, 55);
 	m_rotation = 0;
 	m_sprite.setRotation(m_rotation);
 	m_alive = true;
@@ -57,7 +57,6 @@ bool Factory::SpawnPredator(float time)
 
 	if (spawnTimer > 0.1)
 	{
-		cout << "YOLO "<< endl;
 		spawnTimer = 0;
 		return true;
 	}
@@ -94,15 +93,14 @@ bool Factory::IsColliding()
 		{
 			m_health -= 1;
 			damageSound.play();
-
-			int score = Score::GetInstance()->getScore();
-			Score::GetInstance()->setScore(score + 10);
 		}
 		else
 		{
 		//float distance = sqrt((targetPosition.x - m_position.x)*(targetPosition.x - m_position.x) + (targetPosition.y - m_position.y)*(targetPosition.y - m_position.y));
 		//std::cout << "COLLISION in factory" << std::endl;
 			explosionSound.play();
+			int score = Score::GetInstance()->getScore();
+			Score::GetInstance()->setScore(score + 50);
 			m_alive = false;
 			return true;		//return true
 		}
