@@ -41,7 +41,7 @@ void ParticleSystem::Init()
 void ParticleSystem::addParticle(sf::Vector2f position, int type)
 {
 	sf::Vector2f direction = sf::Vector2f((rand() % 100) - 50, (rand() % 100) - 50);
-	Particle* p = new Particle(position, Normalise(direction) ,rand() % 50, type);
+	Particle* p = new Particle(position, Normalise(direction) ,rand() % 250, type);
 	particles.push_back(p);
 }
 
@@ -77,6 +77,7 @@ void ParticleSystem::Draw(sf::RenderWindow &window)
 		b = rand() % 255;*/
 
 		m_sprite.setColor(sf::Color(255, 255, 255, p->getOpacity()));
+		m_SmokeSprite.setColor(sf::Color(255, 255, 255, p->getOpacity()));
 		if (p->GetType() == 0)
 		{
 			m_sprite.setPosition(p->GetPosition());

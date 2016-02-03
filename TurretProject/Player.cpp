@@ -11,6 +11,8 @@ Player::Player()
 
 void Player::Initialise()
 {
+	m_alive = true;
+
 	if (!font.loadFromFile("TELE2.TTF")) //  digital-7.regular
 	{
 		//handle error
@@ -47,6 +49,18 @@ void Player::Initialise()
 	{
 		// error...
 	}
+	if (!m_poweruptexture.loadFromFile("spacecraftpowerup1.png"))
+	{
+		// error...
+	}
+	if (!m_powerup2texture.loadFromFile("spacecraftpowerup2.png"))
+	{
+		// error...
+	}
+	if (!m_powerup3texture.loadFromFile("spacecraftpowerup3.png"))
+	{
+		// error...
+	}
 	if (!m_dockTexture.loadFromFile("spacecraft4.png"))
 	{
 		// error...
@@ -79,7 +93,7 @@ void Player::Initialise()
 
 	lockSpeed = 50;
 
-	m_radius = 50;
+	m_radius = 70;
 	m_speed = 100;
 	maxSpeed = 500;
 	forward_speed = 0;
@@ -112,10 +126,17 @@ void Player::Initialise()
 	lockBuffer.loadFromFile("lockingin.wav");
 	lockSound.setBuffer(lockBuffer);
 
+	lockinBuffer.loadFromFile("lockin.wav");
+	lockinSound.setBuffer(lockinBuffer);
+
+	deadBuffer.loadFromFile("playerdead.wav");
+	deadSound.setBuffer(lockinBuffer);
+
 	turretRot = 0;
 
 	vol = 50;
 
+	sound.setVolume(40);
 	fireSound.setVolume(vol);
 }
 
@@ -127,43 +148,49 @@ Player::~Player()
 
 void Player::Update(float time)
 {
-	if (turretMode == TURRET)
+	if (m_alive == true)
 	{
-		turretRot = m_rotation;
-	}
-	else if (turretMode == LOCKING)
-	{
-		if (turretRot < 272 && turretRot > 268)
-			turretRot = 270;
-		else if (turretRot > 270)
-			turretRot -= lockSpeed * time;
-		else if (turretRot < 270)
-			turretRot += lockSpeed * time;
+
+		if (turretMode == TURRET)
+		{
+			turretRot = m_rotation;
+		}
+		else if (turretMode == LOCKING)
+		{
+			if (turretRot < 272 && turretRot > 268)
+				turretRot = 270;
+			else if (turretRot > 270)
+				turretRot -= lockSpeed * time;
+			else if (turretRot < 270)
+				turretRot += lockSpeed * time;
+		}
+
+		if (shrink == true && speedBoost == true)
+		{
+			m_sprite.setScale(0.75, 0.75);
+			m_radius = 20;
+			m_sprite.setTexture(m_powerup3texture);
+		}
+		else if (shrink == true && speedBoost == false)
+		{
+			m_sprite.setScale(0.75, 0.75);
+			m_radius = 20;
+			m_sprite.setTexture(m_powerup2texture);
+		}
+		else if (speedBoost == true && shrink == false)
+		{
+			m_sprite.setTexture(m_poweruptexture);
+		}
+
+		if (locked == true && turretMode == LOCKING)
+			slowLock(time);
+
+
+		Move(time);
+		WrapAroundScreen();
+
 	}
 
-	if (shrink == true && speedBoost == true)
-	{
-		m_sprite.setScale(0.75, 0.75);
-		m_radius = 20;
-		m_sprite.setColor(sf::Color::Yellow);
-	}
-	else if (shrink == true && speedBoost == false)
-	{
-		m_sprite.setScale(0.75, 0.75);
-		m_radius = 20;
-		m_sprite.setColor(sf::Color::Cyan);				//sf::Color(50, 190, 150));
-	}
-	else if (speedBoost == true && shrink == false)
-	{
-		m_sprite.setColor(sf::Color::Magenta);				//sf::Color(50, 190, 150));
-	}
-
-	if (locked == true && turretMode == LOCKING)
-		slowLock(time);
-
-
-	Move(time);
-	WrapAroundScreen();
 	text[3].setString(to_string(Score::GetInstance()->getScore()));
 	if (Score::GetInstance()->getScore() >= 500)
 		text[3].setColor(sf::Color::Red);
@@ -177,6 +204,7 @@ void Player::Update(float time)
 		text[3].setColor(sf::Color::Magenta);
 	else if (Score::GetInstance()->getScore() >= 100)
 		text[3].setColor(sf::Color::Blue);
+
 }
 
 void Player::Move(float time)
@@ -205,6 +233,8 @@ void Player::Move(float time)
 				forward_speed += 10;
 			for (int i = 0; i < 5; i++)
 				ParticleSystem::GetInstance()->addParticle(m_pos, 1);
+
+			m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
@@ -320,7 +350,10 @@ void Player::Draw(sf::RenderWindow& window)
 		window.draw(m_landingzoneSprite);
 	}
 	m_dockSprite.setRotation(turretRot);
-	window.draw(m_sprite);
+
+	if (m_alive == true)
+		window.draw(m_sprite);
+
 	window.draw(m_dockSprite);
 	
 
@@ -350,9 +383,6 @@ float Player::toRadians(float degrees)
 
 void Player::Rotation(int dir, float t)
 {
-	m_rotation += 1.5 * m_speed * t * dir;
-	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
-
 	if (m_rotation >= 360)
 	{
 		m_rotation = m_rotation - 360;
@@ -361,6 +391,8 @@ void Player::Rotation(int dir, float t)
 	{
 		m_rotation = 360 - m_rotation;
 	}
+
+	m_rotation += 1.5 * m_speed * t * dir;
 }
 
 void Player::WrapAroundScreen()
@@ -386,7 +418,10 @@ bool Player::isInLockZone()	//checking if the player is in the landing zone and 
 
 void Player::lockStuff()		//things to do when locked
 {
-	
+	if (fireSound.Playing)
+		fireSound.stop();
+
+
 	m_lockSprite.setTexture(m_lockingTexture);
 	forward_speed = 0;
 	turretMode = LOCKING;
@@ -404,6 +439,16 @@ void Player::unlockStuff()		//things to do when unlocked
 
 void Player::slowLock(float t)
 {
+	if (m_rotation >= 360)
+	{
+		m_rotation = m_rotation - 360;
+	}
+	else if (m_rotation < 0)
+	{
+		m_rotation = 360 - m_rotation;
+	}
+
+
 	if (m_pos.x < startPos.x + 3 && m_pos.x > startPos.x - 3)
 		m_pos.x = startPos.x;
 	else if (m_pos.x < startPos.x)
@@ -420,7 +465,7 @@ void Player::slowLock(float t)
 
 	if (m_rotation < 272 && m_rotation > 268)
 		m_rotation = 270;
-	else if (m_rotation > 270)
+	else if (m_rotation > 270 || m_rotation <= 90)
 		m_rotation -= lockSpeed * t;
 	else if (m_rotation < 270)
 		m_rotation += lockSpeed * t;
@@ -430,8 +475,29 @@ void Player::slowLock(float t)
 
 	if (m_pos == startPos && m_rotation == 270)
 	{
+		lockinSound.play();
 		lockSound.stop();
 		turretMode = TURRET;
 		m_lockSprite.setTexture(m_lockedTexture);
+	}
+}
+
+void Player::SetAlive(bool x)
+{ 
+	if (m_alive == true && x == false)
+	{
+		if (fireSound.Playing)
+		{
+			fireSound.stop();
+		}
+
+		deadSound.play();
+		
+		for (int i = 0; i < 500; i++)
+		{
+			ParticleSystem::GetInstance()->addParticle(m_pos, 1);
+			ParticleSystem::GetInstance()->addParticle(m_pos, 0);
+		}
+		m_alive = x;
 	}
 }

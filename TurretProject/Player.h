@@ -25,24 +25,30 @@ class Player
 		int GetRot() { return m_rotation; }
 		void SetSpeed(float tS, float mS) { m_speed = tS; maxSpeed = mS; speedBoost = true; }
 		void SetShrink(bool x) { shrink = x; }
+		void SetAlive(bool x);
 		bool GetShrink() { return shrink; }
 		bool GetLocked() { return locked; }
 
 
+
 	protected:
+		bool m_alive;
 		bool isInLockZone();
 		void lockStuff();
 		void unlockStuff();
 		void slowLock(float t);
 
-		const int TURRET = 0, SPACESHIP = 1, LOCKING = 2;
+		const int TURRET = 0, SPACESHIP = 1, LOCKING = 2, NONE = 3, PURPLE = 4, RED = 5;
 
 		sf::Texture m_texture;
+		sf::Texture m_poweruptexture;
+		sf::Texture m_powerup2texture;
+		sf::Texture m_powerup3texture;
 		sf::Sprite m_sprite;
 		sf::Texture m_dockTexture;
 		sf::Sprite m_dockSprite;
 
-
+		int powerUp;
 
 		sf::Texture m_landingzoneTexture;
 		sf::Sprite m_landingzoneSprite;
@@ -68,6 +74,12 @@ class Player
 
 		sf::SoundBuffer lockBuffer;
 		sf::Sound lockSound;
+
+		sf::SoundBuffer lockinBuffer;
+		sf::Sound lockinSound;
+
+		sf::SoundBuffer deadBuffer;
+		sf::Sound deadSound;
 
 		float lockSpeed;
 		int m_radius;

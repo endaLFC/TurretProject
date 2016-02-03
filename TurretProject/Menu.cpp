@@ -5,7 +5,7 @@
 Menu::Menu(float width, float height)
 {
 	//if (!font.loadFromFile("C:\\Windows\\Fonts\\Arkhip_font.ttf"))
-	if (!font.loadFromFile("digital-7.regular.ttf"))
+	if (!font.loadFromFile("TELE2.TTF"))
 	{
 		//handle error
 	}
@@ -21,21 +21,24 @@ Menu::Menu(float width, float height)
 	}
 
 	text[0].setFont(font);
-	text[0].setColor(sf::Color::Red);
+	text[0].setColor(sf::Color::White);
 	text[0].setString("Play");
+	text[0].setScale(0.6,0.6);
 	//text[0].setPosition(sf::Vector2f(width/15 * 2, height/(MAX_NUMBER_OF_ITEMS + 1 ) * 3));
-	text[0].setPosition(sf::Vector2f(width / 15 * 11.2, height / (MAX_NUMBER_OF_ITEMS + 1) * 1.5));
+	text[0].setPosition(sf::Vector2f(width / 15 * 11.2, height / (MAX_NUMBER_OF_ITEMS + 1) * 1.6));
 
 	text[1].setFont(font);
-	text[1].setColor(sf::Color::White);
+	text[1].setColor(sf::Color::Black);
 	text[1].setString("Options");
+	text[1].setScale(0.5, 0.5);
 	//text[1].setPosition(sf::Vector2f(width /15 * 6, height / (MAX_NUMBER_OF_ITEMS + 1) * 3));
-	text[1].setPosition(sf::Vector2f(width / 15 * 11.2, height / (MAX_NUMBER_OF_ITEMS + 1) * 2));
+	text[1].setPosition(sf::Vector2f(width / 15 * 11, height / (MAX_NUMBER_OF_ITEMS + 1) * 2));
 
 	text[2].setFont(font);
-	text[2].setColor(sf::Color::White);
+	text[2].setColor(sf::Color::Black);
 	text[2].setString("Exit");
-	text[2].setPosition(sf::Vector2f(width /15 * 11.2, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.5));
+	text[2].setScale(0.6, 0.6);
+	text[2].setPosition(sf::Vector2f(width /15 * 11.4, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.35));
 
 	selectedItemIndex = 0;
 }
@@ -58,10 +61,11 @@ void Menu::MoveUp()
 {
 	if (selectedItemIndex - 1 >= 0)
 	{
+		//beepSound.play();
 		Sleep(150);
-		text[selectedItemIndex].setColor(sf::Color::White);
+		text[selectedItemIndex].setColor(sf::Color::Black);
 		selectedItemIndex--;
-		text[selectedItemIndex].setColor(sf::Color::Red);
+		text[selectedItemIndex].setColor(sf::Color::White);
 	}
 }
 
@@ -69,10 +73,11 @@ void Menu::MoveDown()
 {
 	if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS)
 	{
+		//beepSound.play();
 		Sleep(150);
-		text[selectedItemIndex].setColor(sf::Color::White);
+		text[selectedItemIndex].setColor(sf::Color::Black);
 		selectedItemIndex++;
-		text[selectedItemIndex].setColor(sf::Color::Red);
+		text[selectedItemIndex].setColor(sf::Color::White);
 	}
 }
 

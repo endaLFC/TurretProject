@@ -1,36 +1,36 @@
 #include "stdafx.h"
-#include "FlockEnemy.h"
+#include "SwarmEnemy.h"
 #include "ParticleSystem.h"
 #include "Score.h"
 
-FlockEnemy::FlockEnemy()
+SwarmEnemy::SwarmEnemy()
 {
 }
 
-void FlockEnemy::Initialise()
+void SwarmEnemy::Initialise()
 {
-	if (!m_texture.loadFromFile("flockship.png")) //**************
+	if (!m_texture.loadFromFile("swarmenemy.png")) //**************
 	{
 		//error
 	}
 	m_sprite.setTexture(m_texture);
-	m_sprite.setOrigin(32, 32);
+	m_sprite.setOrigin(15, 11);
 	m_rotation = 0;
 	m_sprite.setRotation(m_rotation);
 	m_alive = true;
-	m_radius = 50;
+	m_radius = 15;
 	int r, g, b;
 	r = rand() % 255;
 	g = rand() % 255;
 	b = rand() % 255;
-	m_sprite.setColor(sf::Color(r, g, b));
+	m_sprite.setColor(sf::Color(255, 255, 255));
 
 	buffer.loadFromFile("Explosion.wav");
 	explosionSound.setBuffer(buffer);
 	explosionSound.setVolume(25);
 }
 
-bool FlockEnemy::Update(float time)
+bool SwarmEnemy::Update(float time)
 {
 	if (m_alive)
 	{
@@ -45,7 +45,7 @@ bool FlockEnemy::Update(float time)
 	}
 }
 
-void FlockEnemy::Draw(sf::RenderWindow& window)
+void SwarmEnemy::Draw(sf::RenderWindow& window)
 {
 	if (m_alive == true)
 	{
@@ -53,7 +53,7 @@ void FlockEnemy::Draw(sf::RenderWindow& window)
 	}
 }
 
-void FlockEnemy::WrapAroundScreen()
+void SwarmEnemy::WrapAroundScreen()
 {
 	if (m_position.x > 2400)
 		m_position.x = 0;
@@ -66,7 +66,7 @@ void FlockEnemy::WrapAroundScreen()
 		m_position.y = 1800;
 }
 
-bool FlockEnemy::IsColliding()
+bool SwarmEnemy::IsColliding()
 {
 	if (m_alive == true)
 	{
@@ -78,7 +78,7 @@ bool FlockEnemy::IsColliding()
 		explosionSound.play();
 
 		int score = Score::GetInstance()->getScore();
-		Score::GetInstance()->setScore(score + 10);
+		Score::GetInstance()->setScore(score + 5);
 		m_alive = false;
 		return true;		//return true
 	}
@@ -86,7 +86,7 @@ bool FlockEnemy::IsColliding()
 		return false;
 }
 
-float FlockEnemy::DistanceFrom(sf::Vector2f player)
+float SwarmEnemy::DistanceFrom(sf::Vector2f player)
 {
 	float len = sqrt((player.x - m_position.x)*(player.x - m_position.x) + (player.y - m_position.y)*(player.y - m_position.y));
 	return len;

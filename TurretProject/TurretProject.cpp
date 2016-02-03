@@ -16,6 +16,7 @@
 #include "Obstacle.h"
 #include "Powerup.h"
 #include "FlockEnemy.h"
+#include "SwarmEnemy.h"
 ////////////////////////////////////////////////////////////
 ///Entrypoint of application 
 //////////////////////////////////////////////////////////// 
@@ -27,8 +28,11 @@ int main()
 
 	sf::Music backgroundMusic;
 	backgroundMusic.openFromFile("music.ogg");
-	backgroundMusic.setVolume(25);
+	backgroundMusic.setVolume(15);
 	backgroundMusic.play();
+
+	float count = 0;
+
 	float boidsSize = 10;
 	//string action = "flock";
 	Flock flock;
@@ -37,6 +41,7 @@ int main()
 	Flock preds;
 
 	vector<FlockEnemy*> flockEnemies;
+	vector<SwarmEnemy*> swarmEnemies;
 	vector<sf::CircleShape> shapes;
 	vector<sf::CircleShape> shapes2;
 	vector<Factory*> factories;
@@ -109,64 +114,58 @@ int main()
 	mushroomColour.Initialise(sf::Vector2f(2000, 1500), 1);
 
 
-	for (int i = 0; i < 50; i++) //Number of boids is hardcoded for testing pusposes.
+	for (int i = 0; i < 20; i++) //Creating flock enemies
 	{
-		//Boid b(rand() % window_width, rand() % window_height); //Starts the boid with a random position in the window.
-		Boid b(800 / 3, 600 / 3, 0); //Starts all boids in the center of the screen
+		float x, y;
+		x = rand() % 5500;
+		y = rand() % 200 - 100;
+		Boid b(x,x,0); //Starts the boid with a random position in the window.
 		FlockEnemy *fE = new FlockEnemy;
 		fE->Initialise();
-		fE->SetPosition(sf::Vector2f(800, 600));
+		fE->SetPosition(sf::Vector2f(0, 0));
 		flock.addBoid(b);
 		flockEnemies.push_back(fE);
 	}
 
-	////creating flock boids
+	for (int i = 0; i < 50; i++) //Creating flock enemies
+	{
+		float x, y;
+		x = rand() % 5500;
+		y = rand() % 200 - 100;
+		Boid b(x, x, 1); //Starts the boid with a random position in the window.
+		SwarmEnemy *sE = new SwarmEnemy;
+		sE->Initialise();
+		sE->SetPosition(sf::Vector2f(0, 0));
+		swarm.addBoid(b);
+		swarmEnemies.push_back(sE);
+	}
+
+	////creating swarm boids
 	//for (int i = 0; i < 50; i++) //Number of boids is hardcoded for testing pusposes.
 	//{
 	//	//Boid b(rand() % window_width, rand() % window_height); //Starts the boid with a random position in the window.
-	//	Boid b(800 / 3, 600 / 3, 0); //Starts all boids in the center of the screen
-	//	sf::CircleShape shape(10, 3); //Shape with a radius of 10 and 3 points (Making it a triangle)
+	//	Boid b(800 * 2, 600, 1); 
+	//	sf::CircleShape shape(10, 3); 
 
 	//	//Changing the Visual Properties of the shape
 	//	//shape.setPosition(b.location.x, b.location.y); //Sets position of shape to random location that boid was set to.
 	//	shape.setPosition(800, 600); //Testing purposes, starts all shapes in the center of screen.
-	//	shape.setOutlineColor(sf::Color(0, 255, 0));
+	//	shape.setOutlineColor(sf::Color(255, 0, 0));
 	//	shape.setFillColor(sf::Color::Black);
-	//	shape.setOutlineColor(sf::Color::White);
+	//	shape.setOutlineColor(sf::Color::Red);
 	//	shape.setOutlineThickness(1);
 	//	shape.setRadius(boidsSize);
 
 	//	//Adding the boid to the flock and adding the shapes to the vector<sf::CircleShape>
-	//	flock.addBoid(b);
-	//	shapes.push_back(shape);
+	//	swarm.addBoid(b);
+	//	shapes2.push_back(shape);
 	//}
-
-	//creating swarm boids
-	for (int i = 0; i < 50; i++) //Number of boids is hardcoded for testing pusposes.
-	{
-		//Boid b(rand() % window_width, rand() % window_height); //Starts the boid with a random position in the window.
-		Boid b(800 * 2, 600, 1); //Starts all boids in the center of the screen
-		sf::CircleShape shape(10, 3); //Shape with a radius of 10 and 3 points (Making it a triangle)
-
-		//Changing the Visual Properties of the shape
-		//shape.setPosition(b.location.x, b.location.y); //Sets position of shape to random location that boid was set to.
-		shape.setPosition(800, 600); //Testing purposes, starts all shapes in the center of screen.
-		shape.setOutlineColor(sf::Color(255, 0, 0));
-		shape.setFillColor(sf::Color::Black);
-		shape.setOutlineColor(sf::Color::Red);
-		shape.setOutlineThickness(1);
-		shape.setRadius(boidsSize);
-
-		//Adding the boid to the flock and adding the shapes to the vector<sf::CircleShape>
-		swarm.addBoid(b);
-		shapes2.push_back(shape);
-	}
 
 
 	for (int i = 0; i < 5; i++) //Number of boids is hardcoded for testing pusposes.
 	{
 		//Boid b(rand() % window_width, rand() % window_height); //Starts the boid with a random position in the window.
-		Boid b(800, 1000, 2); //Starts all boids in the center of the screen
+		Boid b(800, 1000, 2);
 		Factory *f = new Factory;
 		f->Initialise();
 		f->SetPosition(sf::Vector2f(800,600));
@@ -198,11 +197,11 @@ int main()
 			background.setTexture(playTexture);
 
 			menu.Update(t);
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
 				menu.MoveUp();
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 			{
 				menu.MoveDown();
 			}
@@ -233,17 +232,6 @@ int main()
 			break;
 
 		case PLAY:
-			/*
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
-			{
-				action = "swarm";
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-			{
-				action = "flock";
-			}
-			*/
-
 			//check for mouse click, draws and adds boid to flock if so.
 			//if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			//{
@@ -356,22 +344,41 @@ int main()
 				}
 			}
 
-			//drawing swarm boids
-			for (int i = 0; i < shapes2.size(); i++)
+
+			for (int i = 0; i < swarmEnemies.size(); i++)
 			{
-				window.draw(shapes2[i]);
+				swarmEnemies[i]->Draw(window);
+				swarmEnemies[i]->Update(t);
 				//Matches up the location of the shape to the boid
-				shapes2[i].setPosition(swarm.getBoid(i).location.x, swarm.getBoid(i).location.y);
+				swarmEnemies[i]->SetPosition(sf::Vector2f(swarm.getBoid(i).location.x, swarm.getBoid(i).location.y));
 				// Calculates the angle where the velocity is pointing so that the triangle turns towards it.
 				float theta;
 				theta = swarm.getBoid(i).angle(swarm.getBoid(i).velocity);
-				shapes2[i].setRotation(theta);
+				swarmEnemies[i]->SetRotation(theta);
 
-				if (BulletManager::GetInstance()->IsColliding2(shapes2[i].getPosition(), shapes2[i].getRadius(), true))
+				if (BulletManager::GetInstance()->IsColliding2(swarmEnemies[i]->GetPosition(), swarmEnemies[i]->GetRadius(), swarmEnemies[i]->GetAlive()) && swarmEnemies[i]->GetAlive() == true)
 				{
-					shapes2[i].setFillColor(sf::Color::Red);
+					swarmEnemies[i]->IsColliding();
 				}
 			}
+
+
+			////drawing swarm boids
+			//for (int i = 0; i < shapes2.size(); i++)
+			//{
+			//	window.draw(shapes2[i]);
+			//	//Matches up the location of the shape to the boid
+			//	shapes2[i].setPosition(swarm.getBoid(i).location.x, swarm.getBoid(i).location.y);
+			//	// Calculates the angle where the velocity is pointing so that the triangle turns towards it.
+			//	float theta;
+			//	theta = swarm.getBoid(i).angle(swarm.getBoid(i).velocity);
+			//	shapes2[i].setRotation(theta);
+
+			//	if (BulletManager::GetInstance()->IsColliding2(shapes2[i].getPosition(), shapes2[i].getRadius(), true))
+			//	{
+			//		shapes2[i].setFillColor(sf::Color::Red);
+			//	}
+			//}
 
 			//drawing factory boids
 			for (int i = 0; i < factories.size(); i++)
@@ -394,11 +401,22 @@ int main()
 
 			if (obstacle.IsColliding(p1.GetPos(), p1.GetRadius()))
 			{
-				gameMode = GAMEOVER;
+				p1.SetAlive(false);
+				count += t;
+				if (count > 2)
+				{
+					gameMode = GAMEOVER;
+				}
+					
 			}
 			else if (obstacle2.IsColliding(p1.GetPos(), p1.GetRadius()))
 			{
-				gameMode = GAMEOVER;
+				p1.SetAlive(false);
+				count += t;
+				if (count > 2)
+				{
+					gameMode = GAMEOVER;
+				}
 			}
 
 			if (mushroomSmall.IsColliding(p1.GetPos(), p1.GetRadius()) && mushroomSmall.GetType() == 0)
@@ -449,10 +467,10 @@ int main()
 			obstacle2.SetSpriteScale(2);
 			obstacle2.Draw(window);
 			obstacle2.SetSpriteScale(1);
-			mushroomSmall.SetSpriteScale(3);
+			mushroomSmall.SetSpriteScale(2);
 			mushroomSmall.Draw(window);
 			mushroomSmall.SetSpriteScale(1);
-			mushroomColour.SetSpriteScale(3);
+			mushroomColour.SetSpriteScale(2);
 			mushroomColour.Draw(window);
 			mushroomColour.SetSpriteScale(1);
 			p1.SetSpriteScale(2);
@@ -466,15 +484,15 @@ int main()
 			}*/
 			for (int i = 0; i < flockEnemies.size(); i++)
 			{
-				flockEnemies[i]->SetScale(3);
+				flockEnemies[i]->SetScale(2);
 				flockEnemies[i]->Draw(window);
 				flockEnemies[i]->SetScale(1);
 			}
-			for (int i = 0; i < shapes2.size(); i++)
+			for (int i = 0; i < swarmEnemies.size(); i++)
 			{
-				shapes2[i].setScale(5, 5);
-				window.draw(shapes2[i]);
-				shapes2[i].setScale(1, 1);
+				swarmEnemies[i]->SetScale(2);
+				swarmEnemies[i]->Draw(window);
+				swarmEnemies[i]->SetScale(1);
 			}
 			for (int i = 0; i < factories.size(); i++)
 			{

@@ -97,7 +97,11 @@ bool Factory::IsColliding()
 		else
 		{
 		//float distance = sqrt((targetPosition.x - m_position.x)*(targetPosition.x - m_position.x) + (targetPosition.y - m_position.y)*(targetPosition.y - m_position.y));
-		//std::cout << "COLLISION in factory" << std::endl;
+			for (int i = 0; i < 100; i++)
+			{
+				ParticleSystem::GetInstance()->addParticle(m_position, 0);
+				ParticleSystem::GetInstance()->addParticle(m_position, 1);
+			}
 			explosionSound.play();
 			int score = Score::GetInstance()->getScore();
 			Score::GetInstance()->setScore(score + 50);
@@ -136,6 +140,7 @@ void Factory::Smoke(float time)
 	{
 		ParticleSystem::GetInstance()->addParticle(m_position, 0);
 		ParticleSystem::GetInstance()->addParticle(m_position, 1);
+		
 		smokeOn = true;
 	}
 
