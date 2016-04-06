@@ -27,8 +27,8 @@ int main()
 	view.reset(sf::FloatRect(0,0, 1100,800));
 
 	sf::Music backgroundMusic;
-	backgroundMusic.openFromFile("music.ogg");
-	backgroundMusic.setVolume(15);
+	backgroundMusic.openFromFile("music2.ogg");
+	backgroundMusic.setVolume(100);
 	backgroundMusic.play();
 
 	float count = 0;
@@ -76,7 +76,7 @@ int main()
 
 	playTexture.loadFromFile("space3.jpg");
 	radarTexture.loadFromFile("space2.jpg");
-	radarBorderTexture.loadFromFile("radarBorder2.png");
+	radarBorderTexture.loadFromFile("radarBorder3.png");
 	scoreHUDTexture.loadFromFile("hud2.png");
 	gameOverTexture.loadFromFile("GameOver.jpg");
 	optionsTexture.loadFromFile("OptionsBackground.jpg");
@@ -103,12 +103,14 @@ int main()
 
 	Obstacle obstacle;
 	Obstacle obstacle2;
+	Obstacle obstacle3;
 
 	Powerup mushroomSmall;
 	Powerup mushroomColour;
 
-	obstacle.Initialise(sf::Vector2f(600, 1600));
-	obstacle2.Initialise(sf::Vector2f(1700, 800));
+	obstacle.Initialise(sf::Vector2f(600, 1600),100,100,255,40);
+	obstacle2.Initialise(sf::Vector2f(1700, 800), 100, 255, 100,80);
+	obstacle3.Initialise(sf::Vector2f(1300, 100), 255, 100, 100,110);
 
 	mushroomSmall.Initialise(sf::Vector2f(200, 200), 0);
 	mushroomColour.Initialise(sf::Vector2f(2000, 1500), 1);
@@ -118,49 +120,27 @@ int main()
 	{
 		float x, y;
 		x = rand() % 5500;
-		y = rand() % 200 - 100;
-		Boid b(x,x,0); //Starts the boid with a random position in the window.
+		y = rand() % 100;
+		Boid b(x,y,0); //Starts the boid with a random position in the window.
 		FlockEnemy *fE = new FlockEnemy;
 		fE->Initialise();
-		fE->SetPosition(sf::Vector2f(0, 0));
+		fE->SetPosition(sf::Vector2f(x, y));
 		flock.addBoid(b);
 		flockEnemies.push_back(fE);
 	}
 
-	for (int i = 0; i < 50; i++) //Creating flock enemies
+	for (int i = 0; i < 50; i++) //Creating swarm enemies
 	{
 		float x, y;
 		x = rand() % 5500;
-		y = rand() % 200 - 100;
-		Boid b(x, x, 1); //Starts the boid with a random position in the window.
+		y = rand() % 100;
+		Boid b(x, y, 1); //Starts the boid with a random position in the window.
 		SwarmEnemy *sE = new SwarmEnemy;
 		sE->Initialise();
-		sE->SetPosition(sf::Vector2f(0, 0));
+		sE->SetPosition(sf::Vector2f(x, y));
 		swarm.addBoid(b);
 		swarmEnemies.push_back(sE);
 	}
-
-	////creating swarm boids
-	//for (int i = 0; i < 50; i++) //Number of boids is hardcoded for testing pusposes.
-	//{
-	//	//Boid b(rand() % window_width, rand() % window_height); //Starts the boid with a random position in the window.
-	//	Boid b(800 * 2, 600, 1); 
-	//	sf::CircleShape shape(10, 3); 
-
-	//	//Changing the Visual Properties of the shape
-	//	//shape.setPosition(b.location.x, b.location.y); //Sets position of shape to random location that boid was set to.
-	//	shape.setPosition(800, 600); //Testing purposes, starts all shapes in the center of screen.
-	//	shape.setOutlineColor(sf::Color(255, 0, 0));
-	//	shape.setFillColor(sf::Color::Black);
-	//	shape.setOutlineColor(sf::Color::Red);
-	//	shape.setOutlineThickness(1);
-	//	shape.setRadius(boidsSize);
-
-	//	//Adding the boid to the flock and adding the shapes to the vector<sf::CircleShape>
-	//	swarm.addBoid(b);
-	//	shapes2.push_back(shape);
-	//}
-
 
 	for (int i = 0; i < 5; i++) //Number of boids is hardcoded for testing pusposes.
 	{
@@ -310,22 +290,6 @@ int main()
 			window.setView(view);			
 			window.draw(background);
 
-			//for (int i = 0; i < shapes.size(); i++)
-			//{
-			//	window.draw(shapes[i]);
-			//	//Matches up the location of the shape to the boid
-			//	shapes[i].setPosition(flock.getBoid(i).location.x, flock.getBoid(i).location.y);
-
-			//	// Calculates the angle where the velocity is pointing so that the triangle turns towards it.
-			//	float theta;
-			//	theta = flock.getBoid(i).angle(flock.getBoid(i).velocity);
-			//	shapes[i].setRotation(theta);
-
-			//	if (BulletManager::GetInstance()->IsColliding2(shapes[i].getPosition(), shapes[i].getRadius(), true))
-			//	{
-			//		shapes[i].setFillColor(sf::Color::Red);
-			//	}
-			//}
 			//drawing factory boids
 			for (int i = 0; i < flockEnemies.size(); i++)
 			{
@@ -340,7 +304,23 @@ int main()
 
 				if (BulletManager::GetInstance()->IsColliding2(flockEnemies[i]->GetPosition(), flockEnemies[i]->GetRadius(), flockEnemies[i]->GetAlive()) && flockEnemies[i]->GetAlive() == true)
 				{
-					flockEnemies[i]->IsColliding();
+					flockEnemies[i]->Colliding();
+				}
+				if (flockEnemies[i]->IsColliding(p1.GetPos(), p1.GetRadius()))
+				{
+					flockEnemies[i]->Colliding();
+				}
+				else if (flockEnemies[i]->IsColliding(obstacle.GetPosition(), obstacle.GetRadius()))
+				{
+					flockEnemies[i]->Colliding();
+				}
+				else if (flockEnemies[i]->IsColliding(obstacle2.GetPosition(), obstacle2.GetRadius()))
+				{
+					flockEnemies[i]->Colliding();
+				}
+				else if (flockEnemies[i]->IsColliding(obstacle3.GetPosition(), obstacle3.GetRadius()))
+				{
+					flockEnemies[i]->Colliding();
 				}
 			}
 
@@ -358,27 +338,26 @@ int main()
 
 				if (BulletManager::GetInstance()->IsColliding2(swarmEnemies[i]->GetPosition(), swarmEnemies[i]->GetRadius(), swarmEnemies[i]->GetAlive()) && swarmEnemies[i]->GetAlive() == true)
 				{
-					swarmEnemies[i]->IsColliding();
+					swarmEnemies[i]->Colliding();
 				}
+				if (swarmEnemies[i]->IsColliding(p1.GetPos(), p1.GetRadius()))
+				{
+					swarmEnemies[i]->Colliding();
+				}
+				else if (swarmEnemies[i]->IsColliding(obstacle.GetPosition(), obstacle.GetRadius()))
+				{
+					swarmEnemies[i]->Colliding();
+				}
+				else if (swarmEnemies[i]->IsColliding(obstacle2.GetPosition(), obstacle2.GetRadius()))
+				{
+					swarmEnemies[i]->Colliding();
+				}
+				else if (swarmEnemies[i]->IsColliding(obstacle3.GetPosition(), obstacle3.GetRadius()))
+				{
+					swarmEnemies[i]->Colliding();
+				}
+
 			}
-
-
-			////drawing swarm boids
-			//for (int i = 0; i < shapes2.size(); i++)
-			//{
-			//	window.draw(shapes2[i]);
-			//	//Matches up the location of the shape to the boid
-			//	shapes2[i].setPosition(swarm.getBoid(i).location.x, swarm.getBoid(i).location.y);
-			//	// Calculates the angle where the velocity is pointing so that the triangle turns towards it.
-			//	float theta;
-			//	theta = swarm.getBoid(i).angle(swarm.getBoid(i).velocity);
-			//	shapes2[i].setRotation(theta);
-
-			//	if (BulletManager::GetInstance()->IsColliding2(shapes2[i].getPosition(), shapes2[i].getRadius(), true))
-			//	{
-			//		shapes2[i].setFillColor(sf::Color::Red);
-			//	}
-			//}
 
 			//drawing factory boids
 			for (int i = 0; i < factories.size(); i++)
@@ -394,7 +373,23 @@ int main()
 
 				if (BulletManager::GetInstance()->IsColliding2(factories[i]->GetPosition(), factories[i]->GetRadius(), factories[i]->GetAlive()) && factories[i]->GetAlive() == true)
 				{
-					factories[i]->IsColliding();
+					factories[i]->Colliding();
+				}
+				if (factories[i]->IsColliding(p1.GetPos(), p1.GetRadius()))
+				{
+					factories[i]->Colliding();
+				}
+				else if (factories[i]->IsColliding(obstacle.GetPosition(), obstacle.GetRadius()))
+				{
+					factories[i]->Colliding();
+				}
+				else if (factories[i]->IsColliding(obstacle2.GetPosition(), obstacle2.GetRadius()))
+				{
+					factories[i]->Colliding();
+				}
+				else if (factories[i]->IsColliding(obstacle3.GetPosition(), obstacle3.GetRadius()))
+				{
+					factories[i]->Colliding();
 				}
 			}
 
@@ -418,6 +413,15 @@ int main()
 					gameMode = GAMEOVER;
 				}
 			}
+			else if (obstacle3.IsColliding(p1.GetPos(), p1.GetRadius()))
+			{
+				p1.SetAlive(false);
+				count += t;
+				if (count > 2)
+				{
+					gameMode = GAMEOVER;
+				}
+			}
 
 			if (mushroomSmall.IsColliding(p1.GetPos(), p1.GetRadius()) && mushroomSmall.GetType() == 0)
 			{
@@ -433,6 +437,8 @@ int main()
 			obstacle.Draw(window);
 			obstacle2.Rotate(t);
 			obstacle2.Draw(window);
+			obstacle3.Rotate(t*0.3);
+			obstacle3.Draw(window);
 
 			mushroomSmall.Draw(window);
 			mushroomColour.Draw(window);
@@ -441,15 +447,13 @@ int main()
 			//if (action == "flock")
 			flock.flocking(p1.GetPos(), obstacle.GetPosition());
 			flock.flocking(p1.GetPos(), obstacle2.GetPosition());
+			flock.flocking(p1.GetPos(), obstacle3.GetPosition());
 			//else
 			swarm.swarming(p1.GetPos());
-			
 
 			factory.flocking(p1.GetPos(), obstacle.GetPosition());
 			factory.flocking(p1.GetPos(), obstacle2.GetPosition());
-
-
-
+			factory.flocking(p1.GetPos(), obstacle3.GetPosition());
 			
 			EnemyManager::GetInstance()->Draw(window);
 			BulletManager::GetInstance()->Draw(window);
@@ -461,21 +465,16 @@ int main()
 
 			window.setView(miniMap);
 			window.draw(radarBackground);
-			obstacle.SetSpriteScale(2);
 			obstacle.Draw(window);
-			obstacle.SetSpriteScale(1);
-			obstacle2.SetSpriteScale(2);
 			obstacle2.Draw(window);
-			obstacle2.SetSpriteScale(1);
+			obstacle3.Draw(window);
 			mushroomSmall.SetSpriteScale(2);
 			mushroomSmall.Draw(window);
 			mushroomSmall.SetSpriteScale(1);
 			mushroomColour.SetSpriteScale(2);
 			mushroomColour.Draw(window);
 			mushroomColour.SetSpriteScale(1);
-			p1.SetSpriteScale(2);
 			p1.Draw(window);
-			p1.SetSpriteScale(1);
 			/*for (int i = 0; i < shapes.size(); i++)
 			{
 				shapes[i].setScale(5,5); 

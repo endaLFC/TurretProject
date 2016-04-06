@@ -37,19 +37,25 @@ Energy::~Energy()
 
 void Energy::Update(float time)
 {
-	if (energyWidth <= 1)
+	if (energyWidth < 0.25)
+	{
+		energyWidth += time * 0.2;
+	}
+	else if (energyWidth <= 1)
+	{
 		energyWidth += time * 0.5;
+	}
 
 	m_sprite.setScale(energyWidth, 1);
 	if (energyWidth > 0.25)
 		m_sprite.setColor(sf::Color(255, 255, 255));
-	else 
+	else
 		m_sprite.setColor(sf::Color(255 * energyWidth, 255, 255));
 }
 
 void Energy::Shot1()
 {
-	energyWidth -= 0.20;
+	energyWidth -= 0.15;
 }
 
 void Energy::Draw(sf::RenderWindow& window)

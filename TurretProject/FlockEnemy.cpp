@@ -66,7 +66,7 @@ void FlockEnemy::WrapAroundScreen()
 		m_position.y = 1800;
 }
 
-bool FlockEnemy::IsColliding()
+bool FlockEnemy::Colliding()
 {
 	if (m_alive == true)
 	{
@@ -84,6 +84,24 @@ bool FlockEnemy::IsColliding()
 	}
 	else
 		return false;
+}
+
+bool FlockEnemy::IsColliding(sf::Vector2f targetPosition, int targetRadius)
+{
+	if (m_alive == true)
+	{
+		//float distance = sqrt((targetPosition.x - m_position.x)*(targetPosition.x - m_position.x) + (targetPosition.y - m_position.y)*(targetPosition.y - m_position.y));
+		if (DistanceFrom(targetPosition) < m_radius + targetRadius)		//collision occurs
+		{
+			//m_alive = false;
+			return true;		//return true
+		}
+		else
+		{
+			return false;	//return false
+		}
+	}
+	return false;
 }
 
 float FlockEnemy::DistanceFrom(sf::Vector2f player)

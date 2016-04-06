@@ -6,7 +6,8 @@ public:
 	FlockEnemy();
 
 	bool Update(float time);
-	bool IsColliding();
+	bool Colliding();
+	bool IsColliding(sf::Vector2f targetPosition, int targetRadius);
 	void Draw(sf::RenderWindow& window);
 	sf::Vector2f GetPosition() { return m_position; }
 	void SetPosition(sf::Vector2f pos) { m_position = pos; }

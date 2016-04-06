@@ -28,5 +28,7 @@ class Menu
 		sf::Sprite background;
 		sf::IntRect animationRect;
 		float frameTimer;
+		float initialFrameTimer;
+		int random;
 };
 

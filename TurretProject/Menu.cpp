@@ -10,8 +10,9 @@ Menu::Menu(float width, float height)
 		//handle error
 	}
 	frameTimer = 0;
+	initialFrameTimer = 0;
 	//texture.loadFromFile("Asteroids4.jpg");
-	texture.loadFromFile("opening.jpg");
+	texture.loadFromFile("Detachedmenu.jpg");
 	background.setTexture(texture);
 	animationRect = { 0, 0, 1100, 800 };
 
@@ -21,26 +22,28 @@ Menu::Menu(float width, float height)
 	}
 
 	text[0].setFont(font);
-	text[0].setColor(sf::Color::White);
+	text[0].setColor(sf::Color::Color(180, 35, 35)); //dark red
 	text[0].setString("Play");
 	text[0].setScale(0.6,0.6);
 	//text[0].setPosition(sf::Vector2f(width/15 * 2, height/(MAX_NUMBER_OF_ITEMS + 1 ) * 3));
 	text[0].setPosition(sf::Vector2f(width / 15 * 11.2, height / (MAX_NUMBER_OF_ITEMS + 1) * 1.6));
 
 	text[1].setFont(font);
-	text[1].setColor(sf::Color::Black);
+	text[1].setColor(sf::Color::Color(120, 120, 120));	//grey
 	text[1].setString("Options");
 	text[1].setScale(0.5, 0.5);
 	//text[1].setPosition(sf::Vector2f(width /15 * 6, height / (MAX_NUMBER_OF_ITEMS + 1) * 3));
 	text[1].setPosition(sf::Vector2f(width / 15 * 11, height / (MAX_NUMBER_OF_ITEMS + 1) * 2));
 
 	text[2].setFont(font);
-	text[2].setColor(sf::Color::Black);
+	text[2].setColor(sf::Color::Color(120, 120, 120));
 	text[2].setString("Exit");
 	text[2].setScale(0.6, 0.6);
 	text[2].setPosition(sf::Vector2f(width /15 * 11.4, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.35));
 
 	selectedItemIndex = 0;
+
+
 }
 
 
@@ -63,9 +66,9 @@ void Menu::MoveUp()
 	{
 		//beepSound.play();
 		Sleep(150);
-		text[selectedItemIndex].setColor(sf::Color::Black);
+		text[selectedItemIndex].setColor(sf::Color::Color(120, 120, 120));
 		selectedItemIndex--;
-		text[selectedItemIndex].setColor(sf::Color::White);
+		text[selectedItemIndex].setColor(sf::Color::Color(180, 35, 35));
 	}
 }
 
@@ -75,24 +78,40 @@ void Menu::MoveDown()
 	{
 		//beepSound.play();
 		Sleep(150);
-		text[selectedItemIndex].setColor(sf::Color::Black);
+		text[selectedItemIndex].setColor(sf::Color::Color(120, 120, 120));
 		selectedItemIndex++;
-		text[selectedItemIndex].setColor(sf::Color::White);
+		text[selectedItemIndex].setColor(sf::Color::Color(180, 35, 35));
 	}
 }
 
 
 void Menu::Update(float time)
-{
+{	
+	/* initialize random seed: */
+	srand(time);
+	random = rand() % 5 + 1;
 	frameTimer += time;
+	initialFrameTimer += time;
+	
 
-	if (frameTimer >= 0.15)
+	if (initialFrameTimer >= random)
 	{
-		if (animationRect.left < 4400)
-			animationRect.left += 1100;
-		else
-			animationRect.left = 0;
-		frameTimer = 0;
+		
+		if (frameTimer >= 0.1)
+		{
+			if (animationRect.left < 7700)
+			{
+				animationRect.left += 1100;
+			}
+			else
+			{
+				animationRect.left = 0;
+				initialFrameTimer = 0;
+			}
+				
+			frameTimer = 0;
+		}
+
 	}
 	background.setTextureRect(animationRect);
 }

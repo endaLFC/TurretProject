@@ -104,7 +104,7 @@ void Player::Initialise()
 	m_sprite.setPosition(m_pos);
 	m_dockSprite.setPosition(startPos);
 	m_dockSprite.setRotation(m_rotation);
-	m_lockSprite.setPosition(227, 628);
+	m_lockSprite.setPosition(239, 647);
 	m_landingzoneSprite.setPosition(1130,1500);
 	fired = false;
 	fired2 = false;
