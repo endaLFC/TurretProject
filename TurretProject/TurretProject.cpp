@@ -4,6 +4,7 @@
 #include "stdafx.h" 
 
 #include "Menu.h"
+#include "OptionsMenu.h"
 #include "Player.h"
 #include "BulletManager.h"
 #include "EnemyManager.h"
@@ -23,6 +24,7 @@
 
 int main()
 {
+	srand(time(NULL));
 	sf::View view;
 	view.reset(sf::FloatRect(0,0, 1100,800));
 
@@ -52,6 +54,7 @@ int main()
 	//window.setFramerateLimit(60);
 	int counter = 0;
 	Menu menu(window.getSize().x, window.getSize().y);
+	OptionsMenu optionsMenu(window.getSize().x, window.getSize().y);
 
 	int gameMode = 0;
 	CONST int MENU = 0, PLAY = 1, OPTIONS = 2, EXIT = 3, GAMEOVER = 4;
@@ -74,12 +77,12 @@ int main()
 	p1.Initialise();
 	
 
-	playTexture.loadFromFile("space3.jpg");
+	//playTexture.loadFromFile("space3.jpg");
 	radarTexture.loadFromFile("space2.jpg");
 	radarBorderTexture.loadFromFile("radarBorder3.png");
 	scoreHUDTexture.loadFromFile("hud2.png");
 	gameOverTexture.loadFromFile("GameOver.jpg");
-	optionsTexture.loadFromFile("OptionsBackground.jpg");
+	//optionsTexture.loadFromFile("OptionsBkg.jpg");
 
 	BulletManager::GetInstance()->Init();
 	EnemyManager::GetInstance()->Init();
@@ -516,16 +519,45 @@ int main()
 			break;
 
 		case OPTIONS:
-				
+			optionsMenu.Update(t);
+
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
 				gameMode = MENU;
 			}
 
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			{
+				optionsMenu.MoveUp();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+			{
+				optionsMenu.MoveDown();
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+			{
+				if (optionsMenu.GetPressedItem() == 0)
+				{
+					
+					//Video button pressed
+				}
+				if (optionsMenu.GetPressedItem() == 1)
+				{
+					
+					//volume button pressed
+				}
+				if (optionsMenu.GetPressedItem() == 2)
+				{
+					
+					
+				}
+			}
+
+
+
 			//DRAW CODE HERE
 			window.clear();
-			background.setTexture(optionsTexture);
-			window.draw(background);
+			optionsMenu.Draw(window);
 			window.display();
 			break;
 
