@@ -65,7 +65,7 @@ void Menu::MoveUp()
 	if (selectedItemIndex - 1 >= 0)
 	{
 		//beepSound.play();
-		Sleep(150);
+		//Sleep(150);
 		text[selectedItemIndex].setColor(sf::Color::Color(120, 120, 120));
 		selectedItemIndex--;
 		text[selectedItemIndex].setColor(sf::Color::Color(180, 35, 35));
@@ -77,7 +77,7 @@ void Menu::MoveDown()
 	if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS)
 	{
 		//beepSound.play();
-		Sleep(150);
+		//Sleep(150);
 		text[selectedItemIndex].setColor(sf::Color::Color(120, 120, 120));
 		selectedItemIndex++;
 		text[selectedItemIndex].setColor(sf::Color::Color(180, 35, 35));

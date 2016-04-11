@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ParticleSystem.h"
 
+
 bool ParticleSystem::instanceFlag = false;
 ParticleSystem* ParticleSystem::instance = NULL;
 
@@ -40,9 +41,13 @@ void ParticleSystem::Init()
 
 void ParticleSystem::addParticle(sf::Vector2f position, int type)
 {
+	
+
 	sf::Vector2f direction = sf::Vector2f((rand() % 100) - 50, (rand() % 100) - 50);
 	Particle* p = new Particle(position, Normalise(direction) ,rand() % 250, type);
+
 	particles.push_back(p);
+
 }
 
 void ParticleSystem::Update(float time)
@@ -58,11 +63,14 @@ void ParticleSystem::Update(float time)
 		}
 		else
 		{
+       
 			delete (*it);
 			it = particles.erase(it);
 			//remove from list 
 		}
 	}
+
+	
 
 }
 
@@ -90,6 +98,7 @@ void ParticleSystem::Draw(sf::RenderWindow &window)
 		}
 		
 	}
+
 }
 
 sf::Vector2f ParticleSystem::Normalise(sf::Vector2f vec)

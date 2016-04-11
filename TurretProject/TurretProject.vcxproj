@@ -99,6 +99,7 @@
     <ClInclude Include="Powerup.h" />
     <ClInclude Include="Pvector.h" />
     <ClInclude Include="Score.h" />
+    <ClInclude Include="SoundOptions.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SwarmEnemy.h" />
     <ClInclude Include="targetver.h" />
@@ -122,6 +123,7 @@
     <ClCompile Include="Powerup.cpp" />
     <ClCompile Include="Pvector.cpp" />
     <ClCompile Include="Score.cpp" />
+    <ClCompile Include="SoundOptions.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

@@ -11,8 +11,8 @@ public:
 	~OptionsMenu();
 
 	void Draw(sf::RenderWindow &window);
-	void MoveUp();
-	void MoveDown();
+	void MoveLeft();
+	void MoveRight();
 	void Update(float time);
 	int GetPressedItem() { return selectedItemIndex; }
 

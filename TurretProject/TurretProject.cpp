@@ -5,6 +5,7 @@
 
 #include "Menu.h"
 #include "OptionsMenu.h"
+#include "SoundOptions.h"
 #include "Player.h"
 #include "BulletManager.h"
 #include "EnemyManager.h"
@@ -22,6 +23,10 @@
 ///Entrypoint of application 
 //////////////////////////////////////////////////////////// 
 
+int gameMode = 0;
+CONST int MENU = 0, PLAY = 1, OPTIONS = 2, EXIT = 3, GAMEOVER = 4, AUDIO = 5;
+sf::RenderWindow window(sf::VideoMode(1100, 800, 32), "SFML First Program");
+
 int main()
 {
 	srand(time(NULL));
@@ -32,6 +37,7 @@ int main()
 	backgroundMusic.openFromFile("music2.ogg");
 	backgroundMusic.setVolume(100);
 	backgroundMusic.play();
+	
 
 	float count = 0;
 
@@ -44,20 +50,20 @@ int main()
 
 	vector<FlockEnemy*> flockEnemies;
 	vector<SwarmEnemy*> swarmEnemies;
-	vector<sf::CircleShape> shapes;
-	vector<sf::CircleShape> shapes2;
+	//vector<sf::CircleShape> shapes;
+	//vector<sf::CircleShape> shapes2;
 	vector<Factory*> factories;
 
 
 	// Create the main window 
-	sf::RenderWindow window(sf::VideoMode(1100, 800, 32), "SFML First Program");
+	
 	//window.setFramerateLimit(60);
 	int counter = 0;
 	Menu menu(window.getSize().x, window.getSize().y);
 	OptionsMenu optionsMenu(window.getSize().x, window.getSize().y);
+	SoundOptions soundOptions(window.getSize().x, window.getSize().y, backgroundMusic);
 
-	int gameMode = 0;
-	CONST int MENU = 0, PLAY = 1, OPTIONS = 2, EXIT = 3, GAMEOVER = 4;
+	
 
 	sf::Texture playTexture;
 	sf::Texture gameOverTexture;
@@ -171,40 +177,138 @@ int main()
 			// "close requested" event: we close the window
 			if (event.type == sf::Event::Closed)
 				window.close();
-		}
 
+
+			switch (gameMode)
+			{
+			case MENU:
+				if (event.type == event.KeyPressed)
+				{
+
+					if (event.key.code == sf::Keyboard::Up)
+					{
+						menu.MoveUp();
+
+					}
+					else if ( event.key.code == sf::Keyboard::Down)
+					{
+						menu.MoveDown();
+					}
+					else if (event.key.code == sf::Keyboard::Return)
+					{
+						if (menu.GetPressedItem() == 0)
+						{
+							gameMode = PLAY;
+						}
+						if (menu.GetPressedItem() == 1)
+						{
+							gameMode = OPTIONS;
+						}
+						if (menu.GetPressedItem() == 2)
+						{
+							gameMode = EXIT;
+						}
+					}
+				}
+				break;
+			case OPTIONS:
+				if (event.type == event.KeyPressed)
+				{
+
+					if (event.key.code == sf::Keyboard::Left)
+					{
+						optionsMenu.MoveLeft();
+					}
+					else if (event.key.code == sf::Keyboard::Right)
+					{
+						optionsMenu.MoveRight();
+					}
+					else if (event.key.code == sf::Keyboard::Return)
+					{
+						if (optionsMenu.GetPressedItem() == 0)
+						{
+
+							//Video button pressed
+						}
+						if (optionsMenu.GetPressedItem() == 1)
+						{
+							//audio button pressed
+							gameMode = AUDIO;
+						}
+						if (optionsMenu.GetPressedItem() == 2)
+						{
+
+							gameMode = MENU;
+						}
+					}
+				}
+				break;
+
+			case AUDIO:
+				if (event.type == event.KeyPressed)
+				{
+					if (event.key.code == sf::Keyboard::Up)
+					{
+						soundOptions.MoveUp();
+					}
+					else if (event.key.code == sf::Keyboard::Down)
+					{
+						soundOptions.MoveDown();
+					}
+					else if (event.key.code == sf::Keyboard::Right)
+					{
+						if (soundOptions.GetPressedItem() == 0)
+						{
+							//volume increased
+							soundOptions.AlterVolume(1, backgroundMusic);
+						}
+						else if (soundOptions.GetPressedItem() == 1)
+						{
+							//song change
+							soundOptions.ChangeSong(1, backgroundMusic);
+						}
+					}
+					else if (event.key.code == sf::Keyboard::Left)
+					{
+						if (soundOptions.GetPressedItem() == 0)
+						{
+							//volume increased
+							soundOptions.AlterVolume(-1, backgroundMusic);
+						}
+						else if (soundOptions.GetPressedItem() == 1)
+						{
+							//song change
+							soundOptions.ChangeSong(-1, backgroundMusic);
+						}
+					}
+					else if (event.key.code == sf::Keyboard::Return)
+					{
+						if (soundOptions.GetPressedItem() == 0)
+						{
+							//volume button pressed
+						}
+						else if (soundOptions.GetPressedItem() == 1)
+						{
+							//music button pressed
+						}
+						else if (soundOptions.GetPressedItem() == 2)
+						{
+							gameMode = OPTIONS;
+						}
+					}
+				}
+				break;
+			}
+		}
 
 		switch (gameMode)
 		{
 		case MENU:
+			window.setKeyRepeatEnabled(false);
+
 			background.setTexture(playTexture);
 
 			menu.Update(t);
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			{
-				menu.MoveUp();
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-			{
-				menu.MoveDown();
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-			{
-				if (menu.GetPressedItem() == 0)
-				{
-					gameMode = PLAY;
-					std::cout << "Play Button has been pressed" << std::endl;
-				}
-				if (menu.GetPressedItem() == 1)
-				{
-					gameMode = OPTIONS;
-					std::cout << "Options Button has been pressed" << std::endl;
-				}
-				if (menu.GetPressedItem() == 2)
-				{
-					gameMode = EXIT;
-				}
-			}
 
 			//DRAW CODE HERE
 			window.clear();
@@ -215,30 +319,6 @@ int main()
 			break;
 
 		case PLAY:
-			//check for mouse click, draws and adds boid to flock if so.
-			//if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-			//{
-			//	//Gets mouse coordinates, sets that as the location of the boid and the shape
-			//	sf::Vector2i mouseCoords = sf::Mouse::getPosition(window);
-			//	Boid b(mouseCoords.x, mouseCoords.y, true);
-			//	sf::CircleShape shape(10, 3);
-
-			//	//Changing visual properties of newly created boid
-			//	shape.setPosition(mouseCoords.x, mouseCoords.y);
-			//	shape.setOutlineColor(sf::Color(255, 0, 0));
-			//	shape.setFillColor(sf::Color(255, 0, 0));
-			//	shape.setOutlineColor(sf::Color::White);
-			//	shape.setOutlineThickness(1);
-			//	shape.setRadius(boidsSize);
-
-			//	//Adds newly created boid and shape to their respective data structure
-			//	flock.addBoid(b);
-			//	shapes.push_back(shape);
-
-			//	//New Shape is drawn
-			//	window.draw(shapes[shapes.size() - 1]);
-			//}
-
 			p1.Update(t);
 			BulletManager::GetInstance()->Update(t);
 			EnemyManager::GetInstance()->Update(t, p1.GetPos());
@@ -520,44 +600,17 @@ int main()
 
 		case OPTIONS:
 			optionsMenu.Update(t);
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			{
-				gameMode = MENU;
-			}
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			{
-				optionsMenu.MoveUp();
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-			{
-				optionsMenu.MoveDown();
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-			{
-				if (optionsMenu.GetPressedItem() == 0)
-				{
-					
-					//Video button pressed
-				}
-				if (optionsMenu.GetPressedItem() == 1)
-				{
-					
-					//volume button pressed
-				}
-				if (optionsMenu.GetPressedItem() == 2)
-				{
-					
-					
-				}
-			}
-
-
-
 			//DRAW CODE HERE
 			window.clear();
 			optionsMenu.Draw(window);
+			window.display();
+			break;
+
+		case AUDIO:
+			soundOptions.Update(t,window);
+			//DRAW CODE HERE
+			window.clear();
+			soundOptions.Draw(window);
 			window.display();
 			break;
 
@@ -587,3 +640,4 @@ int main()
 
 	return EXIT_SUCCESS;
 }
+

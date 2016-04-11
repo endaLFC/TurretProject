@@ -2,6 +2,8 @@
 #include "vector"
 #include "list"
 #include "Particle.h"
+
+
 using namespace std;
 
 class ParticleSystem
@@ -21,6 +23,7 @@ private:
 	}
 	list<Particle*> particles;
 	
+
 	sf::Texture m_texture;
 	sf::Sprite m_sprite;
 
