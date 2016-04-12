@@ -83,7 +83,7 @@ int main()
 	p1.Initialise();
 	
 
-	//playTexture.loadFromFile("space3.jpg");
+	playTexture.loadFromFile("space3.jpg");
 	radarTexture.loadFromFile("space2.jpg");
 	radarBorderTexture.loadFromFile("radarBorder3.png");
 	scoreHUDTexture.loadFromFile("hud2.png");
@@ -249,10 +249,30 @@ int main()
 				{
 					if (event.key.code == sf::Keyboard::Up)
 					{
+						
+						if (soundOptions.GetPressedItem() == 1)
+						{
+							soundOptions.setVolArrows(true);
+							soundOptions.setSongArrows(false);
+						}
+						else if (soundOptions.GetPressedItem() == 2)
+						{
+							soundOptions.setSongArrows(true);
+						}
 						soundOptions.MoveUp();
 					}
 					else if (event.key.code == sf::Keyboard::Down)
 					{
+						
+						if (soundOptions.GetPressedItem() == 0)
+						{
+							soundOptions.setVolArrows(false);
+							soundOptions.setSongArrows(true);
+						}
+						else if (soundOptions.GetPressedItem() == 1)
+						{
+							soundOptions.setSongArrows(false);
+						}
 						soundOptions.MoveDown();
 					}
 					else if (event.key.code == sf::Keyboard::Right)

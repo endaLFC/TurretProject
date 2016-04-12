@@ -17,7 +17,8 @@ public:
 	int GetPressedItem() { return selectedItemIndex; }
 	void AlterVolume(int change, sf::Music &backgroundMusic);
 	void ChangeSong(int change, sf::Music &backgroundMusic);
-
+	void setVolArrows(bool x) { displayVolArrows = x; }
+	void setSongArrows(bool x) { displaySongArrows = x; }
 
 
 private:
@@ -39,5 +40,14 @@ private:
 	int random;
 
 	sf::String songName;
+
+	sf::Texture leftArrowTex;
+	sf::Sprite leftArrowSpr;
+	sf::Texture rightArrowTex;
+	sf::Sprite rightArrowSpr;
+
+	bool volMax, volMin, songMax, songMin;
+	bool displayVolArrows, displaySongArrows;
+	int songCount;
 };
 

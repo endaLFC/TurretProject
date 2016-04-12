@@ -70,7 +70,7 @@ bool SwarmEnemy::Colliding()
 {
 	if (m_alive == true)
 	{
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < 25; i++)
 		{
 			ParticleSystem::GetInstance()->addParticle(m_position, 0);
 			ParticleSystem::GetInstance()->addParticle(m_position, 1);

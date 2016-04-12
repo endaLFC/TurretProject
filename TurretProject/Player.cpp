@@ -493,7 +493,7 @@ void Player::SetAlive(bool x)
 
 		deadSound.play();
 		
-		for (int i = 0; i < 500; i++)
+		for (int i = 0; i < 200; i++)
 		{
 			ParticleSystem::GetInstance()->addParticle(m_pos, 1);
 			ParticleSystem::GetInstance()->addParticle(m_pos, 0);
