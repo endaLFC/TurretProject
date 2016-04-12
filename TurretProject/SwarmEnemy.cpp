@@ -66,7 +66,7 @@ void SwarmEnemy::WrapAroundScreen()
 		m_position.y = 1800;
 }
 
-bool SwarmEnemy::Colliding()
+bool SwarmEnemy::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 {
 	if (m_alive == true)
 	{
@@ -75,10 +75,20 @@ bool SwarmEnemy::Colliding()
 			ParticleSystem::GetInstance()->addParticle(m_position, 0);
 			ParticleSystem::GetInstance()->addParticle(m_position, 1);
 		}
+		if (DistanceFrom(playerPos) > 600)
+		{
+			explosionSound.setVolume(20);
+		}
 		explosionSound.play();
-
+		if (DistanceFrom(playerPos) < 500)
+		{
+			explosionSound.setVolume(100);
+		}
 		int score = Score::GetInstance()->getScore();
-		Score::GetInstance()->setScore(score + 5);
+		if (playerKilledMe == true)
+		{
+			Score::GetInstance()->setScore(score + 5);
+		}
 		m_alive = false;
 		return true;		//return true
 	}

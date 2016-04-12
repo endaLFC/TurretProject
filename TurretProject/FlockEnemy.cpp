@@ -66,7 +66,7 @@ void FlockEnemy::WrapAroundScreen()
 		m_position.y = 1800;
 }
 
-bool FlockEnemy::Colliding()
+bool FlockEnemy::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 {
 	if (m_alive == true)
 	{
@@ -75,10 +75,22 @@ bool FlockEnemy::Colliding()
 			ParticleSystem::GetInstance()->addParticle(m_position, 0);
 			ParticleSystem::GetInstance()->addParticle(m_position, 1);
 		}
+		if (DistanceFrom(playerPos) > 600)
+		{
+			explosionSound.setVolume(20);
+		}
 		explosionSound.play();
 
+		if (DistanceFrom(playerPos) < 500)
+		{
+			explosionSound.setVolume(100);
+		}
+
 		int score = Score::GetInstance()->getScore();
-		Score::GetInstance()->setScore(score + 10);
+		if (playerKilledMe == true)
+		{
+			Score::GetInstance()->setScore(score + 10);
+		}
 		m_alive = false;
 		return true;		//return true
 	}

@@ -25,6 +25,7 @@ void Powerup::Initialise(sf::Vector2f pos, int type)
 		}
 	}
 	
+	o = 255;
 	
 	m_position = pos;
 	m_sprite.setPosition(m_position);
@@ -44,7 +45,7 @@ void Powerup::Initialise(sf::Vector2f pos, int type)
 
 void Powerup::Draw(sf::RenderWindow& window)
 {
-	if (m_alive == true)
+	if (o > 0)
 		window.draw(m_sprite);
 }
 
@@ -73,4 +74,18 @@ void Powerup::Rotate(float time)
 		m_rotation += time * rotateSpeed;
 		m_sprite.setRotation(m_rotation);
 	}
+}
+
+void Powerup::Fade(float time)
+{
+	if (o >= 0)
+	{
+		o -= time * 800;
+		m_sprite.setColor(sf::Color::Color(255,255,255, o));
+	}
+}
+
+void Powerup::Update(float time)
+{
+	Fade(time);
 }

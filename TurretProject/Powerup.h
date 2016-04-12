@@ -12,10 +12,12 @@ public:
 	void Initialise(sf::Vector2f pos, int type);
 	void SetSpriteScale(float s) { m_sprite.setScale(s, s); };
 	void Rotate(float time);
+	void Update(float time);
+	bool getAlive() { return m_alive; }
 
 protected:
 	//Functions
-	void WrapAroundScreen();
+	void Fade(float time);
 	//Variables
 	bool m_alive;
 	int m_radius;
@@ -28,5 +30,6 @@ protected:
 
 	sf::SoundBuffer buffer;
 	sf::Sound sound;
+	int o;
 };
 

@@ -344,6 +344,14 @@ int main()
 			EnemyManager::GetInstance()->Update(t, p1.GetPos());
 			ParticleSystem::GetInstance()->Update(t);
 			Energy::GetInstance()->Update(t);
+			if (mushroomColour.getAlive() == false)
+			{
+				mushroomColour.Update(t);
+			}
+			if (mushroomSmall.getAlive() == false)
+			{
+				mushroomSmall.Update(t);
+			}
 
 			if (BulletManager::GetInstance()->IsColliding())
 			{
@@ -407,23 +415,23 @@ int main()
 
 				if (BulletManager::GetInstance()->IsColliding2(flockEnemies[i]->GetPosition(), flockEnemies[i]->GetRadius(), flockEnemies[i]->GetAlive()) && flockEnemies[i]->GetAlive() == true)
 				{
-					flockEnemies[i]->Colliding();
+					flockEnemies[i]->Colliding(true, p1.GetPos());
 				}
 				if (flockEnemies[i]->IsColliding(p1.GetPos(), p1.GetRadius()))
 				{
-					flockEnemies[i]->Colliding();
+					flockEnemies[i]->Colliding(true, p1.GetPos());
 				}
 				else if (flockEnemies[i]->IsColliding(obstacle.GetPosition(), obstacle.GetRadius()))
 				{
-					flockEnemies[i]->Colliding();
+					flockEnemies[i]->Colliding(false, p1.GetPos());
 				}
 				else if (flockEnemies[i]->IsColliding(obstacle2.GetPosition(), obstacle2.GetRadius()))
 				{
-					flockEnemies[i]->Colliding();
+					flockEnemies[i]->Colliding(false, p1.GetPos());
 				}
 				else if (flockEnemies[i]->IsColliding(obstacle3.GetPosition(), obstacle3.GetRadius()))
 				{
-					flockEnemies[i]->Colliding();
+					flockEnemies[i]->Colliding(false, p1.GetPos());
 				}
 			}
 
@@ -441,23 +449,23 @@ int main()
 
 				if (BulletManager::GetInstance()->IsColliding2(swarmEnemies[i]->GetPosition(), swarmEnemies[i]->GetRadius(), swarmEnemies[i]->GetAlive()) && swarmEnemies[i]->GetAlive() == true)
 				{
-					swarmEnemies[i]->Colliding();
+					swarmEnemies[i]->Colliding(true, p1.GetPos());
 				}
 				if (swarmEnemies[i]->IsColliding(p1.GetPos(), p1.GetRadius()))
 				{
-					swarmEnemies[i]->Colliding();
+					swarmEnemies[i]->Colliding(true, p1.GetPos());
 				}
 				else if (swarmEnemies[i]->IsColliding(obstacle.GetPosition(), obstacle.GetRadius()))
 				{
-					swarmEnemies[i]->Colliding();
+					swarmEnemies[i]->Colliding(false, p1.GetPos());
 				}
 				else if (swarmEnemies[i]->IsColliding(obstacle2.GetPosition(), obstacle2.GetRadius()))
 				{
-					swarmEnemies[i]->Colliding();
+					swarmEnemies[i]->Colliding(false, p1.GetPos());
 				}
 				else if (swarmEnemies[i]->IsColliding(obstacle3.GetPosition(), obstacle3.GetRadius()))
 				{
-					swarmEnemies[i]->Colliding();
+					swarmEnemies[i]->Colliding(false, p1.GetPos());
 				}
 
 			}
@@ -476,23 +484,23 @@ int main()
 
 				if (BulletManager::GetInstance()->IsColliding2(factories[i]->GetPosition(), factories[i]->GetRadius(), factories[i]->GetAlive()) && factories[i]->GetAlive() == true)
 				{
-					factories[i]->Colliding();
+					factories[i]->Colliding(true, p1.GetPos());
 				}
 				if (factories[i]->IsColliding(p1.GetPos(), p1.GetRadius()))
 				{
-					factories[i]->Colliding();
+					factories[i]->Colliding(true, p1.GetPos());
 				}
 				else if (factories[i]->IsColliding(obstacle.GetPosition(), obstacle.GetRadius()))
 				{
-					factories[i]->Colliding();
+					factories[i]->Colliding(false, p1.GetPos());
 				}
 				else if (factories[i]->IsColliding(obstacle2.GetPosition(), obstacle2.GetRadius()))
 				{
-					factories[i]->Colliding();
+					factories[i]->Colliding(false, p1.GetPos());
 				}
 				else if (factories[i]->IsColliding(obstacle3.GetPosition(), obstacle3.GetRadius()))
 				{
-					factories[i]->Colliding();
+					factories[i]->Colliding(false, p1.GetPos());
 				}
 			}
 

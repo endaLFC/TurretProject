@@ -6,7 +6,7 @@ public:
 	Factory();
 
 	bool Update(float time);
-	bool Colliding();
+	bool Colliding(bool playerKilledMe, sf::Vector2f playerPos);
 	bool IsColliding(sf::Vector2f targetPosition, int targetRadius);
 	void Draw(sf::RenderWindow& window);
 	void Smoke(float time);
