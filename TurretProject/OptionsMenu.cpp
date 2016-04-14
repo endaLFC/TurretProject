@@ -22,7 +22,7 @@ OptionsMenu::OptionsMenu(float width, float height)
 
 	text[0].setFont(font);
 	text[0].setColor(sf::Color::Color(140, 140, 40)); //dark red
-	text[0].setString("Video");
+	text[0].setString("Player");
 	text[0].setScale(0.6, 0.6);
 	//text[0].setPosition(sf::Vector2f(width/15 * 2, height/(MAX_NUMBER_OF_ITEMS + 1 ) * 3));
 	text[0].setPosition(sf::Vector2f(width / 15 * 3.6, height / (MAX_NUMBER_OF_ITEMS + 1) * 3.65));
@@ -32,7 +32,7 @@ OptionsMenu::OptionsMenu(float width, float height)
 	text[1].setString("Audio");
 	text[1].setScale(0.6, 0.6);
 	//text[1].setPosition(sf::Vector2f(width /15 * 6, height / (MAX_NUMBER_OF_ITEMS + 1) * 3));
-	text[1].setPosition(sf::Vector2f(width / 15 * 6.45, height / (MAX_NUMBER_OF_ITEMS + 1) * 3.65));
+	text[1].setPosition(sf::Vector2f(width / 15 * 6.8, height / (MAX_NUMBER_OF_ITEMS + 1) * 3.65));
 
 	text[2].setFont(font);
 	text[2].setColor(sf::Color::Color(0, 20, 60));

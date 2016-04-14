@@ -87,7 +87,7 @@ void Factory::WrapAroundScreen()
 
 bool Factory::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 {
-	if (m_alive == true)
+	if (m_alive == true && playerKilledMe == true)
 	{
 		if (m_health > 0)
 		{
@@ -97,7 +97,7 @@ bool Factory::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 		else
 		{
 		//float distance = sqrt((targetPosition.x - m_position.x)*(targetPosition.x - m_position.x) + (targetPosition.y - m_position.y)*(targetPosition.y - m_position.y));
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < 50; i++)
 			{
 				ParticleSystem::GetInstance()->addParticle(m_position, 0);
 				ParticleSystem::GetInstance()->addParticle(m_position, 1);
@@ -105,10 +105,22 @@ bool Factory::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 
 			if (DistanceFrom(playerPos) > 600)
 			{
+				explosionSound.setVolume(10);
+			}
+			else if (DistanceFrom(playerPos) > 500)
+			{
 				explosionSound.setVolume(20);
 			}
+			else if (DistanceFrom(playerPos) > 400)
+			{
+				explosionSound.setVolume(40);
+			}
+			else if (DistanceFrom(playerPos) > 300)
+			{
+				explosionSound.setVolume(60);
+			}
 			explosionSound.play();
-			if (DistanceFrom(playerPos) < 500)
+			if (DistanceFrom(playerPos) < 300)
 			{
 				explosionSound.setVolume(100);
 			}

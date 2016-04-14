@@ -70,19 +70,31 @@ bool SwarmEnemy::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 {
 	if (m_alive == true)
 	{
-		for (int i = 0; i < 25; i++)
+		for (int i = 0; i < 20; i++)
 		{
 			ParticleSystem::GetInstance()->addParticle(m_position, 0);
 			ParticleSystem::GetInstance()->addParticle(m_position, 1);
 		}
 		if (DistanceFrom(playerPos) > 600)
 		{
+			explosionSound.setVolume(5);
+		}
+		else if (DistanceFrom(playerPos) > 500)
+		{
+			explosionSound.setVolume(10);
+		}
+		else if (DistanceFrom(playerPos) > 400)
+		{
+			explosionSound.setVolume(15);
+		}
+		else if (DistanceFrom(playerPos) > 300)
+		{
 			explosionSound.setVolume(20);
 		}
 		explosionSound.play();
-		if (DistanceFrom(playerPos) < 500)
+		if (DistanceFrom(playerPos) < 300)
 		{
-			explosionSound.setVolume(100);
+			explosionSound.setVolume(25);
 		}
 		int score = Score::GetInstance()->getScore();
 		if (playerKilledMe == true)

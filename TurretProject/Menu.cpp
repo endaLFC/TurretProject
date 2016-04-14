@@ -30,10 +30,10 @@ Menu::Menu(float width, float height)
 
 	text[1].setFont(font);
 	text[1].setColor(sf::Color::Color(120, 120, 120));	//grey
-	text[1].setString("Options");
+	text[1].setString("Settings");
 	text[1].setScale(0.5, 0.5);
 	//text[1].setPosition(sf::Vector2f(width /15 * 6, height / (MAX_NUMBER_OF_ITEMS + 1) * 3));
-	text[1].setPosition(sf::Vector2f(width / 15 * 11, height / (MAX_NUMBER_OF_ITEMS + 1) * 2));
+	text[1].setPosition(sf::Vector2f(width / 15 * 10.78, height / (MAX_NUMBER_OF_ITEMS + 1) * 2));
 
 	text[2].setFont(font);
 	text[2].setColor(sf::Color::Color(120, 120, 120));

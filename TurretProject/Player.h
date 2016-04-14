@@ -28,8 +28,8 @@ class Player
 		void SetAlive(bool x);
 		bool GetShrink() { return shrink; }
 		bool GetLocked() { return locked; }
-
-
+		int GetHealth() { return health; }
+		void SetHealth(int newHealth) {health = newHealth; }
 
 	protected:
 		bool m_alive;
@@ -111,5 +111,8 @@ class Player
 		float turretRot;
 
 		float vol;
+
+		int health = 100;
+
 };
 

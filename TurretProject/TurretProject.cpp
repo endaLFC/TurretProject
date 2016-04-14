@@ -6,6 +6,7 @@
 #include "Menu.h"
 #include "OptionsMenu.h"
 #include "SoundOptions.h"
+#include "PlayerOptions.h"
 #include "Player.h"
 #include "BulletManager.h"
 #include "EnemyManager.h"
@@ -24,7 +25,7 @@
 //////////////////////////////////////////////////////////// 
 
 int gameMode = 0;
-CONST int MENU = 0, PLAY = 1, OPTIONS = 2, EXIT = 3, GAMEOVER = 4, AUDIO = 5;
+CONST int MENU = 0, PLAY = 1, OPTIONS = 2, EXIT = 3, GAMEOVER = 4, AUDIO = 5, PLAYER = 6;
 sf::RenderWindow window(sf::VideoMode(1100, 800, 32), "SFML First Program");
 
 int main()
@@ -35,7 +36,7 @@ int main()
 
 	sf::Music backgroundMusic;
 	backgroundMusic.openFromFile("music2.ogg");
-	backgroundMusic.setVolume(100);
+	backgroundMusic.setVolume(50);
 	backgroundMusic.play();
 	
 
@@ -62,7 +63,7 @@ int main()
 	Menu menu(window.getSize().x, window.getSize().y);
 	OptionsMenu optionsMenu(window.getSize().x, window.getSize().y);
 	SoundOptions soundOptions(window.getSize().x, window.getSize().y, backgroundMusic);
-
+	PlayerOptions playerOptions(window.getSize().x, window.getSize().y, backgroundMusic);
 	
 
 	sf::Texture playTexture;
@@ -190,7 +191,7 @@ int main()
 						menu.MoveUp();
 
 					}
-					else if ( event.key.code == sf::Keyboard::Down)
+					else if (event.key.code == sf::Keyboard::Down)
 					{
 						menu.MoveDown();
 					}
@@ -227,7 +228,7 @@ int main()
 					{
 						if (optionsMenu.GetPressedItem() == 0)
 						{
-
+							gameMode = PLAYER;
 							//Video button pressed
 						}
 						if (optionsMenu.GetPressedItem() == 1)
@@ -249,7 +250,7 @@ int main()
 				{
 					if (event.key.code == sf::Keyboard::Up)
 					{
-						
+
 						if (soundOptions.GetPressedItem() == 1)
 						{
 							soundOptions.setVolArrows(true);
@@ -263,7 +264,7 @@ int main()
 					}
 					else if (event.key.code == sf::Keyboard::Down)
 					{
-						
+
 						if (soundOptions.GetPressedItem() == 0)
 						{
 							soundOptions.setVolArrows(false);
@@ -318,6 +319,51 @@ int main()
 					}
 				}
 				break;
+
+			case PLAYER:
+				if (event.type == event.KeyPressed)
+				{
+					if (event.key.code == sf::Keyboard::Up)
+					{
+						playerOptions.MoveUp();
+					}
+					else if (event.key.code == sf::Keyboard::Down)
+					{
+						playerOptions.MoveDown();
+					}
+					else if (event.key.code == sf::Keyboard::Right)
+					{
+						if (playerOptions.GetPressedItem() == 1)
+						{
+							//health change
+							playerOptions.AlterHealth(1, p1);
+						}
+					}
+					else if (event.key.code == sf::Keyboard::Left)
+					{
+						if (playerOptions.GetPressedItem() == 1)
+						{
+							//health change
+							playerOptions.AlterHealth(-1, p1);
+						}
+					}
+					else if (event.key.code == sf::Keyboard::Return)
+					{
+						if (playerOptions.GetPressedItem() == 0)
+						{
+							//skin button pressed
+						}
+						else if (playerOptions.GetPressedItem() == 1)
+						{
+							//health button pressed
+						}
+						else if (playerOptions.GetPressedItem() == 2)
+						{
+							gameMode = OPTIONS;
+						}
+					}
+				}
+				break;
 			}
 		}
 
@@ -362,27 +408,13 @@ int main()
 				gameMode = GAMEOVER;
 			}
 
-			counter++;
 
-			if (counter > 500)
-			{
-				counter = 0;
-			}
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::P) && counter == 1) //&& counter == 1
-			{
-				EnemyManager::GetInstance()->CreateEnemy(sf::Vector2f(0,0));
-			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
 				window.close();
 			}
 
 			window.clear();
-			//window.setView(main);
-
-			//view.setCenter(p1.GetPos());
-			//view.setCenter(p1.GetPos());
 
 			if (p1.GetPos().x >= 550 && p1.GetPos().x <= 1850)
 				view.setCenter(p1.GetPos().x, view.getCenter().y);
@@ -639,6 +671,14 @@ int main()
 			//DRAW CODE HERE
 			window.clear();
 			soundOptions.Draw(window);
+			window.display();
+			break;
+
+		case PLAYER:
+			playerOptions.Update(t, window);
+			//DRAW CODE HERE
+			window.clear();
+			playerOptions.Draw(window);
 			window.display();
 			break;
 
