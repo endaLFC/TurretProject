@@ -81,6 +81,17 @@ void Player::Initialise()
 	{
 		// error...
 	}
+	if (!m_healthTexture.loadFromFile("Healthbar.png"))
+	{
+		// error...
+	}
+	if (!m_health2Texture.loadFromFile("Healthbar2.png"))
+	{
+		// error...
+	}
+
+	m_healthSprite.setTexture(m_healthTexture);
+	m_health2Sprite.setTexture(m_health2Texture);
 
 	m_sprite.setTexture(m_texture);
 	m_sprite.setOrigin(110, 85);//40,40
@@ -105,6 +116,8 @@ void Player::Initialise()
 	m_dockSprite.setPosition(startPos);
 	m_dockSprite.setRotation(m_rotation);
 	m_lockSprite.setPosition(239, 647);
+	m_healthSprite.setPosition(187, 47);
+	m_health2Sprite.setPosition(189, 49);
 	m_landingzoneSprite.setPosition(1130,1500);
 	fired = false;
 	fired2 = false;
@@ -150,7 +163,7 @@ void Player::Update(float time)
 {
 	if (m_alive == true)
 	{
-
+		m_health2Sprite.setScale(health / 100, 1);
 		if (turretMode == TURRET)
 		{
 			turretRot = m_rotation;
@@ -231,8 +244,7 @@ void Player::Move(float time)
 				fireSound.play();
 			if (forward_speed <= maxSpeed)
 				forward_speed += 10;
-			for (int i = 0; i < 5; i++)
-				ParticleSystem::GetInstance()->addParticle(m_pos, 1);
+			ParticleSystem::GetInstance()->addParticle(m_pos, 1);
 
 			m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
 		}
@@ -369,6 +381,8 @@ void Player::DrawScore(sf::RenderWindow& window)
 	{
 		window.draw(text[i]);
 	}
+	window.draw(m_healthSprite);
+	window.draw(m_health2Sprite);
 }
 
 void Player::DrawLock(sf::RenderWindow& window)

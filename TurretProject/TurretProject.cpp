@@ -39,6 +39,7 @@ int main()
 	backgroundMusic.setVolume(50);
 	backgroundMusic.play();
 	
+	//sf::Listener::setGlobalVolume(100);
 
 	float count = 0;
 
@@ -58,7 +59,7 @@ int main()
 
 	// Create the main window 
 	
-	//window.setFramerateLimit(60);
+	window.setFramerateLimit(60);
 	int counter = 0;
 	Menu menu(window.getSize().x, window.getSize().y);
 	OptionsMenu optionsMenu(window.getSize().x, window.getSize().y);
@@ -647,8 +648,9 @@ int main()
 			ParticleSystem::GetInstance()->Draw(window);
 
 			window.setView(scoreHUD);
-			window.draw(scoreHUDSprite);
 			p1.DrawScore(window);
+			window.draw(scoreHUDSprite);
+			
 			Energy::GetInstance()->Draw(window);
 
 			window.setView(main); //setting view back to main

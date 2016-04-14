@@ -27,6 +27,7 @@ void SwarmEnemy::Initialise()
 
 	buffer.loadFromFile("Explosion.wav");
 	explosionSound.setBuffer(buffer);
+	//explosionSound.setRelativeToListener(true);
 	explosionSound.setVolume(25);
 }
 
@@ -70,7 +71,7 @@ bool SwarmEnemy::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 {
 	if (m_alive == true)
 	{
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			ParticleSystem::GetInstance()->addParticle(m_position, 0);
 			ParticleSystem::GetInstance()->addParticle(m_position, 1);
@@ -91,6 +92,7 @@ bool SwarmEnemy::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 		{
 			explosionSound.setVolume(20);
 		}
+		//explosionSound.setPosition(m_position.x, 0, m_position.y);
 		explosionSound.play();
 		if (DistanceFrom(playerPos) < 300)
 		{

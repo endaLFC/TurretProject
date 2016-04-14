@@ -27,6 +27,8 @@ void FlockEnemy::Initialise()
 
 	buffer.loadFromFile("Explosion.wav");
 	explosionSound.setBuffer(buffer);
+	//explosionSound.setRelativeToListener(true);
+
 	explosionSound.setVolume(50);
 }
 
@@ -70,32 +72,33 @@ bool FlockEnemy::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 {
 	if (m_alive == true)
 	{
-		for (int i = 0; i < 25; i++)
+		for (int i = 0; i < 15; i++)
 		{
 			ParticleSystem::GetInstance()->addParticle(m_position, 0);
 			ParticleSystem::GetInstance()->addParticle(m_position, 1);
 		}
 		if (DistanceFrom(playerPos) > 600)
 		{
-			explosionSound.setVolume(10);
+			explosionSound.setVolume(5);
 		}
 		else if (DistanceFrom(playerPos) > 500)
 		{
-			explosionSound.setVolume(20);
+			explosionSound.setVolume(10);
 		}
 		else if (DistanceFrom(playerPos) > 400)
 		{
-			explosionSound.setVolume(30);
+			explosionSound.setVolume(20);
 		}
 		else if (DistanceFrom(playerPos) > 300)
 		{
-			explosionSound.setVolume(40);
+			explosionSound.setVolume(30);
 		}
+		//explosionSound.setPosition(m_position.x,0,m_position.y);
 		explosionSound.play();
 
 		if (DistanceFrom(playerPos) < 300)
 		{
-			explosionSound.setVolume(50);
+			explosionSound.setVolume(40);
 		}
 
 		int score = Score::GetInstance()->getScore();

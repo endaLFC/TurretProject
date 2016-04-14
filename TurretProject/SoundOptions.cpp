@@ -187,7 +187,8 @@ void SoundOptions::AlterVolume(int change, sf::Music &backgroundMusic)
 		volWidth -= 10;
 		volMin = true;
 	}
-	backgroundMusic.setVolume(volWidth);
+	//backgroundMusic.setVolume(volWidth);
+	sf::Listener::setGlobalVolume(volWidth);
 }
 
 void SoundOptions::ChangeSong(int change,sf::Music &backgroundMusic)

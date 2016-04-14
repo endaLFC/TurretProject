@@ -29,6 +29,8 @@ void Factory::Initialise()
 
 	buffer.loadFromFile("Explosion.wav");
 	explosionSound.setBuffer(buffer);
+	//explosionSound.setRelativeToListener(true);
+
 	damageBuffer.loadFromFile("damage.wav");
 	damageSound.setBuffer(damageBuffer);
 }
@@ -92,12 +94,13 @@ bool Factory::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 		if (m_health > 0)
 		{
 			m_health -= 1;
+			//damageSound.setPosition(m_position.x, 0, m_position.y);
 			damageSound.play();
 		}
 		else
 		{
 		//float distance = sqrt((targetPosition.x - m_position.x)*(targetPosition.x - m_position.x) + (targetPosition.y - m_position.y)*(targetPosition.y - m_position.y));
-			for (int i = 0; i < 50; i++)
+			for (int i = 0; i < 30; i++)
 			{
 				ParticleSystem::GetInstance()->addParticle(m_position, 0);
 				ParticleSystem::GetInstance()->addParticle(m_position, 1);
@@ -117,8 +120,9 @@ bool Factory::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 			}
 			else if (DistanceFrom(playerPos) > 300)
 			{
-				explosionSound.setVolume(60);
+				explosionSound.setVolume(50);
 			}
+			explosionSound.setPosition(m_position.x, 0, m_position.y);
 			explosionSound.play();
 			if (DistanceFrom(playerPos) < 300)
 			{

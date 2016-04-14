@@ -48,6 +48,11 @@ class Player
 		sf::Texture m_dockTexture;
 		sf::Sprite m_dockSprite;
 
+		sf::Texture m_healthTexture;
+		sf::Sprite m_healthSprite;
+		sf::Texture m_health2Texture;
+		sf::Sprite m_health2Sprite;
+
 		int powerUp;
 
 		sf::Texture m_landingzoneTexture;
@@ -112,7 +117,7 @@ class Player
 
 		float vol;
 
-		int health = 100;
+		float health = 100;
 
 };
 

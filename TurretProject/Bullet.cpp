@@ -8,7 +8,7 @@ Bullet::Bullet(float rotation, sf::Vector2f position)
 	m_pos = position;
 	m_rotation = rotation;
 	alive = true;
-	m_speed = 700;
+	m_speed = 1000;
 }
 
 void Bullet::Initialise(sf::Texture * text)

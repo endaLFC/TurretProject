@@ -4,7 +4,7 @@
 
 PlayerOptions::PlayerOptions(float width, float height, sf::Music &backgroundMusic)
 {
-	healthMax = false;
+	healthMax = true;
 	healthMin = false;
 	displayHealthArrows = true;
 	//if (!font.loadFromFile("C:\\Windows\\Fonts\\Arkhip_font.ttf"))
@@ -43,7 +43,7 @@ PlayerOptions::PlayerOptions(float width, float height, sf::Music &backgroundMus
 	m_healthSprite.setPosition(width / 15 * 6.7, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.52);
 	m_healthSprite.setTexture(m_healthTexture);
 
-	healthWidth = 50;
+	healthWidth = 100;
 	m_health2Sprite.setOrigin(0, 0);
 	m_health2Sprite.setColor(sf::Color::Color(100,255,100));
 	m_health2Sprite.setPosition(width / 15 * 6.75, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.53);
@@ -149,6 +149,7 @@ void PlayerOptions::Update(float time, sf::RenderWindow &window)
 
 void PlayerOptions::AlterHealth(int change, Player &player)
 {
+
 	if (change == 1 && healthWidth <= 80)
 	{
 		healthWidth += 10;
@@ -169,4 +170,6 @@ void PlayerOptions::AlterHealth(int change, Player &player)
 		healthWidth -= 10;
 		healthMin = true;
 	}
+
+	player.SetHealth(healthWidth);
 }
