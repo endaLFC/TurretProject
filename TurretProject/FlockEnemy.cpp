@@ -94,12 +94,13 @@ bool FlockEnemy::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 			explosionSound.setVolume(30);
 		}
 		//explosionSound.setPosition(m_position.x,0,m_position.y);
-		explosionSound.play();
-
 		if (DistanceFrom(playerPos) < 300)
 		{
 			explosionSound.setVolume(40);
 		}
+		explosionSound.play();
+
+		
 
 		int score = Score::GetInstance()->getScore();
 		if (playerKilledMe == true)

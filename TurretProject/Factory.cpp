@@ -89,13 +89,14 @@ void Factory::WrapAroundScreen()
 
 bool Factory::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 {
-	if (m_alive == true && playerKilledMe == true)
+	if (m_alive == true)
 	{
-		if (m_health > 0)
+		if (m_health > 0 && playerKilledMe == true)
 		{
 			m_health -= 1;
 			//damageSound.setPosition(m_position.x, 0, m_position.y);
 			damageSound.play();
+			return true;		//return true
 		}
 		else
 		{
@@ -122,12 +123,12 @@ bool Factory::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 			{
 				explosionSound.setVolume(50);
 			}
-			explosionSound.setPosition(m_position.x, 0, m_position.y);
-			explosionSound.play();
 			if (DistanceFrom(playerPos) < 300)
 			{
 				explosionSound.setVolume(100);
 			}
+			//explosionSound.setPosition(m_position.x, 0, m_position.y);
+			explosionSound.play();
 			int score = Score::GetInstance()->getScore();
 			if (playerKilledMe == true)
 			{

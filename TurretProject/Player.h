@@ -28,8 +28,9 @@ class Player
 		void SetAlive(bool x);
 		bool GetShrink() { return shrink; }
 		bool GetLocked() { return locked; }
-		int GetHealth() { return health; }
-		void SetHealth(int newHealth) {health = newHealth; }
+		int GetHealth() { return m_health; }
+		void SetHealth(int newHealth) {m_health = newHealth; }
+		void AlterHealth(int change);
 
 	protected:
 		bool m_alive;
@@ -117,7 +118,7 @@ class Player
 
 		float vol;
 
-		float health = 100;
+		float m_health;
 
 };
 

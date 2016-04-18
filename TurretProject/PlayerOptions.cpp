@@ -150,10 +150,14 @@ void PlayerOptions::Update(float time, sf::RenderWindow &window)
 void PlayerOptions::AlterHealth(int change, Player &player)
 {
 
-	if (change == 1 && healthWidth <= 80)
+	if (change == 1 && healthWidth == 1)
+	{
+		healthWidth += 9;
+		healthMin = false;
+	}
+	else if (change == 1 && healthWidth <= 80)
 	{
 		healthWidth += 10;
-		healthMin = false;
 	}
 	else if (change == 1 && healthWidth == 90)
 	{
@@ -167,7 +171,7 @@ void PlayerOptions::AlterHealth(int change, Player &player)
 	}
 	else if (change == -1 && healthWidth == 10)
 	{
-		healthWidth -= 10;
+		healthWidth -= 9;
 		healthMin = true;
 	}
 

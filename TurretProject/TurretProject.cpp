@@ -27,9 +27,21 @@
 int gameMode = 0;
 CONST int MENU = 0, PLAY = 1, OPTIONS = 2, EXIT = 3, GAMEOVER = 4, AUDIO = 5, PLAYER = 6;
 sf::RenderWindow window(sf::VideoMode(1100, 800, 32), "SFML First Program");
+float t;
+float gameOverCount = 0;
+
+void GameOverTimer()
+{
+	gameOverCount += t;
+	if (gameOverCount > 2)
+	{
+		gameMode = GAMEOVER;
+	}
+}
 
 int main()
 {
+	sf::Listener::setGlobalVolume(50);
 	srand(time(NULL));
 	sf::View view;
 	view.reset(sf::FloatRect(0,0, 1100,800));
@@ -41,7 +53,7 @@ int main()
 	
 	//sf::Listener::setGlobalVolume(100);
 
-	float count = 0;
+	
 
 	float boidsSize = 10;
 	//string action = "flock";
@@ -60,7 +72,7 @@ int main()
 	// Create the main window 
 	
 	window.setFramerateLimit(60);
-	int counter = 0;
+	int gameOverCounter = 0;
 	Menu menu(window.getSize().x, window.getSize().y);
 	OptionsMenu optionsMenu(window.getSize().x, window.getSize().y);
 	SoundOptions soundOptions(window.getSize().x, window.getSize().y, backgroundMusic);
@@ -169,7 +181,7 @@ int main()
 	while (window.isOpen())
 	{
 		time = clock.getElapsedTime();
-		float t = time.asSeconds();
+		t = time.asSeconds();
 		clock.restart();
 
 		// Process events 
@@ -404,10 +416,10 @@ int main()
 			{
 			}
 
-			if (EnemyManager::GetInstance()->IsColliding(p1.GetPos(), p1.GetRadius()))
-			{
-				gameMode = GAMEOVER;
-			}
+			//if (EnemyManager::GetInstance()->IsColliding(p1.GetPos(), p1.GetRadius()))
+			//{
+			//	gameMode = GAMEOVER;
+			//}
 
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
@@ -449,10 +461,12 @@ int main()
 				if (BulletManager::GetInstance()->IsColliding2(flockEnemies[i]->GetPosition(), flockEnemies[i]->GetRadius(), flockEnemies[i]->GetAlive()) && flockEnemies[i]->GetAlive() == true)
 				{
 					flockEnemies[i]->Colliding(true, p1.GetPos());
+					
 				}
 				if (flockEnemies[i]->IsColliding(p1.GetPos(), p1.GetRadius()))
 				{
 					flockEnemies[i]->Colliding(true, p1.GetPos());
+					p1.AlterHealth(-7);
 				}
 				else if (flockEnemies[i]->IsColliding(obstacle.GetPosition(), obstacle.GetRadius()))
 				{
@@ -487,6 +501,7 @@ int main()
 				if (swarmEnemies[i]->IsColliding(p1.GetPos(), p1.GetRadius()))
 				{
 					swarmEnemies[i]->Colliding(true, p1.GetPos());
+					p1.AlterHealth(-3);
 				}
 				else if (swarmEnemies[i]->IsColliding(obstacle.GetPosition(), obstacle.GetRadius()))
 				{
@@ -522,6 +537,10 @@ int main()
 				if (factories[i]->IsColliding(p1.GetPos(), p1.GetRadius()))
 				{
 					factories[i]->Colliding(true, p1.GetPos());
+					if (factories[i]->GetAlive() == false)
+					{
+						p1.AlterHealth(-25);
+					}
 				}
 				else if (factories[i]->IsColliding(obstacle.GetPosition(), obstacle.GetRadius()))
 				{
@@ -540,31 +559,35 @@ int main()
 
 			if (obstacle.IsColliding(p1.GetPos(), p1.GetRadius()))
 			{
+				p1.AlterHealth(-100);
 				p1.SetAlive(false);
-				count += t;
-				if (count > 2)
+				/*gameOverCount += t;
+				if (gameOverCount > 2)
 				{
 					gameMode = GAMEOVER;
-				}
-					
+				}*/
 			}
 			else if (obstacle2.IsColliding(p1.GetPos(), p1.GetRadius()))
 			{
+				p1.AlterHealth(-100);
 				p1.SetAlive(false);
-				count += t;
-				if (count > 2)
-				{
-					gameMode = GAMEOVER;
-				}
+				
 			}
 			else if (obstacle3.IsColliding(p1.GetPos(), p1.GetRadius()))
 			{
+				p1.AlterHealth(-100);
 				p1.SetAlive(false);
-				count += t;
-				if (count > 2)
+				/*gameOverCount += t;
+				if (gameOverCount > 2)
 				{
 					gameMode = GAMEOVER;
-				}
+				}*/
+			}
+
+			if (p1.GetHealth() <= 0)
+			{
+				p1.SetAlive(false);
+				GameOverTimer();
 			}
 
 			if (mushroomSmall.IsColliding(p1.GetPos(), p1.GetRadius()) && mushroomSmall.GetType() == 0)
@@ -705,9 +728,12 @@ int main()
 			window.display();
 			break;
 		}
-
+		
 	} //loop back for next frame
+
 
 	return EXIT_SUCCESS;
 }
+
+
 

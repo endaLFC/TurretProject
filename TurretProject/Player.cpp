@@ -151,6 +151,7 @@ void Player::Initialise()
 
 	sound.setVolume(40);
 	fireSound.setVolume(vol);
+	m_health = 100;
 }
 
 
@@ -161,9 +162,10 @@ Player::~Player()
 
 void Player::Update(float time)
 {
+	m_health2Sprite.setScale(m_health / 100, 1);
+	m_health2Sprite.setColor(sf::Color::Color(255, m_health * 2.5, m_health * 2.5));
 	if (m_alive == true)
 	{
-		m_health2Sprite.setScale(health / 100, 1);
 		if (turretMode == TURRET)
 		{
 			turretRot = m_rotation;
@@ -364,7 +366,10 @@ void Player::Draw(sf::RenderWindow& window)
 	m_dockSprite.setRotation(turretRot);
 
 	if (m_alive == true)
+	{
 		window.draw(m_sprite);
+	}
+		
 
 	window.draw(m_dockSprite);
 	
@@ -513,5 +518,19 @@ void Player::SetAlive(bool x)
 			ParticleSystem::GetInstance()->addParticle(m_pos, 0);
 		}
 		m_alive = x;
+	}
+}
+
+void Player::AlterHealth(int change)
+{
+	m_health += change;
+	if (m_health >= 100)
+	{
+		m_health = 100;
+	}
+	else if (m_health <= 0)
+	{
+		m_health = 0;
+		SetAlive(false);
 	}
 }
