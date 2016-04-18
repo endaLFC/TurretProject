@@ -6,13 +6,16 @@ PlayerOptions::PlayerOptions(float width, float height, sf::Music &backgroundMus
 {
 	healthMax = true;
 	healthMin = false;
-	displayHealthArrows = true;
-	//if (!font.loadFromFile("C:\\Windows\\Fonts\\Arkhip_font.ttf"))
+	skinMin = true;
+	skinMax = false;
+	displaySkinArrows = true;
+	displayHealthArrows = false;
+	skinCount = 0;
+
 	if (!font.loadFromFile("TELE2.TTF"))
 	{
 		//handle error
 	}
-	//texture.loadFromFile("Asteroids4.jpg");
 	texture.loadFromFile("SoundOptionsBkg.jpg");
 
 	if (!m_healthTexture.loadFromFile("volumebar.png"))
@@ -31,14 +34,11 @@ PlayerOptions::PlayerOptions(float width, float height, sf::Music &backgroundMus
 	{
 	}
 
-	//leftArrowSpr.setPosition(sf::Vector2f(width / 15 * 6.25, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.05));
 	leftArrowSpr.setTexture(leftArrowTex);
 
-	//rightArrowSpr.setPosition(sf::Vector2f(width / 15 * 11.1, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.05));
 	rightArrowSpr.setTexture(rightArrowTex);
 
 	m_healthSprite.setOrigin(0, 0);
-	//m_healthSprite.setColor(sf::Color::Color(255, 100, 100));
 	m_healthSprite.setPosition(width / 15 * 6.7, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.52);
 	m_healthSprite.setTexture(m_healthTexture);
 
@@ -72,13 +72,13 @@ PlayerOptions::PlayerOptions(float width, float height, sf::Music &backgroundMus
 	text[2].setScale(0.6, 0.6);
 	text[2].setPosition(sf::Vector2f(width / 15 * 3.6, height / (MAX_NUMBER_OF_ITEMS + 1) * 3));
 
-	songName = "Yeezy";
+	skinName = "Classic";
 
 	text[3].setFont(font);
 	text[3].setColor(sf::Color::Color(180, 35, 35));	//red
 
 	text[3].setScale(0.6, 0.6);
-	text[3].setPosition(sf::Vector2f(width / 15 * 7, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.5));
+	text[3].setPosition(sf::Vector2f(width / 15 * 7, height / (MAX_NUMBER_OF_ITEMS + 1) * 2));
 
 	selectedItemIndex = 0;
 }
@@ -94,8 +94,20 @@ void PlayerOptions::Draw(sf::RenderWindow &window)
 	window.draw(m_healthSprite);
 	m_health2Sprite.setScale(healthWidth / 100, 1);
 	window.draw(m_health2Sprite);
-
-	if (displayHealthArrows == true)
+	if (displaySkinArrows == true)
+	{
+		leftArrowSpr.setPosition(sf::Vector2f(1100 / 15 * 6.26, 800 / (MAX_NUMBER_OF_ITEMS + 1) * 2.05));
+		rightArrowSpr.setPosition(sf::Vector2f(1100 / 15 * 11.2, 800 / (MAX_NUMBER_OF_ITEMS + 1) * 2.05));
+		if (skinMin == false)
+		{
+			window.draw(leftArrowSpr);
+		}
+		if (skinMax == false)
+		{
+			window.draw(rightArrowSpr);
+		}
+	}
+	else if (displayHealthArrows == true)
 	{
 		leftArrowSpr.setPosition(sf::Vector2f(1100 / 15 * 6.26, 800 / (MAX_NUMBER_OF_ITEMS + 1) * 2.55));
 		rightArrowSpr.setPosition(sf::Vector2f(1100 / 15 * 11.2, 800 / (MAX_NUMBER_OF_ITEMS + 1) * 2.55));
@@ -112,6 +124,7 @@ void PlayerOptions::Draw(sf::RenderWindow &window)
 	{
 		window.draw(text[i]);
 	}
+	text[3].setString(skinName);
 }
 
 void PlayerOptions::MoveUp()
@@ -169,4 +182,43 @@ void PlayerOptions::AlterHealth(int change, Player &player)
 	}
 
 	player.SetHealth(healthWidth);
+}
+
+void PlayerOptions::ChangeSkin(int change, Player &player)
+{
+	//changing the player's skin
+	if (change == 1 && skinCount < 3)
+	{
+		skinCount++;
+	}
+	else if (change == -1 && skinCount > 0)
+	{
+		skinCount--;
+	}
+
+	//changing song
+	if (skinCount == 0)
+	{
+		skinName = "Classic";
+		skinMin = true;
+		player.SetSkinType(0);
+	}
+	else if (skinCount == 1)
+	{
+		skinName = "Red";
+		skinMin = false;
+		player.SetSkinType(1);
+	}
+	else if (skinCount == 2)
+	{
+		skinName = "Blue";
+		skinMax = false;
+		player.SetSkinType(2);
+	}
+	else if (skinCount == 3)
+	{
+		skinName = "Super";
+		skinMax = true;
+		player.SetSkinType(3);
+	}
 }

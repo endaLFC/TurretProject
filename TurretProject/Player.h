@@ -31,6 +31,7 @@ class Player
 		int GetHealth() { return m_health; }
 		void SetHealth(int newHealth) {m_health = newHealth; }
 		void AlterHealth(int change);
+		void SetSkinType(int x) { skinType = x; }
 
 	protected:
 		bool m_alive;
@@ -38,15 +39,22 @@ class Player
 		void lockStuff();
 		void unlockStuff();
 		void slowLock(float t);
+		void SkinSelector(int skinType);
+		int skinType;
 
 		const int TURRET = 0, SPACESHIP = 1, LOCKING = 2, NONE = 3, PURPLE = 4, RED = 5;
 
 		sf::Texture m_texture;
+		sf::Texture m_superTexture;
+		sf::Texture m_superTexturePU1;		//powerup textures
+		sf::Texture m_superTexturePU2;
+		sf::Texture m_superTexturePU3;
+		sf::Texture m_superDockTexture;
 		sf::Texture m_poweruptexture;
 		sf::Texture m_powerup2texture;
 		sf::Texture m_powerup3texture;
-		sf::Sprite m_sprite;
 		sf::Texture m_dockTexture;
+		sf::Sprite m_sprite;
 		sf::Sprite m_dockSprite;
 
 		sf::Texture m_healthTexture;
@@ -59,7 +67,7 @@ class Player
 		sf::Texture m_landingzoneTexture;
 		sf::Sprite m_landingzoneSprite;
 
-		sf::Texture m_lockedTexture; 
+		sf::Texture m_lockedTexture;
 		sf::Texture m_unlockedTexture;
 		sf::Texture m_lockingTexture;
 		sf::Sprite m_lockSprite;
@@ -118,7 +126,7 @@ class Player
 
 		float vol;
 
-		float m_health;
+		float m_health, m_turretHealth;
 
 };
 

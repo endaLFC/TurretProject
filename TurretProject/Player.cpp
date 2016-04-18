@@ -48,6 +48,26 @@ void Player::Initialise()
 	{
 		// error...
 	}
+	if (!m_superTexture.loadFromFile("superCraft.png"))
+	{
+		// error...
+	}
+	if (!m_superTexturePU1.loadFromFile("superCraftPowerUp1.png"))
+	{
+		// error...
+	}
+	if (!m_superTexturePU2.loadFromFile("superCraftPowerUp2.png"))
+	{
+		// error...
+	}
+	if (!m_superTexturePU3.loadFromFile("superCraftPowerUp3.png"))
+	{
+		// error...
+	}
+	if (!m_superDockTexture.loadFromFile("superCraft2.png"))
+	{
+		// error...
+	}
 	if (!m_poweruptexture.loadFromFile("spacecraftpowerup1.png"))
 	{
 		// error...
@@ -93,10 +113,10 @@ void Player::Initialise()
 	m_health2Sprite.setTexture(m_health2Texture);
 
 	m_sprite.setTexture(m_texture);
-	m_sprite.setOrigin(110, 85);//40,40
+	m_sprite.setOrigin(110, 85);
 
 	m_dockSprite.setTexture(m_dockTexture);
-	m_dockSprite.setOrigin(110, 85);//40,40
+	m_dockSprite.setOrigin(110, 85);
 
 	m_lockSprite.setTexture(m_lockedTexture);
 	m_landingzoneSprite.setTexture(m_landingzoneTexture);
@@ -152,18 +172,28 @@ void Player::Initialise()
 	sound.setVolume(40);
 	fireSound.setVolume(vol);
 	m_health = 100;
+	m_turretHealth = 100;
 }
 
 
 Player::~Player()
 {
-
+	
 }
 
 void Player::Update(float time)
 {
-	m_health2Sprite.setScale(m_health / 100, 1);
-	m_health2Sprite.setColor(sf::Color::Color(255, m_health * 2.5, m_health * 2.5));
+	if (turretMode == SPACESHIP)
+	{
+		m_health2Sprite.setScale(m_health / 100, 1);
+		m_health2Sprite.setColor(sf::Color::Color(255, m_health * 2.5, m_health * 2.5));
+	}
+	else if ((turretMode == TURRET))
+	{
+		m_health2Sprite.setScale(m_turretHealth / 100, 1);
+		m_health2Sprite.setColor(sf::Color::Color(255,0,255));
+		//m_health2Sprite.setColor(sf::Color::Color(255, m_turretHealth * 2.5, 255));
+	}
 	if (m_alive == true)
 	{
 		if (turretMode == TURRET)
@@ -362,6 +392,7 @@ void Player::Draw(sf::RenderWindow& window)
 
 	if (m_alive == true)
 	{
+		SkinSelector(skinType);
 		window.draw(m_sprite);
 	}
 	window.draw(m_dockSprite);
@@ -529,14 +560,75 @@ void Player::SetAlive(bool x)
 
 void Player::AlterHealth(int change)
 {
-	m_health += change;
-	if (m_health >= 100)
+	if (turretMode == SPACESHIP)
 	{
-		m_health = 100;
+		m_health += change;
+		if (m_health >= 100)
+		{
+			m_health = 100;
+		}
+		else if (m_health <= 0)
+		{
+			m_health = 0;
+			SetAlive(false);
+		}
 	}
-	else if (m_health <= 0)
+	else if (turretMode == TURRET)
 	{
-		m_health = 0;
-		SetAlive(false);
+		m_turretHealth += change/2;
+		if (m_turretHealth >= 100)
+		{
+			m_turretHealth = 100;
+		}
+		else if (m_turretHealth <= 0)
+		{
+			m_turretHealth = 0;
+			SetAlive(false);
+		}
 	}
+	
+}
+
+void Player::SkinSelector(int skinType)
+{
+	if (skinType == 0)
+	{
+		m_dockSprite.setTexture(m_texture);
+		m_dockSprite.setTexture(m_dockTexture);
+	}
+	else if (skinType == 1)
+	{
+		m_sprite.setColor(sf::Color::Color(255, 100, 100));
+		m_dockSprite.setColor(sf::Color::Color(255, 100, 100));
+	}
+	else if (skinType == 2)
+	{
+		m_sprite.setColor(sf::Color::Color(100, 100, 255));
+		m_dockSprite.setColor(sf::Color::Color(100, 100, 255));
+	}
+	else if (skinType == 3)
+	{
+		m_sprite.setColor(sf::Color::Color(255, 255, 255));
+		m_dockSprite.setColor(sf::Color::Color(255, 255, 255));
+
+		if (shrink == true && speedBoost == true)
+		{
+			m_sprite.setTexture(m_superTexturePU3);
+		}
+		else if (shrink == true && speedBoost == false)
+		{
+			m_sprite.setTexture(m_superTexturePU2);
+		}
+		else if (shrink == false && speedBoost == true)
+		{
+			m_sprite.setTexture(m_superTexturePU1);
+		}
+		else
+		{
+			m_sprite.setTexture(m_superTexture);
+		}
+
+		m_dockSprite.setTexture(m_superDockTexture);
+	}
+	
 }

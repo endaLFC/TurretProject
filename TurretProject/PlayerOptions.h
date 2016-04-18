@@ -17,9 +17,9 @@ public:
 	void Update(float time, sf::RenderWindow &window);
 	int GetPressedItem() { return selectedItemIndex; }
 	void AlterHealth(int change, Player &player);
-	//void ChangeSong(int change, sf::Music &backgroundMusic);
-	//void setVolArrows(bool x) { displayVolArrows = x; }
-	//void setSongArrows(bool x) { displaySongArrows = x; }
+	void ChangeSkin(int change, Player &player);
+	void setHealthArrows(bool x) { displayHealthArrows = x; }
+	void setSkinArrows(bool x) { displaySkinArrows = x; }
 
 private:
 	int selectedItemIndex;
@@ -36,14 +36,15 @@ private:
 	sf::Sprite background;
 	int random;
 
-	sf::String songName;
+	sf::String skinName;
 
 	sf::Texture leftArrowTex;
 	sf::Sprite leftArrowSpr;
 	sf::Texture rightArrowTex;
 	sf::Sprite rightArrowSpr;
 
-	bool healthMax, healthMin; // songMax, songMin;
-	bool displayHealthArrows; // displaySongArrows;
+	bool healthMax, healthMin, skinMax, skinMin; // songMax, songMin;
+	bool displayHealthArrows, displaySkinArrows; // displaySongArrows;
+	int skinCount;
 };
 

@@ -10,7 +10,7 @@ SoundOptions::SoundOptions(float width, float height, sf::Music &backgroundMusic
 	songMin = true;
 	displayVolArrows = true;
 	displaySongArrows = false;
-	//if (!font.loadFromFile("C:\\Windows\\Fonts\\Arkhip_font.ttf"))
+
 	if (!font.loadFromFile("TELE2.TTF"))
 	{
 		//handle error
@@ -129,7 +129,6 @@ void SoundOptions::MoveUp()
 {
 	if (selectedItemIndex - 1 >= 0)
 	{
-		//beepSound.play();
 		text[selectedItemIndex].setColor(sf::Color::Color(0, 20, 60));
 		selectedItemIndex--;
 		text[selectedItemIndex].setColor(sf::Color::Color(140, 140, 40));
@@ -140,7 +139,6 @@ void SoundOptions::MoveDown()
 {
 	if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS - 1)
 	{
-		//beepSound.play();
 		text[selectedItemIndex].setColor(sf::Color::Color(0, 20, 60));
 		selectedItemIndex++;
 		text[selectedItemIndex].setColor(sf::Color::Color(140, 140, 40));
@@ -239,5 +237,4 @@ void SoundOptions::ChangeSong(int change,sf::Music &backgroundMusic)
 		songName = "Journey";
 		songMax = true;
 	}
-	
 }

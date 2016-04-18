@@ -47,12 +47,22 @@ int main()
 	view.reset(sf::FloatRect(0,0, 1100,800));
 
 	sf::Music backgroundMusic;
+	sf::Sound menuBeep;
+	sf::SoundBuffer menuBeepBuffer;
+	sf::Sound menuBeep2;
+	sf::SoundBuffer menuBeep2Buffer;
+	
 	backgroundMusic.openFromFile("music2.ogg");
 	backgroundMusic.setVolume(50);
 	backgroundMusic.play();
 	
-	//sf::Listener::setGlobalVolume(100);
+	menuBeepBuffer.loadFromFile("menubeep.wav");
+	menuBeep.setBuffer(menuBeepBuffer);
+	menuBeep.setVolume(30);
 
+	menuBeep2Buffer.loadFromFile("menubeep2.wav");
+	menuBeep2.setBuffer(menuBeep2Buffer);
+	menuBeep2.setVolume(30);
 	
 
 	float boidsSize = 10;
@@ -201,15 +211,17 @@ int main()
 
 					if (event.key.code == sf::Keyboard::Up)
 					{
+						menuBeep.play();
 						menu.MoveUp();
-
 					}
 					else if (event.key.code == sf::Keyboard::Down)
 					{
+						menuBeep.play();
 						menu.MoveDown();
 					}
 					else if (event.key.code == sf::Keyboard::Return)
 					{
+						menuBeep2.play();
 						if (menu.GetPressedItem() == 0)
 						{
 							gameMode = PLAY;
@@ -231,14 +243,17 @@ int main()
 
 					if (event.key.code == sf::Keyboard::Left)
 					{
+						menuBeep.play();
 						optionsMenu.MoveLeft();
 					}
 					else if (event.key.code == sf::Keyboard::Right)
 					{
+						menuBeep.play();
 						optionsMenu.MoveRight();
 					}
 					else if (event.key.code == sf::Keyboard::Return)
 					{
+						menuBeep2.play();
 						if (optionsMenu.GetPressedItem() == 0)
 						{
 							gameMode = PLAYER;
@@ -263,7 +278,7 @@ int main()
 				{
 					if (event.key.code == sf::Keyboard::Up)
 					{
-
+						menuBeep.play();
 						if (soundOptions.GetPressedItem() == 1)
 						{
 							soundOptions.setVolArrows(true);
@@ -277,7 +292,7 @@ int main()
 					}
 					else if (event.key.code == sf::Keyboard::Down)
 					{
-
+						menuBeep.play();
 						if (soundOptions.GetPressedItem() == 0)
 						{
 							soundOptions.setVolArrows(false);
@@ -291,6 +306,7 @@ int main()
 					}
 					else if (event.key.code == sf::Keyboard::Right)
 					{
+						menuBeep.play();
 						if (soundOptions.GetPressedItem() == 0)
 						{
 							//volume increased
@@ -304,6 +320,7 @@ int main()
 					}
 					else if (event.key.code == sf::Keyboard::Left)
 					{
+						menuBeep.play();
 						if (soundOptions.GetPressedItem() == 0)
 						{
 							//volume increased
@@ -317,6 +334,7 @@ int main()
 					}
 					else if (event.key.code == sf::Keyboard::Return)
 					{
+						menuBeep2.play();
 						if (soundOptions.GetPressedItem() == 0)
 						{
 							//volume button pressed
@@ -338,15 +356,41 @@ int main()
 				{
 					if (event.key.code == sf::Keyboard::Up)
 					{
+						menuBeep.play();
+						if (playerOptions.GetPressedItem() == 1)
+						{
+							playerOptions.setSkinArrows(true);
+							playerOptions.setHealthArrows(false);
+						}
+						else if (playerOptions.GetPressedItem() == 2)
+						{
+							playerOptions.setHealthArrows(true);
+						}
 						playerOptions.MoveUp();
 					}
 					else if (event.key.code == sf::Keyboard::Down)
 					{
+						menuBeep.play();
+						if (playerOptions.GetPressedItem() == 0)
+						{
+							playerOptions.setSkinArrows(false);
+							playerOptions.setHealthArrows(true);
+						}
+						else if (playerOptions.GetPressedItem() == 1)
+						{
+							playerOptions.setHealthArrows(false);
+						}
 						playerOptions.MoveDown();
 					}
 					else if (event.key.code == sf::Keyboard::Right)
 					{
-						if (playerOptions.GetPressedItem() == 1)
+						menuBeep.play();
+						if (playerOptions.GetPressedItem() == 0)
+						{
+							//skin change
+							playerOptions.ChangeSkin(1, p1);
+						}
+						else if (playerOptions.GetPressedItem() == 1)
 						{
 							//health change
 							playerOptions.AlterHealth(1, p1);
@@ -354,7 +398,13 @@ int main()
 					}
 					else if (event.key.code == sf::Keyboard::Left)
 					{
-						if (playerOptions.GetPressedItem() == 1)
+						menuBeep.play();
+						if (playerOptions.GetPressedItem() == 0)
+						{
+							//skin change
+							playerOptions.ChangeSkin(-1, p1);
+						}
+						else if (playerOptions.GetPressedItem() == 1)
 						{
 							//health change
 							playerOptions.AlterHealth(-1, p1);
@@ -362,6 +412,7 @@ int main()
 					}
 					else if (event.key.code == sf::Keyboard::Return)
 					{
+						menuBeep2.play();
 						if (playerOptions.GetPressedItem() == 0)
 						{
 							//skin button pressed
@@ -454,7 +505,7 @@ int main()
 					flockEnemies[i]->Colliding(true, p1.GetPos());
 					
 				}
-				if (flockEnemies[i]->IsColliding(p1.GetPos(), p1.GetRadius()))
+				if (flockEnemies[i]->IsColliding(p1.GetPos(), p1.GetRadius()) && p1.GetHealth() > 0)
 				{
 					flockEnemies[i]->Colliding(true, p1.GetPos());
 					p1.AlterHealth(-7);
@@ -489,7 +540,7 @@ int main()
 				{
 					swarmEnemies[i]->Colliding(true, p1.GetPos());
 				}
-				if (swarmEnemies[i]->IsColliding(p1.GetPos(), p1.GetRadius()))
+				if (swarmEnemies[i]->IsColliding(p1.GetPos(), p1.GetRadius()) && p1.GetHealth() > 0)
 				{
 					swarmEnemies[i]->Colliding(true, p1.GetPos());
 					p1.AlterHealth(-3);
@@ -525,7 +576,7 @@ int main()
 				{
 					factories[i]->Colliding(true, p1.GetPos());
 				}
-				if (factories[i]->IsColliding(p1.GetPos(), p1.GetRadius()))
+				if (factories[i]->IsColliding(p1.GetPos(), p1.GetRadius()) && p1.GetHealth() > 0)
 				{
 					factories[i]->Colliding(true, p1.GetPos());
 					if (factories[i]->GetAlive() == false)
@@ -552,11 +603,6 @@ int main()
 			{
 				p1.AlterHealth(-100);
 				p1.SetAlive(false);
-				/*gameOverCount += t;
-				if (gameOverCount > 2)
-				{
-					gameMode = GAMEOVER;
-				}*/
 			}
 			else if (obstacle2.IsColliding(p1.GetPos(), p1.GetRadius()))
 			{
@@ -568,11 +614,6 @@ int main()
 			{
 				p1.AlterHealth(-100);
 				p1.SetAlive(false);
-				/*gameOverCount += t;
-				if (gameOverCount > 2)
-				{
-					gameMode = GAMEOVER;
-				}*/
 			}
 
 			if (p1.GetHealth() <= 0)
@@ -602,24 +643,19 @@ int main()
 			mushroomColour.Draw(window);
 
 			//Applies the three rules to each boid in the flock and changes them accordingly.
-			//if (action == "flock")
 			flock.flocking(p1.GetPos(), obstacle.GetPosition());
 			flock.flocking(p1.GetPos(), obstacle2.GetPosition());
 			flock.flocking(p1.GetPos(), obstacle3.GetPosition());
-			//else
+
 			swarm.swarming(p1.GetPos());
 
 			factory.flocking(p1.GetPos(), obstacle.GetPosition());
 			factory.flocking(p1.GetPos(), obstacle2.GetPosition());
 			factory.flocking(p1.GetPos(), obstacle3.GetPosition());
 			
-			//EnemyManager::GetInstance()->Draw(window);
 			BulletManager::GetInstance()->Draw(window);
 			ParticleSystem::GetInstance()->Draw(window);
-			//window.draw(scoreHUDSprite);
 			p1.Draw(window);
-			//Energy::GetInstance()->Draw(window);
-
 
 			window.setView(miniMap);
 			window.draw(radarBackground);
@@ -633,12 +669,7 @@ int main()
 			mushroomColour.Draw(window);
 			mushroomColour.SetSpriteScale(1);
 			p1.Draw(window);
-			/*for (int i = 0; i < shapes.size(); i++)
-			{
-				shapes[i].setScale(5,5); 
-				window.draw(shapes[i]);
-				shapes[i].setScale(1, 1);
-			}*/
+
 			for (int i = 0; i < flockEnemies.size(); i++)
 			{
 				flockEnemies[i]->SetScale(2);
@@ -657,7 +688,6 @@ int main()
 				factories[i]->Draw(window);
 				//factories[i]->SetScale(1);
 			}
-			//EnemyManager::GetInstance()->Draw(window);
 			BulletManager::GetInstance()->Draw(window);
 			ParticleSystem::GetInstance()->Draw(window);
 
