@@ -21,15 +21,10 @@ void Factory::Initialise()
 	m_health = 3;
 	m_radius = 50;
 	smokeOn = false;
-	/*int r, g, b;
-	r = rand() % 255;
-	g = rand() % 255;
-	b = rand() % 255;*/
 	m_sprite.setColor(sf::Color(255, 255, 255));
 
 	buffer.loadFromFile("Explosion.wav");
 	explosionSound.setBuffer(buffer);
-	//explosionSound.setRelativeToListener(true);
 
 	damageBuffer.loadFromFile("damage.wav");
 	damageSound.setBuffer(damageBuffer);
@@ -91,10 +86,9 @@ bool Factory::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 {
 	if (m_alive == true)
 	{
-		if (m_health > 0 && playerKilledMe == true)
+		if (m_health > 0 && playerKilledMe == true)		//if the player hits the factory and the factory has health then damage the factory
 		{
 			m_health -= 1;
-			//damageSound.setPosition(m_position.x, 0, m_position.y);
 			damageSound.play();
 			return true;		//return true
 		}
@@ -106,29 +100,8 @@ bool Factory::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 				ParticleSystem::GetInstance()->addParticle(m_position, 0);
 				ParticleSystem::GetInstance()->addParticle(m_position, 1);
 			}
-
-			if (DistanceFrom(playerPos) > 600)
-			{
-				explosionSound.setVolume(10);
-			}
-			else if (DistanceFrom(playerPos) > 500)
-			{
-				explosionSound.setVolume(20);
-			}
-			else if (DistanceFrom(playerPos) > 400)
-			{
-				explosionSound.setVolume(40);
-			}
-			else if (DistanceFrom(playerPos) > 300)
-			{
-				explosionSound.setVolume(50);
-			}
-			if (DistanceFrom(playerPos) < 300)
-			{
-				explosionSound.setVolume(100);
-			}
-			//explosionSound.setPosition(m_position.x, 0, m_position.y);
-			explosionSound.play();
+			DistantSound(playerPos);		//decreases the volume of sound effects the further away the explosion occurs from the player
+			
 			int score = Score::GetInstance()->getScore();
 			if (playerKilledMe == true)
 			{
@@ -141,14 +114,38 @@ bool Factory::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 	else
 		return false;
 }
+
+void Factory::DistantSound(sf::Vector2f playerPos)
+{
+	if (DistanceFrom(playerPos) > 600)
+	{
+		explosionSound.setVolume(10);
+	}
+	else if (DistanceFrom(playerPos) > 500)
+	{
+		explosionSound.setVolume(20);
+	}
+	else if (DistanceFrom(playerPos) > 400)
+	{
+		explosionSound.setVolume(40);
+	}
+	else if (DistanceFrom(playerPos) > 300)
+	{
+		explosionSound.setVolume(50);
+	}
+	if (DistanceFrom(playerPos) < 300)
+	{
+		explosionSound.setVolume(60);
+	}
+	explosionSound.play();
+}
+
 bool Factory::IsColliding(sf::Vector2f targetPosition, int targetRadius)
 {
 	if (m_alive == true)
 	{
-		//float distance = sqrt((targetPosition.x - m_position.x)*(targetPosition.x - m_position.x) + (targetPosition.y - m_position.y)*(targetPosition.y - m_position.y));
 		if (DistanceFrom(targetPosition) < m_radius + targetRadius)		//collision occurs
 		{
-			//m_alive = false;
 			return true;		//return true
 		}
 		else
@@ -167,22 +164,12 @@ float Factory::DistanceFrom(sf::Vector2f player)
 
 void Factory::Smoke(float time)
 {
-	/*if (smokeOn == true)
-	{
- 		smokeOnTime += time;
-		if (smokeOnTime >= 0.01)
-		{
-			smokeOnTime = 0;
-			smokeOn = false;
-		}
-	}*/
-
-	if (m_health >= 1 && m_health <= 2)// && smokeOn == false)
+	if (m_health >= 1 && m_health <= 2)
 	{
 		ParticleSystem::GetInstance()->addParticle(m_position, 1);
 		smokeOn = true;
 	}
-	else if (m_health == 0)// && smokeOn == false)
+	else if (m_health == 0)
 	{
 		ParticleSystem::GetInstance()->addParticle(m_position, 0);
 		ParticleSystem::GetInstance()->addParticle(m_position, 1);

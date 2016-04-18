@@ -16,10 +16,6 @@ public:
 	void Update(float time);
 	int GetPressedItem() { return selectedItemIndex; }
 
-
-
-
-
 private:
 	int selectedItemIndex;
 	sf::Font font;
@@ -28,7 +24,6 @@ private:
 	sf::Sprite background;
 	sf::IntRect animationRect;
 	float frameTimer;
-	float initialFrameTimer;
 	int random;
 };
 

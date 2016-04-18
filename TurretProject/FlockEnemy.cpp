@@ -20,14 +20,13 @@ void FlockEnemy::Initialise()
 	m_alive = true;
 	m_radius = 50;
 	int r, g, b;
-	r = rand() % 255;
-	g = rand() % 255;
-	b = rand() % 255;
-	m_sprite.setColor(sf::Color(r, g, b));
+	r = 255;
+	g = 255;
+	b = 255;
+	m_sprite.setColor(sf::Color(r, g, b));		//assigning every flock enemy a random colour
 
 	buffer.loadFromFile("Explosion.wav");
 	explosionSound.setBuffer(buffer);
-	//explosionSound.setRelativeToListener(true);
 
 	explosionSound.setVolume(50);
 }
@@ -77,30 +76,8 @@ bool FlockEnemy::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 			ParticleSystem::GetInstance()->addParticle(m_position, 0);
 			ParticleSystem::GetInstance()->addParticle(m_position, 1);
 		}
-		if (DistanceFrom(playerPos) > 600)
-		{
-			explosionSound.setVolume(5);
-		}
-		else if (DistanceFrom(playerPos) > 500)
-		{
-			explosionSound.setVolume(10);
-		}
-		else if (DistanceFrom(playerPos) > 400)
-		{
-			explosionSound.setVolume(20);
-		}
-		else if (DistanceFrom(playerPos) > 300)
-		{
-			explosionSound.setVolume(30);
-		}
-		//explosionSound.setPosition(m_position.x,0,m_position.y);
-		if (DistanceFrom(playerPos) < 300)
-		{
-			explosionSound.setVolume(40);
-		}
-		explosionSound.play();
-
 		
+		DistantSound(playerPos);		//decreases the volume of sound effects the further away the explosion occurs from the player
 
 		int score = Score::GetInstance()->getScore();
 		if (playerKilledMe == true)
@@ -112,6 +89,31 @@ bool FlockEnemy::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 	}
 	else
 		return false;
+}
+
+void FlockEnemy::DistantSound(sf::Vector2f playerPos)
+{
+	if (DistanceFrom(playerPos) > 600)
+	{
+		explosionSound.setVolume(10);
+	}
+	else if (DistanceFrom(playerPos) > 500)
+	{
+		explosionSound.setVolume(15);
+	}
+	else if (DistanceFrom(playerPos) > 400)
+	{
+		explosionSound.setVolume(20);
+	}
+	else if (DistanceFrom(playerPos) > 300)
+	{
+		explosionSound.setVolume(25);
+	}
+	if (DistanceFrom(playerPos) < 300)
+	{
+		explosionSound.setVolume(30);
+	}
+	explosionSound.play();
 }
 
 bool FlockEnemy::IsColliding(sf::Vector2f targetPosition, int targetRadius)

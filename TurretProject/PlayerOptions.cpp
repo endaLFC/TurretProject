@@ -12,7 +12,6 @@ PlayerOptions::PlayerOptions(float width, float height, sf::Music &backgroundMus
 	{
 		//handle error
 	}
-	frameTimer = 0;
 	//texture.loadFromFile("Asteroids4.jpg");
 	texture.loadFromFile("SoundOptionsBkg.jpg");
 
@@ -49,9 +48,7 @@ PlayerOptions::PlayerOptions(float width, float height, sf::Music &backgroundMus
 	m_health2Sprite.setPosition(width / 15 * 6.75, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.53);
 	m_health2Sprite.setTexture(m_health2Texture);
 
-
 	background.setTexture(texture);
-	animationRect = { 0, 0, 1100, 800 };
 
 	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
 	{
@@ -111,7 +108,6 @@ void PlayerOptions::Draw(sf::RenderWindow &window)
 			window.draw(rightArrowSpr);
 		}
 	}
-
 	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
 	{
 		window.draw(text[i]);
@@ -122,7 +118,6 @@ void PlayerOptions::MoveUp()
 {
 	if (selectedItemIndex - 1 >= 0)
 	{
-		//beepSound.play();
 		text[selectedItemIndex].setColor(sf::Color::Color(0, 20, 60));
 		selectedItemIndex--;
 		text[selectedItemIndex].setColor(sf::Color::Color(140, 140, 40));
@@ -133,7 +128,6 @@ void PlayerOptions::MoveDown()
 {
 	if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS - 1)
 	{
-		//beepSound.play();
 		text[selectedItemIndex].setColor(sf::Color::Color(0, 20, 60));
 		selectedItemIndex++;
 		text[selectedItemIndex].setColor(sf::Color::Color(140, 140, 40));
@@ -144,12 +138,11 @@ void PlayerOptions::MoveDown()
 void PlayerOptions::Update(float time, sf::RenderWindow &window)
 {
 	/* initialize random seed: */
-
 }
 
 void PlayerOptions::AlterHealth(int change, Player &player)
 {
-
+	//changing the healthbar
 	if (change == 1 && healthWidth == 1)
 	{
 		healthWidth += 9;

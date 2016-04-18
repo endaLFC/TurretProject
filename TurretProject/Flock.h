@@ -25,15 +25,7 @@ public:
 
 	//Constructors
 	Flock() {}
-/*
-Commented out for now, since including destructors causes g++ to spit back
-errors. 
-	//Destructor
-	Flock::~Flock()
-	{
-		//cout << "Flock is being deleted by destructor!" << endl;
-	}
-*/
+
 	//Accessor functions
 	int getSize();
 	Boid getBoid(int i);

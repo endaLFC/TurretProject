@@ -24,8 +24,7 @@ void Particle::Update(float time)
 
 	timeAlive += time;
 
-
-	if (opacity >= 10)
+	if (opacity >= 10)				//making the particles appear to fade away gradually
 		opacity -= time * 300;
 	else
 		opacity = 0;
@@ -34,7 +33,4 @@ void Particle::Update(float time)
 	{
 		m_alive = false;
 	}
-	
-		
-
 }

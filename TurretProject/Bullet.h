@@ -33,4 +33,5 @@ class Bullet
 		float toRadians(float degrees);
 		void Rotation(int dir);
 		void Move(float time);
+		void WithinBounds();
 };

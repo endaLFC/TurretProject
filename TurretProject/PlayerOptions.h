@@ -21,7 +21,6 @@ public:
 	//void setVolArrows(bool x) { displayVolArrows = x; }
 	//void setSongArrows(bool x) { displaySongArrows = x; }
 
-
 private:
 	int selectedItemIndex;
 
@@ -35,9 +34,6 @@ private:
 	sf::Text text[MAX_NUMBER_OF_ITEMS];
 	sf::Texture texture;
 	sf::Sprite background;
-	sf::IntRect animationRect;
-	float frameTimer;
-	//float initialFrameTimer;
 	int random;
 
 	sf::String songName;
@@ -49,6 +45,5 @@ private:
 
 	bool healthMax, healthMin; // songMax, songMin;
 	bool displayHealthArrows; // displaySongArrows;
-	//int songCount;
 };
 

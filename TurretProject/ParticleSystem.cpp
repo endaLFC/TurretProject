@@ -41,18 +41,13 @@ void ParticleSystem::Init()
 
 void ParticleSystem::addParticle(sf::Vector2f position, int type)
 {
-	
-
 	sf::Vector2f direction = sf::Vector2f((rand() % 100) - 50, (rand() % 100) - 50);
-	Particle* p = new Particle(position, Normalise(direction) ,rand() % 250, type);
-
+	Particle* p = new Particle(position, Normalise(direction), rand() % 250, type);
 	particles.push_back(p);
-
 }
 
 void ParticleSystem::Update(float time)
 {
-
 	list<Particle*>::iterator it = particles.begin();
 	for (it = particles.begin(); it != particles.end();)
 	{
@@ -63,27 +58,17 @@ void ParticleSystem::Update(float time)
 		}
 		else
 		{
-       
+			//remove from list 
 			delete (*it);
 			it = particles.erase(it);
-			//remove from list 
 		}
 	}
-
-	
-
 }
 
 void ParticleSystem::Draw(sf::RenderWindow &window)
 {
 	for each (Particle* p in particles)
 	{
-		
-		/*int r, g, b;
-		r = rand() % 255;
-		g = rand() % 255;
-		b = rand() % 255;*/
-
 		m_sprite.setColor(sf::Color(255, 255, 255, p->getOpacity()));
 		m_SmokeSprite.setColor(sf::Color(255, 255, 255, p->getOpacity()));
 		if (p->GetType() == 0)
@@ -96,9 +81,7 @@ void ParticleSystem::Draw(sf::RenderWindow &window)
 			m_SmokeSprite.setPosition(p->GetPosition());
 			window.draw(m_SmokeSprite);
 		}
-		
 	}
-
 }
 
 sf::Vector2f ParticleSystem::Normalise(sf::Vector2f vec)

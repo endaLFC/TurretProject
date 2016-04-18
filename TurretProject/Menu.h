@@ -16,10 +16,6 @@ class Menu
 		void Update(float time);
 		int GetPressedItem() {return selectedItemIndex;}
 
-
-		
-		
-
 	private:
 		int selectedItemIndex;
 		sf::Font font;

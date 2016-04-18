@@ -11,7 +11,6 @@ Menu::Menu(float width, float height)
 	}
 	frameTimer = 0;
 	initialFrameTimer = 0;
-	//texture.loadFromFile("Asteroids4.jpg");
 	texture.loadFromFile("Detachedmenu.jpg");
 	background.setTexture(texture);
 	animationRect = { 0, 0, 1100, 800 };
@@ -25,14 +24,12 @@ Menu::Menu(float width, float height)
 	text[0].setColor(sf::Color::Color(180, 35, 35)); //dark red
 	text[0].setString("Play");
 	text[0].setScale(0.6,0.6);
-	//text[0].setPosition(sf::Vector2f(width/15 * 2, height/(MAX_NUMBER_OF_ITEMS + 1 ) * 3));
 	text[0].setPosition(sf::Vector2f(width / 15 * 11.2, height / (MAX_NUMBER_OF_ITEMS + 1) * 1.6));
 
 	text[1].setFont(font);
 	text[1].setColor(sf::Color::Color(120, 120, 120));	//grey
 	text[1].setString("Settings");
 	text[1].setScale(0.5, 0.5);
-	//text[1].setPosition(sf::Vector2f(width /15 * 6, height / (MAX_NUMBER_OF_ITEMS + 1) * 3));
 	text[1].setPosition(sf::Vector2f(width / 15 * 10.78, height / (MAX_NUMBER_OF_ITEMS + 1) * 2));
 
 	text[2].setFont(font);
@@ -42,8 +39,6 @@ Menu::Menu(float width, float height)
 	text[2].setPosition(sf::Vector2f(width /15 * 11.4, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.35));
 
 	selectedItemIndex = 0;
-
-
 }
 
 
@@ -64,8 +59,6 @@ void Menu::MoveUp()
 {
 	if (selectedItemIndex - 1 >= 0)
 	{
-		//beepSound.play();
-		//Sleep(150);
 		text[selectedItemIndex].setColor(sf::Color::Color(120, 120, 120));
 		selectedItemIndex--;
 		text[selectedItemIndex].setColor(sf::Color::Color(180, 35, 35));
@@ -76,8 +69,6 @@ void Menu::MoveDown()
 {
 	if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS)
 	{
-		//beepSound.play();
-		//Sleep(150);
 		text[selectedItemIndex].setColor(sf::Color::Color(120, 120, 120));
 		selectedItemIndex++;
 		text[selectedItemIndex].setColor(sf::Color::Color(180, 35, 35));
@@ -88,16 +79,13 @@ void Menu::MoveDown()
 void Menu::Update(float time)
 {	
 	/* initialize random seed: */
-	
 	random = rand() % 10 + 1;
 	frameTimer += time;
 	initialFrameTimer += time;
 	
-
-	if (initialFrameTimer >= 4)
+	if (initialFrameTimer >= 4)		//this timer waits on the first image so the animation only plays every 4 seconds
 	{
-		
-		if (frameTimer >= 0.1)
+		if (frameTimer >= 0.1)		//this timer flicks through the animation
 		{
 			if (animationRect.left < 7700)
 			{
@@ -111,7 +99,6 @@ void Menu::Update(float time)
 				
 			frameTimer = 0;
 		}
-
 	}
 	background.setTextureRect(animationRect);
 }

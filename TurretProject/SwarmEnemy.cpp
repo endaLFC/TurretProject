@@ -19,15 +19,10 @@ void SwarmEnemy::Initialise()
 	m_sprite.setRotation(m_rotation);
 	m_alive = true;
 	m_radius = 15;
-	int r, g, b;
-	r = rand() % 255;
-	g = rand() % 255;
-	b = rand() % 255;
 	m_sprite.setColor(sf::Color(255, 255, 255));
 
 	buffer.loadFromFile("Explosion.wav");
 	explosionSound.setBuffer(buffer);
-	//explosionSound.setRelativeToListener(true);
 	explosionSound.setVolume(25);
 }
 
@@ -76,28 +71,8 @@ bool SwarmEnemy::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 			ParticleSystem::GetInstance()->addParticle(m_position, 0);
 			ParticleSystem::GetInstance()->addParticle(m_position, 1);
 		}
-		if (DistanceFrom(playerPos) > 600)
-		{
-			explosionSound.setVolume(5);
-		}
-		else if (DistanceFrom(playerPos) > 500)
-		{
-			explosionSound.setVolume(10);
-		}
-		else if (DistanceFrom(playerPos) > 400)
-		{
-			explosionSound.setVolume(15);
-		}
-		else if (DistanceFrom(playerPos) > 300)
-		{
-			explosionSound.setVolume(20);
-		}
-		//explosionSound.setPosition(m_position.x, 0, m_position.y);
-		if (DistanceFrom(playerPos) < 300)
-		{
-			explosionSound.setVolume(25);
-		}
-		explosionSound.play();
+		
+		DistantSound(playerPos);		//decreases the volume of sound effects the further away the explosion occurs from the player
 		
 		int score = Score::GetInstance()->getScore();
 		if (playerKilledMe == true)
@@ -109,6 +84,31 @@ bool SwarmEnemy::Colliding(bool playerKilledMe, sf::Vector2f playerPos)
 	}
 	else
 		return false;
+}
+
+void SwarmEnemy::DistantSound(sf::Vector2f playerPos)
+{
+	if (DistanceFrom(playerPos) > 600)
+	{
+		explosionSound.setVolume(5);
+	}
+	else if (DistanceFrom(playerPos) > 500)
+	{
+		explosionSound.setVolume(10);
+	}
+	else if (DistanceFrom(playerPos) > 400)
+	{
+		explosionSound.setVolume(13);
+	}
+	else if (DistanceFrom(playerPos) > 300)
+	{
+		explosionSound.setVolume(17);
+	}
+	if (DistanceFrom(playerPos) < 300)
+	{
+		explosionSound.setVolume(20);
+	}
+	explosionSound.play();
 }
 
 bool SwarmEnemy::IsColliding(sf::Vector2f targetPosition, int targetRadius)

@@ -34,9 +34,6 @@ private:
 	sf::Text text[MAX_NUMBER_OF_ITEMS];
 	sf::Texture texture;
 	sf::Sprite background;
-	sf::IntRect animationRect;
-	float frameTimer;
-	float initialFrameTimer;
 	int random;
 
 	sf::String songName;

@@ -28,19 +28,15 @@ protected:
 	void Move(float time, sf::Vector2f playerPos);
 	void WrapAroundScreen();
 	float DistanceFrom(sf::Vector2f player);
+	void DistantSound(sf::Vector2f playerPos);
 	//Variables
 	int m_radius = 40;
 	int m_health;
-	//int m_width;
-	//int m_height;
 	bool m_alive;
 	bool smokeOn;
 	float smokeOnTime;
-	float m_speed;
 	float m_rotation;
-	//float toRadians(float degrees);
 	sf::Vector2f m_position;
-	//sf::Vector2f m_direction;
 	sf::Sprite m_sprite;
 	sf::Texture m_texture;
 	sf::FloatRect m_bounds;

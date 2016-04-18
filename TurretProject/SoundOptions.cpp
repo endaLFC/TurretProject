@@ -15,11 +15,8 @@ SoundOptions::SoundOptions(float width, float height, sf::Music &backgroundMusic
 	{
 		//handle error
 	}
-	frameTimer = 0;
-	//texture.loadFromFile("Asteroids4.jpg");
 	texture.loadFromFile("SoundOptionsBkg.jpg");
 
-	
 	if (!m_volTexture.loadFromFile("volumebar.png"))
 	{
 		//error
@@ -28,7 +25,6 @@ SoundOptions::SoundOptions(float width, float height, sf::Music &backgroundMusic
 	{
 		//error
 	}
-
 	if (!leftArrowTex.loadFromFile("arrowLeft.png"))
 	{
 	}
@@ -36,10 +32,8 @@ SoundOptions::SoundOptions(float width, float height, sf::Music &backgroundMusic
 	{
 	}
 	
-	//leftArrowSpr.setPosition(sf::Vector2f(width / 15 * 6.25, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.05));
 	leftArrowSpr.setTexture(leftArrowTex);
 
-	//rightArrowSpr.setPosition(sf::Vector2f(width / 15 * 11.1, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.05));
 	rightArrowSpr.setTexture(rightArrowTex);
 
 	m_volSprite.setOrigin(0, 0);
@@ -52,7 +46,6 @@ SoundOptions::SoundOptions(float width, float height, sf::Music &backgroundMusic
 	m_vol2Sprite.setTexture(m_vol2Texture);
 
 	background.setTexture(texture);
-	animationRect = { 0, 0, 1100, 800 };
 
 	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
 	{
@@ -88,7 +81,6 @@ SoundOptions::SoundOptions(float width, float height, sf::Music &backgroundMusic
 	songCount = 0;
 }
 
-
 SoundOptions::~SoundOptions()
 {
 }
@@ -99,7 +91,7 @@ void SoundOptions::Draw(sf::RenderWindow &window)
 	window.draw(m_volSprite);
 	m_vol2Sprite.setScale(volWidth / 100, 1);
 	window.draw(m_vol2Sprite);
-	if (displayVolArrows == true)
+	if (displayVolArrows == true)		//drawing the arrows beside the volume bar when appropriate
 	{
 		leftArrowSpr.setPosition(sf::Vector2f(1100 / 15 * 6.26, 800 / (MAX_NUMBER_OF_ITEMS + 1) * 2.05));
 		rightArrowSpr.setPosition(sf::Vector2f(1100 / 15 * 11.2, 800 / (MAX_NUMBER_OF_ITEMS + 1) * 2.05));
@@ -112,7 +104,7 @@ void SoundOptions::Draw(sf::RenderWindow &window)
 			window.draw(rightArrowSpr);
 		}
 	}
-	else if (displaySongArrows == true)
+	else if (displaySongArrows == true)		//drawing the arrows beside the song names when appropriate
 	{
 		leftArrowSpr.setPosition(sf::Vector2f(1100 / 15 * 6.26, 800 / (MAX_NUMBER_OF_ITEMS + 1) * 2.55));
 		rightArrowSpr.setPosition(sf::Vector2f(1100 / 15 * 11.1, 800 / (MAX_NUMBER_OF_ITEMS + 1) * 2.55));
@@ -125,9 +117,6 @@ void SoundOptions::Draw(sf::RenderWindow &window)
 			window.draw(rightArrowSpr);
 		}
 	}
-
-	
-
 
 	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++)
 	{

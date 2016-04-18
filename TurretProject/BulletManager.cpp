@@ -25,10 +25,6 @@ void BulletManager::Init()
 	{
 		//error
 	}
-	buffer.loadFromFile("Explosion.wav");
-	explosionSound.setBuffer(buffer);
-	damageBuffer.loadFromFile("damage.wav");
-	damageSound.setBuffer(damageBuffer);
 }
 
 BulletManager::~BulletManager()
@@ -69,7 +65,7 @@ void BulletManager::Draw(sf::RenderWindow &window)
 	}
 }
 
-bool BulletManager::IsColliding2(sf::Vector2f targetPosition, int targetRadius, bool targetAlive)
+bool BulletManager::IsColliding(sf::Vector2f targetPosition, int targetRadius, bool targetAlive)
 {
 	bool collision = false;
 	list<Bullet>::iterator it = bullets.begin();
@@ -85,58 +81,6 @@ bool BulletManager::IsColliding2(sf::Vector2f targetPosition, int targetRadius, 
 		{
 			++it;
 		}
-	}
-	return collision;
-}
-
-bool BulletManager::IsColliding()
-{
-   	bool collision = false;
-	list<Bullet>::iterator it = bullets.begin();
-	for (it = bullets.begin(); it != bullets.end();)
-	{
-		bool hit = false;
-		list<Enemy>* enemies = EnemyManager::GetInstance()->GetEnemies();
-		for (list<Enemy>::iterator Enemyit = enemies->begin(); Enemyit != enemies->end();)
-		{
-			if (it->IsColliding(Enemyit->GetPosition(), Enemyit->GetRadius(), Enemyit->GetAlive()))
-			{
-				if (Enemyit->GetHealth() > 0)
-				{
-					damageSound.play();
-					it = bullets.erase(it);
-					Enemyit->SetHealth(Enemyit->GetHealth() - 1);
-					hit = true;
-					break;
-				}
-
-				else if (Enemyit->GetHealth() == 0)
-				{
-					explosionSound.play();
-					int playerScore = Score::GetInstance()->getScore();
-					Score::GetInstance()->setScore(playerScore + 10);
-					for (int i = 0; i < 100; i++)
-					{
-						ParticleSystem::GetInstance()->addParticle(Enemyit->GetPosition(),0);
-					}
-
-					it = bullets.erase(it);
-					Enemyit = enemies->erase(Enemyit);
-					hit = true;
-					collision = true;
-					break;
-				}
-			}
-			else
-			{
-				++Enemyit;
-			}
-		}
-		if (!hit)
-		{
-			++it;
-		}
-		
 	}
 	return collision;
 }

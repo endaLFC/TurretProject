@@ -86,8 +86,6 @@
     <ClInclude Include="Boid.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletManager.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Energy.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Flock.h" />
@@ -111,8 +109,6 @@
     <ClCompile Include="Boid.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletManager.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="Energy.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="Flock.cpp" />
@@ -134,17 +130,6 @@
     </ClCompile>
     <ClCompile Include="SwarmEnemy.cpp" />
     <ClCompile Include="TurretProject.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="BulletSprite.png" />
-    <Image Include="Earth.jpg" />
-    <Image Include="GameOver.jpg" />
-    <Image Include="newcannon.png" />
-    <Image Include="Skull.jpg" />
-    <Image Include="Spaceship.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="Capture_it.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

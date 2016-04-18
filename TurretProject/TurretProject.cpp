@@ -9,7 +9,7 @@
 #include "PlayerOptions.h"
 #include "Player.h"
 #include "BulletManager.h"
-#include "EnemyManager.h"
+//#include "EnemyManager.h"
 #include "ParticleSystem.h"
 #include "Energy.h"
 #include "Boid.h"
@@ -105,7 +105,7 @@ int main()
 	//optionsTexture.loadFromFile("OptionsBkg.jpg");
 
 	BulletManager::GetInstance()->Init();
-	EnemyManager::GetInstance()->Init();
+	//EnemyManager::GetInstance()->Init();
 	ParticleSystem::GetInstance()->Init();
 	Energy::GetInstance()->Initialise();
 
@@ -400,7 +400,7 @@ int main()
 		case PLAY:
 			p1.Update(t);
 			BulletManager::GetInstance()->Update(t);
-			EnemyManager::GetInstance()->Update(t, p1.GetPos());
+			//EnemyManager::GetInstance()->Update(t, p1.GetPos());
 			ParticleSystem::GetInstance()->Update(t);
 			Energy::GetInstance()->Update(t);
 			if (mushroomColour.getAlive() == false)
@@ -411,15 +411,6 @@ int main()
 			{
 				mushroomSmall.Update(t);
 			}
-
-			if (BulletManager::GetInstance()->IsColliding())
-			{
-			}
-
-			//if (EnemyManager::GetInstance()->IsColliding(p1.GetPos(), p1.GetRadius()))
-			//{
-			//	gameMode = GAMEOVER;
-			//}
 
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
@@ -458,7 +449,7 @@ int main()
 				theta = flock.getBoid(i).angle(flock.getBoid(i).velocity);
 				flockEnemies[i]->SetRotation(theta);
 
-				if (BulletManager::GetInstance()->IsColliding2(flockEnemies[i]->GetPosition(), flockEnemies[i]->GetRadius(), flockEnemies[i]->GetAlive()) && flockEnemies[i]->GetAlive() == true)
+				if (BulletManager::GetInstance()->IsColliding(flockEnemies[i]->GetPosition(), flockEnemies[i]->GetRadius(), flockEnemies[i]->GetAlive()) && flockEnemies[i]->GetAlive() == true)
 				{
 					flockEnemies[i]->Colliding(true, p1.GetPos());
 					
@@ -494,7 +485,7 @@ int main()
 				theta = swarm.getBoid(i).angle(swarm.getBoid(i).velocity);
 				swarmEnemies[i]->SetRotation(theta);
 
-				if (BulletManager::GetInstance()->IsColliding2(swarmEnemies[i]->GetPosition(), swarmEnemies[i]->GetRadius(), swarmEnemies[i]->GetAlive()) && swarmEnemies[i]->GetAlive() == true)
+				if (BulletManager::GetInstance()->IsColliding(swarmEnemies[i]->GetPosition(), swarmEnemies[i]->GetRadius(), swarmEnemies[i]->GetAlive()) && swarmEnemies[i]->GetAlive() == true)
 				{
 					swarmEnemies[i]->Colliding(true, p1.GetPos());
 				}
@@ -530,7 +521,7 @@ int main()
 				theta = factory.getBoid(i).angle(factory.getBoid(i).velocity);
 				factories[i]->SetRotation(theta);
 
-				if (BulletManager::GetInstance()->IsColliding2(factories[i]->GetPosition(), factories[i]->GetRadius(), factories[i]->GetAlive()) && factories[i]->GetAlive() == true)
+				if (BulletManager::GetInstance()->IsColliding(factories[i]->GetPosition(), factories[i]->GetRadius(), factories[i]->GetAlive()) && factories[i]->GetAlive() == true)
 				{
 					factories[i]->Colliding(true, p1.GetPos());
 				}
@@ -622,7 +613,7 @@ int main()
 			factory.flocking(p1.GetPos(), obstacle2.GetPosition());
 			factory.flocking(p1.GetPos(), obstacle3.GetPosition());
 			
-			EnemyManager::GetInstance()->Draw(window);
+			//EnemyManager::GetInstance()->Draw(window);
 			BulletManager::GetInstance()->Draw(window);
 			ParticleSystem::GetInstance()->Draw(window);
 			//window.draw(scoreHUDSprite);
@@ -666,7 +657,7 @@ int main()
 				factories[i]->Draw(window);
 				//factories[i]->SetScale(1);
 			}
-			EnemyManager::GetInstance()->Draw(window);
+			//EnemyManager::GetInstance()->Draw(window);
 			BulletManager::GetInstance()->Draw(window);
 			ParticleSystem::GetInstance()->Draw(window);
 

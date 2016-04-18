@@ -25,6 +25,7 @@ protected:
 	void Move(float time, sf::Vector2f playerPos);
 	void WrapAroundScreen();
 	float DistanceFrom(sf::Vector2f player);
+	void DistantSound(sf::Vector2f playerPos);
 	//Variables
 	int m_radius = 5;
 	bool m_alive;

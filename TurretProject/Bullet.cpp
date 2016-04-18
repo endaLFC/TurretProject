@@ -16,17 +16,17 @@ void Bullet::Initialise(sf::Texture * text)
 	m_texture = text;
 	m_sprite.setTexture(*m_texture);
 	m_sprite.setOrigin(15, 10);
-	int r, g, b;
-	r = rand() % 255;
-	g = rand() % 255;
-	b = rand() % 255;
 	if (Energy::GetInstance()->GetEnergy() < 0.15)
+	{
 		m_sprite.setColor(sf::Color(255 * Energy::GetInstance()->GetEnergy() ,255,255));
+	}
+		
 	else
+	{
 		m_sprite.setColor(sf::Color(255, 255, 255));
+	}
+		
 }
-
-
 
 Bullet::~Bullet()
 {
@@ -35,11 +35,16 @@ Bullet::~Bullet()
 bool Bullet::Update(float time)
 {
 	Move(time);
-
-	if (m_pos.x > 2400 || m_pos.x < 0 || m_pos.y < 0 || m_pos.y > 1800)
-		alive = false;
-
+	WithinBounds();	
 	return alive;
+}
+
+void Bullet::WithinBounds()
+{
+	if (m_pos.x > 2400 || m_pos.x < 0 || m_pos.y < 0 || m_pos.y > 1800)
+	{
+		alive = false;
+	}
 }
 
 void Bullet::Move(float time)

@@ -56,7 +56,7 @@ Pvector Boid::Separation(vector<Boid> boids, sf::Vector2f playerPos)
 		Pvector p(playerPos.x, playerPos.y);
 		float d2 = location.distance(p); //distance from player
 
-		//If the boids are too close to the player retreat
+		//If the flock boids are too close to the player retreat
 		if ((d2 > 0) && (d2 < desiredseparation2) && boidType == FLOCK)
 		{
 			Pvector boid2Player(0, 0);
@@ -67,7 +67,7 @@ Pvector Boid::Separation(vector<Boid> boids, sf::Vector2f playerPos)
 			count++;
 		}
 
-		//If the boids are too close to the player retreat
+		//If the factory boids are too close to the player retreat
 		if ((d2 > 0) && (d2 < desiredseparation3) && boidType == FACTORY)
 		{
 			Pvector boid2Player(0, 0);
@@ -78,7 +78,7 @@ Pvector Boid::Separation(vector<Boid> boids, sf::Vector2f playerPos)
 			count++;
 		}
 
-		// If this is a fellow boid and it's too close, move away from it
+		// If this is a fellow factory boid and it's too close, move away from it
 		if ((d > 0) && (d < desiredseparation4) && boidType == FACTORY)
 		{
 			Pvector diff(0, 0);
@@ -89,7 +89,7 @@ Pvector Boid::Separation(vector<Boid> boids, sf::Vector2f playerPos)
 			count++;
 		}
 
-		// If this is a fellow boid and it's too close, move away from it
+		// If this is a fellow flock boid and it's too close, move away from it
 		if ((d > 0) && (d < desiredseparation) && boidType == FLOCK)
 		{
 			Pvector diff(0,0);

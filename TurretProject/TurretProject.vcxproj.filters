@@ -36,13 +36,7 @@
     <ClInclude Include="BulletManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ParticleSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Particle.h">
@@ -107,13 +101,7 @@
     <ClCompile Include="BulletManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Particle.cpp">
@@ -158,30 +146,5 @@
     <ClCompile Include="PlayerOptions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Earth.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Skull.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Spaceship.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="BulletSprite.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="newcannon.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="GameOver.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="Capture_it.ttf">
-      <Filter>Resource Files</Filter>
-    </Font>
   </ItemGroup>
 </Project>

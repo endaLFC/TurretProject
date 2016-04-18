@@ -23,7 +23,6 @@ private:
 	}
 	list<Particle*> particles;
 	
-
 	sf::Texture m_texture;
 	sf::Sprite m_sprite;
 

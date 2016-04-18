@@ -39,18 +39,22 @@ void Energy::Update(float time)
 {
 	if (energyWidth < 0.25)
 	{
-		energyWidth += time * 0.2;
+		energyWidth += time * 0.2;		//if energy is in the blue zone recharge slowly
 	}
 	else if (energyWidth <= 1)
 	{
-		energyWidth += time * 0.5;
+		energyWidth += time * 0.5;		//if energy is in the red zone recharge faster
 	}
 
 	m_sprite.setScale(energyWidth, 1);
-	if (energyWidth > 0.25)
+	if (energyWidth > 0.25)				//changing the colour of the energy bar depending on how much energy is left
+	{
 		m_sprite.setColor(sf::Color(255, 255, 255));
+	}
 	else
+	{
 		m_sprite.setColor(sf::Color(255 * energyWidth, 255, 255));
+	}
 }
 
 void Energy::Shot1()

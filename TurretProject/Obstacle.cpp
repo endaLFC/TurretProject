@@ -41,7 +41,6 @@ bool Obstacle::IsColliding(sf::Vector2f targetPosition, int targetRadius)
 	float distance = sqrt((targetPosition.x - m_position.x)*(targetPosition.x - m_position.x) + (targetPosition.y - m_position.y)*(targetPosition.y - m_position.y));
 	if (distance < m_radius + targetRadius)		//collision occurs
 	{
-		//std::cout << "COLLISION" << std::endl;
 		return true;	//return true
 	}
 	else
