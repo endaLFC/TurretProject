@@ -173,8 +173,9 @@ void Player::Initialise()
 	fireSound.setVolume(vol);
 	m_health = 100;
 	m_turretHealth = 100;
+	shrink = false;
+	speedBoost = false;
 }
-
 
 Player::~Player()
 {
@@ -203,33 +204,24 @@ void Player::Update(float time)
 		else if (turretMode == LOCKING)		//if the ship is locking into the dock, make the dock do the appropriate rotation
 		{
 			if (turretRot < 272 && turretRot > 268)
+			{
 				turretRot = 270;
+			}
 			else if (turretRot > 270)
+			{
 				turretRot -= lockSpeed * time;
+			}
 			else if (turretRot < 270)
+			{
 				turretRot += lockSpeed * time;
+			}
 		}
-		//checking what powerups are active and changing variables accordingly
-		if (shrink == true && speedBoost == true)
-		{
-			m_sprite.setScale(0.75, 0.75);
-			m_radius = 20;
-			m_sprite.setTexture(m_powerup3texture);
-		}
-		else if (shrink == true && speedBoost == false)
-		{
-			m_sprite.setScale(0.75, 0.75);
-			m_radius = 20;
-			m_sprite.setTexture(m_powerup2texture);
-		}
-		else if (speedBoost == true && shrink == false)
-		{
-			m_sprite.setTexture(m_poweruptexture);
-		}
+		SkinSelector(skinType);
 
 		if (locked == true && turretMode == LOCKING)
+		{
 			slowLock(time);
-
+		}
 		Move(time);
 		WrapAroundScreen();
 	}
@@ -237,15 +229,25 @@ void Player::Update(float time)
 	//changing the colour of the score text depending on the score
 	text[3].setString(to_string(Score::GetInstance()->getScore()));
 	if (Score::GetInstance()->getScore() >= 500)
+	{
 		text[3].setColor(sf::Color::Red);
+	}
 	else if (Score::GetInstance()->getScore() >= 400)
+	{
 		text[3].setColor(sf::Color::Green);
+	}
 	else if (Score::GetInstance()->getScore() >= 300)
+	{
 		text[3].setColor(sf::Color::Yellow);
+	}
 	else if (Score::GetInstance()->getScore() >= 200)
+	{
 		text[3].setColor(sf::Color::Magenta);
+	}
 	else if (Score::GetInstance()->getScore() >= 100)
-		text[3].setColor(sf::Color::Blue);
+	{
+		text[3].setColor(sf::Color::Cyan);
+	}
 }
 
 void Player::Move(float time)
@@ -591,32 +593,21 @@ void Player::AlterHealth(int change)
 
 void Player::SkinSelector(int skinType)
 {
-	if (skinType == 0)
-	{
-		m_dockSprite.setTexture(m_texture);
-		m_dockSprite.setTexture(m_dockTexture);
-	}
-	else if (skinType == 1)
-	{
-		m_sprite.setColor(sf::Color::Color(255, 100, 100));
-		m_dockSprite.setColor(sf::Color::Color(255, 100, 100));
-	}
-	else if (skinType == 2)
-	{
-		m_sprite.setColor(sf::Color::Color(100, 100, 255));
-		m_dockSprite.setColor(sf::Color::Color(100, 100, 255));
-	}
-	else if (skinType == 3)
+	if (skinType == 3)		//if super skin
 	{
 		m_sprite.setColor(sf::Color::Color(255, 255, 255));
 		m_dockSprite.setColor(sf::Color::Color(255, 255, 255));
-
+		//checking for powerups
 		if (shrink == true && speedBoost == true)
 		{
+			m_sprite.setScale(0.75, 0.75);
+			m_radius = 20;
 			m_sprite.setTexture(m_superTexturePU3);
 		}
 		else if (shrink == true && speedBoost == false)
 		{
+			m_sprite.setScale(0.75, 0.75);
+			m_radius = 20;
 			m_sprite.setTexture(m_superTexturePU2);
 		}
 		else if (shrink == false && speedBoost == true)
@@ -625,10 +616,79 @@ void Player::SkinSelector(int skinType)
 		}
 		else
 		{
+			m_sprite.setScale(1, 1);
 			m_sprite.setTexture(m_superTexture);
 		}
 
 		m_dockSprite.setTexture(m_superDockTexture);
 	}
-	
+	else		//if not super skin
+	{
+		//check powerups
+		if (shrink == true && speedBoost == true)
+		{
+			m_sprite.setScale(0.75, 0.75);
+			m_radius = 20;
+			m_sprite.setTexture(m_powerup3texture);
+		}
+		else if (shrink == true && speedBoost == false)
+		{
+			m_sprite.setScale(0.75, 0.75);
+			m_radius = 20;
+			m_sprite.setTexture(m_powerup2texture);
+		}
+		else if (speedBoost == true && shrink == false)
+		{
+			m_sprite.setTexture(m_poweruptexture);
+		}
+		else
+		{
+			m_sprite.setScale(1, 1);
+			m_sprite.setTexture(m_texture);
+		}
+		m_dockSprite.setTexture(m_dockTexture);
+
+		if (skinType == 0)
+		{
+			m_sprite.setColor(sf::Color::Color(255, 255, 255));
+			m_dockSprite.setColor(sf::Color::Color(255, 255, 255));
+		}
+		else if (skinType == 1)
+		{
+			m_sprite.setColor(sf::Color::Color(255, 100, 100));
+			m_dockSprite.setColor(sf::Color::Color(255, 100, 100));
+		}
+		else if (skinType == 2)
+		{
+			m_sprite.setColor(sf::Color::Color(100, 100, 255));
+			m_dockSprite.setColor(sf::Color::Color(100, 100, 255));
+		}
+	}
+}
+
+void Player::Restart()
+{
+	m_alive = true;
+	m_radius = 70;
+	m_speed = 100;
+	maxSpeed = 500;
+	forward_speed = 0;
+	m_rotation = 270;
+	m_direction = sf::Vector2f(cos(toRadians(m_rotation)), sin(toRadians(m_rotation)));
+	m_pos = startPos;
+	shrink = false;
+	speedBoost = false;
+	fired = false;
+	fired2 = false;
+	firedTime = 0;
+	firedTimeControl = 0.2;
+	fireSide = false;
+	locked = true;
+	turretMode = TURRET;
+	turretRot = 0;
+	m_health = 100;
+	m_turretHealth = 100;
+	SkinSelector(skinType);
+	Score::GetInstance()->setScore(0);
+	text[3].setColor(sf::Color::White);
 }

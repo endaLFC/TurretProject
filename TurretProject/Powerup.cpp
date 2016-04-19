@@ -7,7 +7,7 @@ Powerup::Powerup()
 	m_position = sf::Vector2f(0, 0);
 }
 
-void Powerup::Initialise(sf::Vector2f pos, int type)
+void Powerup::Initialise(sf::Vector2f asteroidPos, sf::Vector2f asteroidPos2, sf::Vector2f asteroidPos3, int type)
 {
 	m_type = type;
 	if (m_type == 0)
@@ -27,7 +27,21 @@ void Powerup::Initialise(sf::Vector2f pos, int type)
 	
 	o = 255;
 	
-	m_position = pos;
+	x = rand() % 2100 + 50;
+	y = rand() % 700 + 50;
+	sf::Vector2f tempPos(x, y);
+
+	while (OverlappingAsteroid(asteroidPos, asteroidPos2, asteroidPos3, tempPos) == true)
+	{
+		x = rand() % 2100 + 50;
+		y = rand() % 700 + 50;
+		sf::Vector2f tempPos(x, y);
+	}
+
+	if (OverlappingAsteroid(asteroidPos, asteroidPos2, asteroidPos3, tempPos) == false)
+	{
+		m_position = tempPos;
+	}
 	m_sprite.setPosition(m_position);
 	m_sprite.setTexture(m_texture);
 	m_sprite.setOrigin(30, 30);
@@ -60,11 +74,8 @@ bool Powerup::IsColliding(sf::Vector2f targetPosition, int targetRadius)
 			m_alive = false;
 			return true;	//return true
 		}
-		else
-		{
-			return false;	//return false
-		}
 	}
+	return false;	//return false
 }
 
 void Powerup::Rotate(float time)
@@ -88,4 +99,24 @@ void Powerup::Fade(float time)
 void Powerup::Update(float time)
 {
 	Fade(time);
+}
+
+bool Powerup::OverlappingAsteroid(sf::Vector2f asteroidPos, sf::Vector2f asteroidPos2, sf::Vector2f asteroidPos3, sf::Vector2f powerUpPos)
+{
+	if (powerUpPos.x < asteroidPos.x + 70 && powerUpPos.x > asteroidPos.x - 70 && powerUpPos.y < asteroidPos.y + 70 && powerUpPos.y > asteroidPos.y - 70)	//if within bounds of asteroid 1
+	{
+		return true;
+	}
+	else if (powerUpPos.x < asteroidPos2.x + 100 && powerUpPos.x > asteroidPos2.x - 100 && powerUpPos.y < asteroidPos2.y + 100 && powerUpPos.y > asteroidPos2.y - 100)	//if within bounds of asteroid 2
+	{
+		return true;
+	}
+	else if (powerUpPos.x < asteroidPos3.x + 150 && powerUpPos.x > asteroidPos3.x - 150 && powerUpPos.y < asteroidPos3.y + 150 && powerUpPos.y > asteroidPos3.y - 150)	//if within bounds of asteroid 3
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

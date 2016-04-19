@@ -23,6 +23,11 @@ void Flock::addBoid(Boid b)
 	flock.push_back(b);
 }
 
+void Flock::ClearAll()
+{
+	flock.clear();
+}
+
 // Runs the run function for every boid in the flock checking against the flock
 // itself. Which in turn applies all the rules to the flock.
 void Flock::flocking(sf::Vector2f playerPos, sf::Vector2f asteroidPos)

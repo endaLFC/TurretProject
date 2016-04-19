@@ -32,6 +32,7 @@ class Player
 		void SetHealth(int newHealth) {m_health = newHealth; }
 		void AlterHealth(int change);
 		void SetSkinType(int x) { skinType = x; }
+		void Restart();
 
 	protected:
 		bool m_alive;
@@ -105,8 +106,8 @@ class Player
 		bool locked;
 		int turretMode;
 
-		bool shrink = false;
-		bool speedBoost = false;
+		bool shrink;
+		bool speedBoost;
 
 		bool fired;
 		bool fired2;

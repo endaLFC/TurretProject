@@ -9,15 +9,18 @@ public:
 	sf::Vector2f GetPosition() { return m_position; }
 	int GetRadius() { return m_radius; }
 	int GetType() { return m_type; }
-	void Initialise(sf::Vector2f pos, int type);
+	void Initialise(sf::Vector2f asteroidPos, sf::Vector2f asteroidPos2, sf::Vector2f asteroidPos3, int type);
 	void SetSpriteScale(float s) { m_sprite.setScale(s, s); };
 	void Rotate(float time);
 	void Update(float time);
 	bool getAlive() { return m_alive; }
+	void setAlive(bool x) { m_alive = x, o = 255; }
 
 protected:
 	//Functions
+	float x, y;
 	void Fade(float time);
+	bool OverlappingAsteroid(sf::Vector2f asteroidPos, sf::Vector2f asteroidPos2, sf::Vector2f asteroidPos3, sf::Vector2f powerUpPos);
 	//Variables
 	bool m_alive;
 	int m_radius;

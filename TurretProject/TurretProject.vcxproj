@@ -90,6 +90,7 @@
     <ClInclude Include="Factory.h" />
     <ClInclude Include="Flock.h" />
     <ClInclude Include="FlockEnemy.h" />
+    <ClInclude Include="GameOverMenu.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="OptionsMenu.h" />
@@ -113,6 +114,7 @@
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="Flock.cpp" />
     <ClCompile Include="FlockEnemy.cpp" />
+    <ClCompile Include="GameOverMenu.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />

@@ -62,7 +62,7 @@ PlayerOptions::PlayerOptions(float width, float height, sf::Music &backgroundMus
 
 	text[1].setFont(font);
 	text[1].setColor(sf::Color::Color(0, 20, 60));	//navy
-	text[1].setString("Health");
+	text[1].setString("SHip HP");
 	text[1].setScale(0.55, 0.55);
 	text[1].setPosition(sf::Vector2f(width / 15 * 3.6, height / (MAX_NUMBER_OF_ITEMS + 1) * 2.5));
 

@@ -33,6 +33,7 @@ public:
 	void addBoid(Boid b);
 	void flocking(sf::Vector2f playerPos, sf::Vector2f asteroidPos);
 	void swarming(sf::Vector2f playerPos);
+	void ClearAll();
 
 };
 
