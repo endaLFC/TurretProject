@@ -4,11 +4,12 @@
 
 Powerup::Powerup()
 {
-	m_position = sf::Vector2f(0, 0);
+	
 }
 
 void Powerup::Initialise(sf::Vector2f asteroidPos, sf::Vector2f asteroidPos2, sf::Vector2f asteroidPos3, int type)
 {
+	//srand(time(NULL));
 	m_type = type;
 	if (m_type == 0)
 	{
@@ -28,13 +29,13 @@ void Powerup::Initialise(sf::Vector2f asteroidPos, sf::Vector2f asteroidPos2, sf
 	o = 255;
 	
 	x = rand() % 2100 + 50;
-	y = rand() % 700 + 50;
+	y = rand() % 1600 + 50;
 	sf::Vector2f tempPos(x, y);
 
 	while (OverlappingAsteroid(asteroidPos, asteroidPos2, asteroidPos3, tempPos) == true)
 	{
 		x = rand() % 2100 + 50;
-		y = rand() % 700 + 50;
+		y = rand() % 1600 + 50;
 		sf::Vector2f tempPos(x, y);
 	}
 
@@ -60,7 +61,9 @@ void Powerup::Initialise(sf::Vector2f asteroidPos, sf::Vector2f asteroidPos2, sf
 void Powerup::Draw(sf::RenderWindow& window)
 {
 	if (o > 0)
+	{
 		window.draw(m_sprite);
+	}
 }
 
 bool Powerup::IsColliding(sf::Vector2f targetPosition, int targetRadius)
@@ -119,4 +122,27 @@ bool Powerup::OverlappingAsteroid(sf::Vector2f asteroidPos, sf::Vector2f asteroi
 	{
 		return false;
 	}
+}
+
+void Powerup::Restart(sf::Vector2f asteroidPos, sf::Vector2f asteroidPos2, sf::Vector2f asteroidPos3)
+{
+	x = rand() % 2100 + 50;
+	y = rand() % 1400 + 50;
+	sf::Vector2f tempPos(x, y);
+
+	while (OverlappingAsteroid(asteroidPos, asteroidPos2, asteroidPos3, tempPos) == true)
+	{
+		x = rand() % 2100 + 50;
+		y = rand() % 1600 + 50;
+		sf::Vector2f tempPos(x, y);
+	}
+	if (OverlappingAsteroid(asteroidPos, asteroidPos2, asteroidPos3, tempPos) == false)
+	{
+		m_position = tempPos;
+	}
+	m_sprite.setPosition(m_position);
+
+	m_alive = true;
+	o = 255;
+
 }

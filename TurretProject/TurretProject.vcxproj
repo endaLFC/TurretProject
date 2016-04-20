@@ -92,6 +92,7 @@
     <ClInclude Include="FlockEnemy.h" />
     <ClInclude Include="GameOverMenu.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Notification.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="OptionsMenu.h" />
     <ClInclude Include="Particle.h" />
@@ -116,6 +117,7 @@
     <ClCompile Include="FlockEnemy.cpp" />
     <ClCompile Include="GameOverMenu.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Notification.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />
     <ClCompile Include="Particle.cpp" />

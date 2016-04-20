@@ -21,6 +21,8 @@
 #include "Powerup.h"
 #include "FlockEnemy.h"
 #include "SwarmEnemy.h"
+#include "Score.h"
+#include "Notification.h"
 ////////////////////////////////////////////////////////////
 ///Entrypoint of application 
 //////////////////////////////////////////////////////////// 
@@ -36,6 +38,7 @@ Powerup mushroomColour;
 
 bool enemiesDestroyed = true;
 bool gameReset = false;
+bool allDead = true;
 
 Obstacle obstacle;
 Obstacle obstacle2;
@@ -49,9 +52,39 @@ Flock factory;
 vector<FlockEnemy*> flockEnemies;
 vector<SwarmEnemy*> swarmEnemies;
 vector<Factory*> factories;
+bool WonGame;
 
-void GameOverTimer()
+void CheckForAllDead()
 {
+	for (int i = 0; i < factories.size(); i++)
+	{
+		if (factories[i]->GetAlive() == true)
+		{
+			allDead = false;
+			break;
+		}
+	}
+	for (int i = 0; i < swarmEnemies.size(); i++)
+	{
+		if (swarmEnemies[i]->GetAlive() == true)
+		{
+			allDead = false;
+			break;
+		}
+	}
+	for (int i = 0; i < flockEnemies.size(); i++)
+	{
+		if (flockEnemies[i]->GetAlive() == true)
+		{
+			allDead = false;
+			break;
+		}
+	}
+}
+
+void GameOverTimer(bool winner)
+{
+	WonGame = winner;
 	gameOverCount += t;
 	if (gameOverCount > 2)
 	{
@@ -60,11 +93,20 @@ void GameOverTimer()
 	}
 }
 
+void CreateSwarmEnemy(sf::Vector2f pos)
+{
+	Boid b(pos.x, pos.y, 1); //Starts the boid at the passed position
+	SwarmEnemy *sE = new SwarmEnemy;
+	sE->Initialise();
+	sE->SetPosition(sf::Vector2f(pos.x, pos.y));
+	swarm.addBoid(b);
+	swarmEnemies.push_back(sE);
+}
+
 void ManageFlockEnemies()
 {
 	for (int i = 0; i < flockEnemies.size(); i++)
 	{
-		flockEnemies[i]->Draw(window);
 		flockEnemies[i]->Update(t);
 		//Matches up the location of the shape to the boid
 		flockEnemies[i]->SetPosition(sf::Vector2f(flock.getBoid(i).location.x, flock.getBoid(i).location.y));
@@ -101,7 +143,6 @@ void ManageSwarmEnemies()
 {
 	for (int i = 0; i < swarmEnemies.size(); i++)
 	{
-		swarmEnemies[i]->Draw(window);
 		swarmEnemies[i]->Update(t);
 		//Matches up the location of the shape to the boid
 		swarmEnemies[i]->SetPosition(sf::Vector2f(swarm.getBoid(i).location.x, swarm.getBoid(i).location.y));
@@ -138,7 +179,6 @@ void ManageFactoryEnemies()
 	//drawing factory boids
 	for (int i = 0; i < factories.size(); i++)
 	{
-		factories[i]->Draw(window);
 		factories[i]->Update(t);
 		//Matches up the location of the shape to the boid
 		factories[i]->SetPosition(sf::Vector2f(factory.getBoid(i).location.x, factory.getBoid(i).location.y));
@@ -180,44 +220,82 @@ void ManageEnemies()
 	ManageFactoryEnemies();
 }
 
+void CreateSwarmEnemy()
+{
+	float x, y;
+	x = rand() % 2200;
+	y = rand() % 200 + 700;
+	Boid b(x, y, 1); //Starts the boid with a random position in the window.
+	SwarmEnemy *sE = new SwarmEnemy;
+	sE->Initialise();
+	sE->SetPosition(sf::Vector2f(x, y));
+	swarm.addBoid(b);
+	swarmEnemies.push_back(sE);
+}
+void CreateFlockEnemies()
+{
+	float x, y;
+	x = rand() % 2200;
+	y = rand() % 200 + 400;
+	Boid b(x, y, 0); //Starts the boid with a random position in the window.
+	FlockEnemy *fE = new FlockEnemy;
+	fE->Initialise();
+	fE->SetPosition(sf::Vector2f(x, y));
+	flock.addBoid(b);
+	flockEnemies.push_back(fE);
+}
+void CreateFactoryEnemies()
+{
+	//Boid b(rand() % window_width, rand() % window_height); //Starts the boid with a random position in the window.
+	Boid b(800, 1000, 2);
+	Factory *f = new Factory;
+	f->Initialise();
+	f->SetPosition(sf::Vector2f(800, 600));
+	factory.addBoid(b);
+	factories.push_back(f);
+}
 void CreateEnemies()
 {
 	for (int i = 0; i < 20; i++) //Creating flock enemies
 	{
-		float x, y;
-		x = rand() % 2200;
-		y = rand() % 200 + 400;
-		Boid b(x, y, 0); //Starts the boid with a random position in the window.
-		FlockEnemy *fE = new FlockEnemy;
-		fE->Initialise();
-		fE->SetPosition(sf::Vector2f(x, y));
-		flock.addBoid(b);
-		flockEnemies.push_back(fE);
+		CreateFlockEnemies();
 	}
-
 	for (int i = 0; i < 50; i++) //Creating swarm enemies
 	{
-		float x, y;
-		x = rand() % 2200;
-		y = rand() % 200 + 700;
-		Boid b(x, y, 1); //Starts the boid with a random position in the window.
-		SwarmEnemy *sE = new SwarmEnemy;
-		sE->Initialise();
-		sE->SetPosition(sf::Vector2f(x, y));
-		swarm.addBoid(b);
-		swarmEnemies.push_back(sE);
+		CreateSwarmEnemy();
 	}
-
 	for (int i = 0; i < 5; i++) //Number of boids is hardcoded for testing pusposes.
 	{
-		//Boid b(rand() % window_width, rand() % window_height); //Starts the boid with a random position in the window.
-		Boid b(800, 1000, 2);
-		Factory *f = new Factory;
-		f->Initialise();
-		f->SetPosition(sf::Vector2f(800, 600));
-		factory.addBoid(b);
-		factories.push_back(f);
+		CreateFactoryEnemies();
 	}
+}
+
+void DestroyEnemies()
+{
+	vector<FlockEnemy*>::iterator it = flockEnemies.begin();
+	for (; it != flockEnemies.end() ;)
+	{
+		delete *it;
+		it = flockEnemies.erase(it);
+	}
+	flock.ClearAll();
+
+	vector<SwarmEnemy*>::iterator it2 = swarmEnemies.begin();
+	for (; it2 != swarmEnemies.end();)
+	{
+		delete *it2;
+		it2 = swarmEnemies.erase(it2);
+	}
+	swarm.ClearAll();
+
+	vector<Factory*>::iterator it3 = factories.begin();
+	for (; it3 != factories.end();)
+	{
+		delete *it3;
+		it3 = factories.erase(it3);
+	}
+	factory.ClearAll();
+
 }
 
 void ResetGame()
@@ -225,10 +303,11 @@ void ResetGame()
 	if (gameReset == false)
 	{
 		p1.Restart();
-		mushroomSmall.setAlive(true);
-		mushroomColour.setAlive(true);
+		mushroomSmall.Restart(obstacle.GetPosition(), obstacle2.GetPosition(), obstacle3.GetPosition());
+		mushroomColour.Restart(obstacle.GetPosition(), obstacle2.GetPosition(), obstacle3.GetPosition());
 		gameReset = true;
-		//CreateEnemies();
+		DestroyEnemies();
+		CreateEnemies();
 	}
 }
 
@@ -246,6 +325,8 @@ int main()
 	sf::SoundBuffer menuBeepBuffer;
 	sf::Sound menuBeep2;
 	sf::SoundBuffer menuBeep2Buffer;
+
+	Notification notification;
 
 	backgroundMusic.openFromFile("music2.ogg");
 	backgroundMusic.setVolume(50);
@@ -284,7 +365,8 @@ int main()
 	sf::Time time;
 	sf::Clock clock;
 
-	
+	//notification.Initialise();
+
 	p1.Initialise();
 
 
@@ -296,7 +378,6 @@ int main()
 	//optionsTexture.loadFromFile("OptionsBkg.jpg");
 
 	BulletManager::GetInstance()->Init();
-	//EnemyManager::GetInstance()->Init();
 	ParticleSystem::GetInstance()->Init();
 	Energy::GetInstance()->Initialise();
 
@@ -321,6 +402,7 @@ int main()
 
 	mushroomSmall.Initialise(obstacle.GetPosition(), obstacle2.GetPosition(), obstacle3.GetPosition(), 0);
 	mushroomColour.Initialise(obstacle.GetPosition(), obstacle2.GetPosition(), obstacle3.GetPosition(), 1);
+
 
 	CreateEnemies();
 
@@ -590,7 +672,6 @@ int main()
 				}
 				break;
 			case GAMEOVER:
-				ResetGame();
 				if (event.type == event.KeyPressed)
 				{
 					if (event.key.code == sf::Keyboard::Left)
@@ -651,6 +732,7 @@ int main()
 			break;
 
 		case PLAY:
+			//notification.Update(t);
 			gameReset = false;
 			p1.Update(t);
 			BulletManager::GetInstance()->Update(t);
@@ -674,6 +756,7 @@ int main()
 
 			window.clear();
 
+			//making sure the camera has the player
 			if (p1.GetPos().x >= 550 && p1.GetPos().x <= 1850)
 			{
 				view.setCenter(p1.GetPos().x, view.getCenter().y);
@@ -701,8 +784,9 @@ int main()
 			window.setView(view);
 			window.draw(background);
 
-			//creating all enemies
+			//manage all enemies
 			ManageEnemies();
+			
 
 			if (obstacle.IsColliding(p1.GetPos(), p1.GetRadius()))
 			{
@@ -723,8 +807,18 @@ int main()
 
 			if (p1.GetHealth() <= 0)
 			{
+				gameOverMenu.SetScore(1);
 				p1.SetAlive(false);
-				GameOverTimer();
+				GameOverTimer(false);
+			}
+
+			allDead = true;
+			CheckForAllDead();
+
+			if (allDead == true)
+			{
+				gameOverMenu.SetScore(Score::GetInstance()->getScore());
+				GameOverTimer(true);
 			}
 
 			if (mushroomSmall.IsColliding(p1.GetPos(), p1.GetRadius()) && mushroomSmall.GetType() == 0)// && mushroomSmall.getAlive() == true)
@@ -761,6 +855,19 @@ int main()
 			BulletManager::GetInstance()->Draw(window);
 			ParticleSystem::GetInstance()->Draw(window);
 			p1.Draw(window);
+			
+			for (int i = 0; i < swarmEnemies.size(); i++)
+			{
+				swarmEnemies[i]->Draw(window);
+			}
+			for (int i = 0; i < flockEnemies.size(); i++)
+			{
+				flockEnemies[i]->Draw(window);
+			}
+			for (int i = 0; i < factories.size(); i++)
+			{
+				factories[i]->Draw(window);
+			}
 
 			window.setView(miniMap);
 			window.draw(radarBackground);
@@ -802,6 +909,8 @@ int main()
 
 			Energy::GetInstance()->Draw(window);
 
+			notification.Draw(window);
+
 			window.setView(main); //setting view back to main
 			window.draw(radarBorderSpr);
 			p1.DrawLock(window);
@@ -840,12 +949,18 @@ int main()
 			break;
 
 		case GAMEOVER:
+			ResetGame();
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
 				window.close();
 			}
+			
+			gameOverMenu.GameWon(WonGame);
 
+			
+			
+			
 			gameOverMenu.Update(t);
 			//DRAW CODE HERE
 			window.clear();

@@ -162,7 +162,7 @@ void Player::Initialise()
 	lockinSound.setBuffer(lockinBuffer);
 
 	deadBuffer.loadFromFile("playerdead.wav");
-	deadSound.setBuffer(lockinBuffer);
+	deadSound.setBuffer(deadBuffer);
 
 	turretRot = 0;
 

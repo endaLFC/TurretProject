@@ -150,14 +150,13 @@ Pvector Boid::Separation(vector<Boid> boids, sf::Vector2f playerPos)
 	return steer;
 }
 
-
 Pvector Boid::AsteroidSeparation(vector<Boid> boids, sf::Vector2f asteroidPos)
 {
 	// If the boid we're looking at is a predator, do not run the separation
 	// algorithm
 
 	// Distance of field of vision for separation between boids
-	float desiredseparation = 250;
+	float desiredseparation = 280;
 
 	Pvector steer(0, 0);
 	int count = 0;

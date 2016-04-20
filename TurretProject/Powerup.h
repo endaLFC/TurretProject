@@ -10,11 +10,12 @@ public:
 	int GetRadius() { return m_radius; }
 	int GetType() { return m_type; }
 	void Initialise(sf::Vector2f asteroidPos, sf::Vector2f asteroidPos2, sf::Vector2f asteroidPos3, int type);
-	void SetSpriteScale(float s) { m_sprite.setScale(s, s); };
+	void SetSpriteScale(float s) { m_sprite.setScale(s, s); }
 	void Rotate(float time);
 	void Update(float time);
 	bool getAlive() { return m_alive; }
 	void setAlive(bool x) { m_alive = x, o = 255; }
+	void Restart(sf::Vector2f asteroidPos, sf::Vector2f asteroidPos2, sf::Vector2f asteroidPos3);
 
 protected:
 	//Functions
