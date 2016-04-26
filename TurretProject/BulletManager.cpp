@@ -37,6 +37,7 @@ void BulletManager::PlayerFire(float rotation, sf::Vector2f position)
 {
 	Bullet b(rotation, position);
 	b.Initialise(&m_texture);
+	//b.Initialise(NULL);
 	bullets.push_back(b);
 }
 

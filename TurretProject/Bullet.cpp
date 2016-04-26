@@ -1,6 +1,14 @@
 #include "stdafx.h"
 #include "Bullet.h"
 #include "Energy.h"
+#include <stdio.h>      /* printf */
+#include <assert.h>     /* assert */
+
+void Bullet::print_number(sf::Texture* myText)
+{
+	assert(myText != NULL);
+	printf("%d\n", *myText);
+}
 
 Bullet::Bullet(float rotation, sf::Vector2f position)
 {
@@ -13,12 +21,14 @@ Bullet::Bullet(float rotation, sf::Vector2f position)
 
 void Bullet::Initialise(sf::Texture * text)
 {
+	//print_number(text);				//attempt at assertions
+
 	m_texture = text;
 	m_sprite.setTexture(*m_texture);
 	m_sprite.setOrigin(15, 10);
 	if (Energy::GetInstance()->GetEnergy() < 0.15)
 	{
-		m_sprite.setColor(sf::Color(255 * Energy::GetInstance()->GetEnergy() ,255,255));
+		m_sprite.setColor(sf::Color(255 * Energy::GetInstance()->GetEnergy(), 255,255));
 	}
 		
 	else

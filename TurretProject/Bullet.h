@@ -34,4 +34,6 @@ class Bullet
 		void Rotation(int dir);
 		void Move(float time);
 		void WithinBounds();
+
+		void print_number(sf::Texture* myText);
 };
